@@ -1,0 +1,45 @@
+<?php
+require '../../connect.php';
+include('../../user.php');
+
+$candid_id=$_REQUEST['cid'];
+$user_id=$_REQUEST['sid'];
+$approve=$_REQUEST['approve'];
+$interviewround=$_REQUEST['round'];
+$status_recruiter=$_REQUEST['status_recruiter'];
+
+//$section_name_count= count($section_name);
+$count=$_REQUEST['count'];
+$count_name_count= count($count);
+for($i=0;$i<$count_name_count;$i++)
+{
+	
+$interviewroundids= $_REQUEST['interviewroundid'.$i];
+$intername_ids= $_REQUEST['intername_id'.$i];
+$section_names= $_REQUEST['section_name'.$i];
+$sql1 = $con->query("INSERT INTO `hr_domain_entries`(`candids_id`, `hire_id`, `round_id`, `round_name_id`, `feedback`) VALUES ('$candid_id','$user_id','$interviewroundids','$intername_ids','$section_names')");
+} 
+//("Update candidate_round_details set status='$status_recruiter' where candid_id='$candid_id' and person_id='$user_id'");
+$ins=$con->query("insert into candidate_round_details(candid_id,round_id,person_id,status,created_by,created_on)values('$candid_id','$interviewroundids','$user_id','$status_recruiter','$user_id',now())");
+
+
+$round = $con -> query("INSERT INTO `interview_round_level`(`candidate_id`, `interview_round_level`, `approval_level`, `status`, `created_by`, `created_on`) VALUES ('$candid_id','$interviewround','$approve',1,'$user_id',now())");
+
+$interview_round = $con->query("SELECT count(*) as round_count FROM `interview_round_level` WHERE candidate_id='$candid_id'");
+$round = $interview_round->fetch();
+$no_of_row = $round['round_count'];
+
+if($interviewround==$no_of_row){
+	$sql3 = $con->query("Update candidate_form_details set status=41 where id='$candid_id'"); 
+}else{
+	$sql3 = $con->query("Update candidate_form_details set status='$status_recruiter' where id='$candid_id'"); 
+}
+
+if($sql1 && $ins && $sql3 && $round){
+	echo 1;
+}
+else{
+	echo 0;
+}
+?>
+
