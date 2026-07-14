@@ -132,7 +132,7 @@ $userrole=$_SESSION['userrole'];
     type:"POST",
     url:"qvision/masters/department_mapping/new_department_mapping.php",
     success:function(data){
-    $(".content").html(data);
+    $("#main_content").html(data);
     }
     })
   }
@@ -142,7 +142,7 @@ $userrole=$_SESSION['userrole'];
     type:"POST",
     url:"qvision/masters/department_mapping/edit_department_mapping.php?id="+v,
     success:function(data){
-    $(".content").html(data);
+    $("#main_content").html(data);
     }
     })
   }

@@ -11,14 +11,14 @@ $sta=$row['dstatus'];
 <div class="card mb-3">
 <div class="card-header">
 <i class="fa fa-table"></i> DEPARTMENT DETAILS EDIT
-<a onclick="return back_ctc()" style="float: right;" data-toggle="modal" class="btn btn-primary">Back</a>
+<a onclick="department_mapping()" style="float: right;" data-toggle="modal" class="btn btn-primary">Back</a>
 </div>
 <div class="card-body" id="printableArea">
 <form role="form" name="" action="qvision/masters/department_mapping/update_depmapping.php" method="post" enctype="multipart/type">
 
 <table class="table table-bordered">
 <tr>
-<td><center><img src="../../Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
+<td><center><img src="qvision/images/logo123.jpg" alt="quadsel" style="width:100px;height:50px;"></center></td>
 <td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
 </tr>
 <tr>

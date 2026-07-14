@@ -14,6 +14,6 @@ if(isset($_REQUEST['submit']))
 	if($sql)
 {
 	echo "<script>alert(' Updated Updated');</script>";
-	header("location:/qvision/index.php");
+	header("location:/bbvision/index.php");
 }
-}?>
+}?>	
