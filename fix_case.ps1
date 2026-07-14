@@ -1,4 +1,4 @@
-$base = 'c:\xampp\htdocs\BBvisionQclone'
+$base = 'c:\xampp\htdocs\bbvision'
 $files = Get-ChildItem -Path $base -Recurse -Filter '*.php'
 $map = @{}
 foreach ($f in $files) {

@@ -99,7 +99,7 @@ $userrole = $_SESSION['userrole'];
     function add_staff_asset() {
         $.ajax({
             type: "POST",
-            url: "/BBvisionQclone/qvision/Recruitment/staff_asset_master/new_staff_asset_master.php",
+            url: "/bbvision/qvision/Recruitment/staff_asset_master/new_staff_asset_master.php",
             success: function(data) {
                 $(".content").html(data);
             },
@@ -114,7 +114,7 @@ $userrole = $_SESSION['userrole'];
     function staff_asset_edit(id) {
         $.ajax({
             type: "POST",
-            url: "/BBvisionQclone/qvision/Recruitment/staff_asset_master/edit_staff_asset_master.php",
+            url: "/bbvision/qvision/Recruitment/staff_asset_master/edit_staff_asset_master.php",
             data: {
                 id: id
             },
@@ -134,7 +134,7 @@ $userrole = $_SESSION['userrole'];
 
         $.ajax({
             type: "POST",
-            url: "/BBvisionQclone/qvision/Recruitment/staff_asset_master/staff_asset_master.php",
+            url: "/bbvision/qvision/Recruitment/staff_asset_master/staff_asset_master.php",
             success: function(data) {
                 $(".content").html(data);
                 // setTimeout(function() {
@@ -159,7 +159,7 @@ $userrole = $_SESSION['userrole'];
 
         $.ajax({
             type: "POST",
-            url: "/BBvisionQclone/qvision/Recruitment/staff_asset_master/update_staff_asset_master.php",
+            url: "/bbvision/qvision/Recruitment/staff_asset_master/update_staff_asset_master.php",
             data: data,
             success: function(response) {
                 alert(response);

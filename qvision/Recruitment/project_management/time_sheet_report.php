@@ -25,7 +25,8 @@ $userrole=$_SESSION['userrole'];
         </thead>
       <tbody>
       <?php
-$emp_sql=$con->query("SELECT a.id as emp_id,a.*,b.* from time_sheet a left join staff_master b on(a.staff_id=b.candid_id)");
+// $emp_sql=$con->query("SELECT a.id as emp_id,a.*,b.* from time_sheet a left join staff_master b on(a.staff_id=b.candid_id)");
+$emp_sql=$con->query("SELECT a.id as emp_id,a.*,b.* from time_sheet a left join staff_master b on(a.staff_id=b.candid_id) ORDER BY a.id DESC");
 
 // echo "SELECT a.id as emp_id,a.*,b.* from time_sheet a left join staff_master b on(a.staff_id=b.candid_id)";
 

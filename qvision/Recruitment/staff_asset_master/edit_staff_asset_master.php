@@ -27,7 +27,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     <tr>
                         <td>
                             <center>
-                                <img src="../../Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;">
+                                <img src="qvision\images\logo123.jpg" alt="quadsel" style="width:100px;height:50px;">
                             </center>
                         </td>
                         <td colspan="5">
