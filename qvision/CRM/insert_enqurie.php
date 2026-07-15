@@ -1,6 +1,6 @@
 <?php
 require '../config.php';
-require '../user.php';
+require '../../user.php';
 $candidateid=$_SESSION['candidateid'];
 
 $Call_type=$_REQUEST['Call_type'];
@@ -53,7 +53,7 @@ $employee=$_REQUEST['employees'];
 $Location=$_REQUEST['location'];
 $Company_name=$_REQUEST['Company_name'];
 
-$sql11=$con->query("insert into Enquiry(`Call_type`, `date`, `Client_type`, `Company_name`, `Location`,`Address`,`area`,`pincode`,`client_department`,
+$sql11=$con->query("insert into enquiry(`Call_type`, `date`, `Client_type`, `Company_name`, `Location`,`Address`,`area`,`pincode`,`client_department`,
 	`it_name`,`it_designation`,`it_mob1`,`it_mob2`,`it_mail1`,`it_mail2`,`it_landno`,`Client_id`,`Product`,`list`,`Feedback`, `Follup`, `companys`, `Department`, `employee`,  `created_by`, `created_on`)
 	values('$Call_type','$date','$Client_type','$Company_name','$Location','$Address','$area','$pincode','$client_depart','$it_name','$it_designation','$it_mob1','$it_mob2','$it_mail1','$it_mail2','$it_landno','$client_id','$Product','$list','$Feedback','$Follup','$companys','$Department1','$employee1','$candidateid',now())");
 	
@@ -74,7 +74,7 @@ $employee=$_REQUEST['employee'];
 $Location=$_REQUEST['newlocation'];	
 $Company_name=$_REQUEST['new_company_name'];
 
-$sql11=$con->query("insert into Enquiry(`Call_type`,`date`,`Client_type`,`Company_name`, `Location`,`Address`,`area`,`pincode`,
+$sql11=$con->query("insert into enquiry(`Call_type`,`date`,`Client_type`,`Company_name`, `Location`,`Address`,`area`,`pincode`,
 `client_department`,`it_name`,`it_designation`,`it_mob1`,`it_mob2`,`it_mail1`,`it_mail2`,`it_landno`,`Product`,`list`,`Feedback`,`Follup`, `companys`, `Department`,`employee`,`created_by`,`created_on`) 
  values('$Call_type','$date','$Client_type','$Company_name','$Location','$Address','$area','$pincode','$client_depart',
  '$it_name','$it_designation','$it_mob1','$it_mob2','$it_mail1','$it_mail2','$it_landno','$Product','$list','$Feedback','$Follup',
