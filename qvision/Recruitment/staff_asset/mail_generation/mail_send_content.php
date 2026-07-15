@@ -8,9 +8,12 @@ $it_person = $_REQUEST['it_person']; //Mail Created by this employee.
 $mail_content = $_REQUEST['mail_content']; //content for the mail.
 $mail_cc = $_REQUEST['mail_cc']; //cc for the mail.
 
+if(empty($emp_name) || $emp_name == '0' || empty($it_person) || $it_person == '0') {
+    echo "Error: Please select Valid Employee and IT Person.";
+    exit(); 
+}
 
-	$sql=$con->query("INSERT INTO `emp_mail_details`(`emp_name`, `IT_person`, `status`, `created_by`) VALUES ('$emp_name','$it_person', 0 ,'$candidateid')");
-
+    $sql=$con->query("INSERT INTO `emp_mail_details`(`emp_name`, `IT_person`, `status`, `created_by`) VALUES ('$emp_name','$it_person', 0 ,'$candidateid')");
 require '../../../../PHPMailer/PHPMailerAutoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -43,7 +46,7 @@ $mail->SMTPOptions = [
     ]
 ];
 $mail->From = 'test1@ssinformation.in';		//Sets the From email address for the message
-$mail->FromName = 'quadsel systems';
+$mail->FromName = 'Bluebase Software services Pvt Ltd';	//Sets the From name of the message
 $mail->AddAddress($SENDMAIL, $FULLNAME);		//Adds a "To" address
 //$mail->AddAddress('rabi.p@bluebase.in', $FULLNAME);		//Adds a "To" address
 $mail->AddCC($mail_cc);           //Adds a "CC" address.

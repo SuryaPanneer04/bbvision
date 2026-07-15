@@ -27,13 +27,16 @@ $userrole = $_SESSION['userrole'];
 					<select class="form-control" name="emp_name" >
 						<option value="0">-- Select Employee Name --</option>
 						<?php
-						$dep_sql = $con->query("SELECT * FROM staff_master");
-						while ($dep_sql_res = $dep_sql->fetch(PDO::FETCH_ASSOC)) {
-						?>
-							<option value="<?php echo $dep_sql_res['candid_id']; ?>"> <?php echo $dep_sql_res['emp_name']; ?> </option>
-						<?php
-						}
-						?>
+$dep_sql = $con->query("SELECT * FROM staff_master");
+while ($dep_sql_res = $dep_sql->fetch(PDO::FETCH_ASSOC)) {
+    // Name empty ah illana mattum than kela option show aagum:
+    if (!empty(trim($dep_sql_res['emp_name']))) {
+?>
+	<option value="<?php echo $dep_sql_res['candid_id']; ?>"><?php echo trim($dep_sql_res['emp_name']); ?></option>
+<?php
+    }
+}
+?>
 					</select>
 				</td>
 			</tr>
@@ -44,13 +47,16 @@ $userrole = $_SESSION['userrole'];
 				<td colspan="2"><select class="form-control" name="it_person">
 						<option value="0">-- Select Person --</option>
 						<?php
-						$it_dept = $con->query("SELECT * FROM staff_master");
-						while ($it_person = $it_dept->fetch(PDO::FETCH_ASSOC)) {
-						?>
-							<option value="<?php echo $it_person['candid_id']; ?>"><?php echo $it_person['emp_name']; ?></option>
-						<?php
-						}
-						?>
+$it_dept = $con->query("SELECT * FROM staff_master");
+while ($it_person = $it_dept->fetch(PDO::FETCH_ASSOC)) {
+    // Name empty ah illana mattum than IT person list la varum:
+    if (!empty(trim($it_person['emp_name']))) {
+?>
+	<option value="<?php echo $it_person['candid_id']; ?>"><?php echo trim($it_person['emp_name']); ?></option>
+<?php
+    }
+}
+?>
 					</select></td>
 			</tr>
 
@@ -80,16 +86,24 @@ $userrole = $_SESSION['userrole'];
 		}
 
 		function send_mail_to_IT() {
+    if ($('select[name="emp_name"]').val() == "0" || $('select[name="it_person"]').val() == "0") {
+        alert("Please select both Employee Name and IT Person!");
+        return false; 
+    }
 
-			var formData = $('form').serialize();
-			$.ajax({
-				method: "POST",
-				data: formData,
-				url: 'qvision/Recruitment/staff_asset/mail_generation/mail_send_content.php',
-				success: function(data) {
-					alert("Mail Send Successfully.");
-					mail_generation()
-				}
-			})
-		}
+    var formData = $('form').serialize();
+    $.ajax({
+        method: "POST",
+        data: formData,
+        url: 'qvision/Recruitment/staff_asset/mail_generation/mail_send_content.php',
+        success: function(data) {
+            if (data.includes("Message has been sent.") || data.includes("1")) {
+                alert("Mail Send Successfully.");
+                mail_generation();
+            } else {
+                alert("Mail sending failed! Please check mail configurations.");
+            }
+        }
+    })
+}
 	</script>

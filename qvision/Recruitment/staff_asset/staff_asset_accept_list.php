@@ -40,11 +40,12 @@ $staff_id = $sfet['id'];
 
                 // print_r($staff_id);
                 // die();
-                if ($staff_id == '') {
-                  $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1");
-                } else {
-                  $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='1'");
-                }
+               if ($staff_id == '') {
+  $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1");
+} else {
+  // '1' nu irunthatha eduthuttu, login aaguravangalayoda id '$staff_id' nu maathiyachu
+  $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id'");
+}
 
                 //echo "SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id'";
                 //echo "SELECT sm.emp_name,s.stationaries,s.system_or_laptop,s.id_card,s.cug,s.access_card,s.erp_access,s.mail_id,s.id AS sid FROM staff_asset s join staff_master sm on s.emp_name=sm.id";

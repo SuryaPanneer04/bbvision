@@ -26,7 +26,8 @@ $userrole = $_SESSION['userrole'];
 				<td colspan="3"><select class="form-control" name="emp_name">
 						<option value="0">-- Select Employee Name --</option>
 						<?php
-						$dep_sql = $con->query("SELECT * FROM staff_master");
+						
+                         $dep_sql = $con->query("SELECT * FROM staff_master WHERE emp_name IS NOT NULL AND TRIM(emp_name) != ''");
 						while ($dep_sql_res = $dep_sql->fetch(PDO::FETCH_ASSOC)) {
 						?>
 							<option value="<?php echo $dep_sql_res['id']; ?>"><?php echo $dep_sql_res['emp_name']; ?></option>
