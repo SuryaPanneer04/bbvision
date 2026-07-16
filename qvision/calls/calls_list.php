@@ -172,7 +172,7 @@ $cnt=$cnt+1;
 		//alert(v);
 	$.ajax({
 	type:"POST",
-	url:"qvision/Calls/call_upload.php",
+	url:"qvision/calls/call_upload.php",
 	 
 	success:function(data)
 	{
@@ -186,7 +186,7 @@ $cnt=$cnt+1;
 		//alert(v);
 	$.ajax({
 	type:"POST",
-	url:"qvision/Calls/calls_edit.php?id="+v,
+	url:"qvision/calls/calls_edit.php?id="+v,
 	 
 	success:function(data)
 	{
@@ -199,7 +199,7 @@ $cnt=$cnt+1;
 		alert(v);
 	$.ajax({
 	type:"POST",
-	url:"qvision/Calls/calls_feedback.php?id="+v,
+	url:"qvision/calls/calls_feedback.php?id="+v,
 	 
 	success:function(data)
 	{
@@ -218,7 +218,7 @@ function add()
 	{
 		$.ajax({
 		type:"POST",
-		url:"qvision/Calls/calls_add.php",
+		url:"qvision/calls/calls_add.php",
 		success:function(data){
 		$("#main_content").html(data);
 		}
@@ -229,7 +229,7 @@ function add()
 		//alert("Are you confirm to Delete");
 	$.ajax({
 	type:"POST",
-	url:"qvision/Calls/calls_delete.php?id="+v,
+	url:"qvision/calls/calls_delete.php?id="+v,
 	 
 	success:function(data)
 	{

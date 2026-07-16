@@ -228,7 +228,7 @@ function record_fetch(a){
 		{
 			type:'GET',
 			data:'id='+id,
-			url:"qvision/Calls/existing_data.php",
+			url:"qvision/calls/existing_data.php",
 			dataType: 'json',
 			success:function(value)
 			{
@@ -266,7 +266,7 @@ document.getElementById('services').style.visibility = "visible";
 var formData = new FormData(this);
   
            $.ajax({  
-                 url:"qvision/Calls/calls_submit.php",
+                 url:"qvision/calls/calls_submit.php",
                 method:"POST",  
                 data:formData, 
 				cache: false,
