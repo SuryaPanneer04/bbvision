@@ -59,15 +59,8 @@ $staff_id = $sfet['id'];
             </thead>
             <tbody>
               <?php
-              if ($staff_id == '') {
-                $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 group by a.staff_id ");
-              } else {
-                $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id' group by a.staff_id");
-              }
-
-              //echo "SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id'";
-              //echo "SELECT sm.emp_name,s.stationaries,s.system_or_laptop,s.id_card,s.cug,s.access_card,s.erp_access,s.mail_id,s.id AS sid FROM staff_asset s join staff_master sm on s.emp_name=sm.id";
-              $i = 1;
+                $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id  group by a.staff_id ");
+               $i = 1;
               while ($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC)) {
                 $staffid = $emp_res['staff_id'];
               ?>

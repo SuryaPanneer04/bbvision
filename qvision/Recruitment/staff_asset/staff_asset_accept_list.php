@@ -4,10 +4,12 @@ include("../../../user.php");
 $userrole = $_SESSION['userrole'];
 $candidateid = $_SESSION['candidateid'];
 
+
 $staff = $con->query("select * from staff_master where candid_id='$candidateid'");
 
 $sfet = $staff->fetch();
 $staff_id = $sfet['id'];
+
 ?>
 
 <head>
@@ -35,68 +37,89 @@ $staff_id = $sfet['id'];
                 <th>Action</th>
                 <!--th>Tools</th-->
               </thead>
-              <tbody>
+             <tbody>
                 <?php
+                // HR Sasi Rekha (42) and Role (R003) ku data show aaganum
+                if ($userrole == 'R003' || $candidateid == '42') {
+                    $emp_sql = $con->query("SELECT sm.emp_name, a.asset_master_id, a.id as sid, a.status as status FROM staff_access_request a JOIN staff_master sm ON a.staff_id=sm.id ");                    
+                  } else {
+                    $emp_sql = $con->query("SELECT sm.emp_name, a.asset_master_id, a.id as sid, a.status as status FROM staff_access_request a JOIN staff_master sm ON a.staff_id=sm.id WHERE a.staff_id='$staff_id'");
+                }
+                // SQL Error irukka nu check pandrom (White screen thadukka)
+                if($emp_sql === false) {
+                    echo "<tr><td colspan='5' style='color:red;'><b>SQL Error:</b> Data fetch aagala, Database query check pannunga!</td></tr>";
+                } else {
+                    $i = 1;
 
-                // print_r($staff_id);
-                // die();
-               if ($staff_id == '') {
-  $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1");
-} else {
-  // '1' nu irunthatha eduthuttu, login aaguravangalayoda id '$staff_id' nu maathiyachu
-  $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id'");
-}
+                    
+                    while ($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC)) {
 
-                //echo "SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id'";
-                //echo "SELECT sm.emp_name,s.stationaries,s.system_or_laptop,s.id_card,s.cug,s.access_card,s.erp_access,s.mail_id,s.id AS sid FROM staff_asset s join staff_master sm on s.emp_name=sm.id";
-                $i = 1;
-                while ($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC)) {
-                ?>
-                  <tr>
-                    <td><?php echo $i; ?></td>
-                    <td><?php echo $emp_res['emp_name']; ?></td>
-                    <td><?php
-                        $aids = $emp_res['asset_master_id'];
-                        $ass = $con->query("select * from assets_master where name in('$aids')");
-
-                        while ($afet = $ass->fetch()) {
-                          $dat = $afet['name'];
-                          echo $dat . ",";
-                        }
-
-
-                        ?></td>
-                    <td>
-                      <?php
-                      if ($emp_res['status'] == 1) {
-                        echo "Pending";
-                      } elseif ($emp_res['status'] == 2) {
-                        echo "Allocated";
-                      } elseif ($emp_res['status'] == 3) {
-                        echo "Accepted";
-                      } elseif ($emp_res['status'] == 4) {
-                        echo "Head Approved";
-                      }
-                      ?>
-                    </td>
-                    <td>
-                      <?php
-                      if ($emp_res['status'] == 2) {
-                      ?>
-                        <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_page(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> Accept</button>
-                    </td>
-                  <?php
-                      }
-                      if ($emp_res['status'] == 3 || $emp_res['status'] == 4) {
-                  ?>
-                    <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_view(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> View</button>
-                    </td>
-                  <?php
-                      }
-                  ?>
-                  </tr>
-                <?php
-                  $i++;
+                    
+                        ?>
+                        <tr>
+                            <td><?php echo $i; ?></td>
+                            
+                            <!-- Fix 1: Database la name empty ah iruntha text kaatum -->
+                            <td>
+                                <?php 
+                                if($emp_res['emp_name'] != '') {
+                                    echo $emp_res['emp_name']; 
+                                } else {
+                                    echo "<span style='color:red;'>Name Missing in DB</span>";
+                                }
+                                ?>
+                            </td>
+                            
+                            <!-- Fix 2: 'name' ku bathila 'id' vechu asset thedurom -->
+                            <td>
+                                <?php
+                                $aids = $emp_res['asset_master_id'];
+                                if(!empty($aids)){
+                                    $ass = $con->query("SELECT * FROM assets_master WHERE id IN ($aids)");
+                                    if($ass){
+                                        while ($afet = $ass->fetch()) {
+                                            echo $afet['name'] . ", ";
+                                        }
+                                    }
+                                }
+                                ?>
+                            </td>
+                            
+                            <!-- Fix 3: Status list la illana enna status nu exact ah kaatum -->
+                            <td>
+                                <?php
+                                if ($emp_res['status'] == 1) { echo "Pending"; }
+                                elseif ($emp_res['status'] == 2) { echo "Allocated"; }
+                                elseif ($emp_res['status'] == 3) { echo "Accepted"; }
+                                elseif ($emp_res['status'] == 4) { echo "Head Approved"; }
+                                else { echo "<span style='color:orange;'>Unknown Status (" . $emp_res['status'] . ")</span>"; }
+                                ?>
+                            </td>
+                            
+                            <!-- Action Buttons -->
+                            <td>
+                                <?php
+                                if ($emp_res['status'] == 2) {
+                                ?>
+                                    <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_page(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> Accept</button>
+                                <?php
+                                }
+                                if ($emp_res['status'] == 3 || $emp_res['status'] == 4) {
+                                ?>
+                                    <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_view(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> View</button>
+                                <?php
+                                }
+                                if ($emp_res['status'] == 1) {
+                                ?>
+                                    <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_view(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> view</button>
+                                <?php
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <?php
+                        $i++;
+                    }
                 }
                 ?>
               </tbody>

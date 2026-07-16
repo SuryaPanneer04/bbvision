@@ -1158,16 +1158,24 @@ function payable_list()
             }
         })
     }
-    function staff_asset()
-    {
-        $.ajax({
-            type: "POST",
-            url: "qvision/Recruitment/staff_asset/main_page.php",
-            success: function (data) {
-                $("#main_content").html(data);
-            }
-        })
-    }
+    function staff_asset() {
+    $.ajax({
+        type: "POST",
+        url: "qvision/Recruitment/staff_asset/main_page.php", 
+        success: function(data) {
+            $("#main_content").html(data);
+        }
+    });
+}
+    function staff_asset_request() {
+    $.ajax({
+        type: "POST",
+        url: "qvision/Recruitment/staff_asset/staff_asset_request.php", 
+        success: function(data) {
+            $("#main_content").html(data);
+        }
+    });
+}
     function staff_asset_master()
     {
         $.ajax({
