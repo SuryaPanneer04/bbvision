@@ -712,7 +712,7 @@ function closeForm() {
     $.ajax({
     type:'GET',
     data:data,	
-  url:"qvision/Calls/calls_feedback_insert.php",
+  url:"qvision/calls/calls_feedback_insert.php",
     success:function(data)
     {   
 
@@ -816,7 +816,7 @@ function closeForm() {
     $.ajax({
     type:'POST',
     data:"id="+idd+'&remark='+remark+'&feedback='+feedback+'&feedback_date='+feedback_date+'&fed_date='+fed_date,
-	url:"qvision/Calls/enquiry_insert.php",
+	url:"qvision/calls/enquiry_insert.php",
 	success:function(data)
 	{
 		
@@ -933,7 +933,7 @@ function closeForm() {
 var formData = new FormData(this);
 
             $.ajax({  
-                 url:"qvision/Calls/enquiry_insertuh.php",
+                 url:"qvision/calls/enquiry_insertuh.php",
                 method:"POST",  
                 data:formData, 
 				cache: false,
@@ -953,7 +953,7 @@ var formData = new FormData(this);
 		 ev.preventDefault();
 var formData = new FormData(this);
 $.ajax({  
-                 url:"qvision/Calls/enquiry_insertuhh.php",
+                 url:"qvision/calls/enquiry_insertuhh.php",
                 method:"POST",  
                 data:formData, 
 				cache: false,

@@ -1,10 +1,10 @@
 <?php
 require '../config.php';
-include("../user.php");
+include("../../user.php");
 $id=$_REQUEST['id'];
-$stmt = $con->prepare("SELECT a.id as enquiry_id,a.status as enquiry_status,a.*,b.*,c.*,d.*,e.*,f.name as eqp_name,f.*  FROM enquiry a left join calls_master b on (a.call_type=b.id) left join z_department_master c on (a.Department=c.id) left join candidate_form_details d on(a.employee=d.id) left join products_master e on(a.product=e.Product_id) left join product_services f on (a.list=f.id)where a.id='$id'");
+$stmt = $con->prepare("SELECT a.id as enquiry_id,a.status as enquiry_status,a.*,b.*,c.*,d.*,e.*,f.name as eqp_name,f.*  FROM enquiry a left join calls_master b on (a.call_type=b.id) left join z_department_master c on (a.Department=c.id) left join staff_master d on(a.employee=d.candid_id) left join products_master e on(a.product=e.Product_id) left join product_services f on (a.list=f.id)where a.id='$id'");
 
-/*  echo "SELECT a.id as enquiry_id,a.status as enquiry_status,a.*,b.*,c.*,d.*,e.*,f.name as eqp_name,f.*  FROM enquiry a left join calls_master b on (a.call_type=b.id) left join z_department_master c on (a.Department=c.id) left join candidate_form_details d on(a.employee=d.id) left join products_master e on(a.product=e.Product_id) left join product_services f on (a.list=f.id)where a.id='$id'";  */
+/*  echo "SELECT a.id as enquiry_id,a.status as enquiry_status,a.*,b.*,c.*,d.*,e.*,f.name as eqp_name,f.*  FROM enquiry a left join calls_master b on (a.call_type=b.id) left join z_department_master c on (a.Department=c.id) left join staff_master d on(a.employee=d.candid_id) left join products_master e on(a.product=e.Product_id) left join product_services f on (a.list=f.id)where a.id='$id'";  */
 
 $stmt->execute(); 
 $row = $stmt->fetch();
@@ -19,7 +19,7 @@ $row = $stmt->fetch();
     <!-- Post -->
     <table class="table table-bordered">
         <tr>
-        <td><center><img src="/qvision/Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
+        <td><center><img src="qvision/images/logo123.jpg" alt="quadsel" style="width:100px;height:50px;"></center></td>
         <td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
         </tr>
          <?php
@@ -136,7 +136,7 @@ $row = $stmt->fetch();
 		$list=$row['list'];
 			$stmtl = $con->query("SELECT * FROM product_services where id='$list'");
 							$rowl = $stmtl->fetch();?>
-		 <td colspan="5"><input type="text" value="<?php echo $rowl ['name']; ?>" class="form-control" name="services" id="services" readonly>		
+		 <td colspan="5"><input type="text" value="<?php echo $rowl ? $rowl['name'] : ''; ?>" class="form-control" name="services" id="services" readonly>		
 		</td>
         </tr>
 		<tr>
@@ -167,7 +167,7 @@ $row = $stmt->fetch();
 		<tr>
 		<td>Employee :</td>
 		<td colspan="5">
-		 <input type="text" class="form-control" name="employee" id="employee" value="<?php echo $row ['first_name']; ?>" readonly></td>
+		 <input type="text" class="form-control" name="employee" id="employee" value="<?php echo $row ['emp_name']; ?>" readonly></td>
         </tr>
 
         </table>
@@ -192,9 +192,6 @@ while($rows = $sql->fetch(PDO::FETCH_ASSOC))
 	
 ?>
 <tr>
-<input type="hidden" class="form-control" id="get_id" name="get_id" value="<?php echo  $rows['enquiry_id']; ?>">
-
-<td>Date:</td><td colspan="1"><input type="text" class="form-control" id="todaydate_1" name="t_dates[]" value="<?php echo  $rows['date']; ?>" readonly></td>
 
 <td>Feedback:</td>
 <td><input type="text" class="form-control" id="feedback_1" name="feedbacks[]" value="<?php echo  $rows['Feedback']; ?>" readonly></td>
@@ -220,7 +217,6 @@ $cnt=$cnt+1;
     </tr>
     <tr>
       <th>#</th>
-      <th>Date</th>
       <th>Feedback</th>
       <th>Feedback Followup Date</th>
      
@@ -230,9 +226,8 @@ $cnt=$cnt+1;
     <tr>
       <td><input type="checkbox" class="chk" name="chk[]" id="chk_1" value="1" style="width:15px;height:20px;"/></td>
 	  
-     <td><input type="date" class="form-control" id="todaydate_1" name="t_date[]"></td>
       <td><input type="text" class="form-control" id="feedback_1" name="feedback[]"></td>
-      <td><input type="date" class="form-control" id="date_1" name="date[]"></td>
+      <td><input type="date" class="form-control" id="date_1" name="f_date[]"></td>
       
      
       <td><input type="button" class="btn btn-success" id="new_row" name="new_row" onclick="check()" value="Add">
@@ -276,19 +271,19 @@ $cnt=$cnt+1;
     type:'GET',
     data: data + "&" + "id="+id,
 	
-    url:'/KerliERP/CRM/accept_enquiry.php',
+    url:'qvision/CRM/accept_enquiry.php',
     success:function(data)
     {
-      if(data==1)
+      if(data.trim() == "2")
       { 
-        alert('Not');
+        alert("Update Successfully");
+	    enquiry();
       }
       else
       {
-        alert("Update Successfully");
-	 enquiry()
+        alert("Error: " + data);
       }
-      }           
+    }           
     });
     }
 	
@@ -302,7 +297,7 @@ $cnt=$cnt+1;
     type:'GET',
     data: data + "&" + "id="+id,
 	
-    url:'/KerliERP/CRM/change_status.php',
+    url:'qvision/CRM/change_status.php',
     success:function(data)
     {
       if(data==1)
@@ -324,7 +319,7 @@ $cnt=$cnt+1;
     {
     var len=$('#new_tab tr').length;	
     len=len+1; 
-    $('#new_tab').append('<tr class="row_'+len+'"><td><input type="checkbox" class="chk" name="chk[]" id="chk_'+len+'" value="'+len+'"</td><td><input type="date" class="form-control" id="todaydate_'+len+'" name="t_date[]"></td><td><input type="text" class="form-control" id="feedback_'+len+'" name="feedback[]"></td><td><input type="date" class="form-control" id="date_'+len+'" name="date[]"></td></tr>'); 
+    $('#new_tab').append('<tr class="row_'+len+'"><td><input type="checkbox" class="chk" name="chk[]" id="chk_'+len+'" value="'+len+'"</td><td><input type="text" class="form-control" id="feedback_'+len+'" name="feedback[]"></td><td><input type="date" class="form-control" id="date_'+len+'" name="f_date[]"></td></tr>'); 
     }
 
 

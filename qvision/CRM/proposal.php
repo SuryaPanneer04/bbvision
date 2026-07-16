@@ -1,6 +1,6 @@
 <?php
 require '../config.php';
-require '../user.php';
+require '../../user.php';
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
 ?>
@@ -60,7 +60,7 @@ $userrole=$_SESSION['userrole'];
 		 $datas=$con->query("SELECT a.id as enquiry_id,a.status as enquiry_status,a.it_name as client_name,a.it_designation as client_designation,a.it_mob1 as client_mob1,a.it_mob2 as client_mob2,a.it_mail1 as client_mail1,a.it_mail2 as client_mail2,a.it_landno as client_land,a.*,b.*,c.*,d.*,e.status as client_ststs,e.*  FROM enquiry a
 	   left JOIN calls_master b ON (a.Call_type=b.id)
 	  left join z_department_master c ON (a.Department=c.id)
-	  left JOIN candidate_form_details d ON (a.employee=d.id) left join new_client_master e on (a.Client_id=e.id) where a.employee='$candidateid' and a.status='2'");
+	  left JOIN staff_master d ON (a.employee=d.candid_id) left join new_client_master e on (a.Client_id=e.id) where a.employee='$candidateid' and a.status='2'");
 	  
 	  /* echo "SELECT enquiry.id as enquiry_id,enquiry.mail as enquiry_mailid,enquiry.status as enquiry_status,enquiry.*,calls_master.*,z_department_master.*,candidate_form_details.*,new_client_master.status as client_ststs,new_client_master.*  FROM `enquiry`
 	   left JOIN calls_master ON enquiry.Call_type=calls_master.id
@@ -71,7 +71,7 @@ $userrole=$_SESSION['userrole'];
       $datas=$con->query("SELECT a.id as enquiry_id,a.status as enquiry_status,a.it_name as client_name,a.it_designation as client_designation,a.it_mob1 as client_mob1,a.it_mob2 as client_mob2,a.it_mail1 as client_mail1,a.it_mail2 as client_mail2,a.it_landno as client_land,a.*,b.*,c.*,d.*,e.status as client_ststs,e.*  FROM enquiry a
 	   left JOIN calls_master b ON (a.Call_type=b.id)
 	  left join z_department_master c ON (a.Department=c.id)
-	  left JOIN candidate_form_details d ON (a.employee=d.id) left join new_client_master e on (a.Client_id=e.id) where a.employee='$candidateid' and a.status='2'");
+	  left JOIN staff_master d ON (a.employee=d.candid_id) left join new_client_master e on (a.Client_id=e.id) where a.employee='$candidateid' and a.status='2'");
 	  
 	 /*  echo "SELECT enquiry.id as enquiry_id,enquiry.mail as enquiry_mailid,enquiry.status as enquiry_status,enquiry.*,calls_master.*,z_department_master.*,candidate_form_details.*,new_client_master.status as client_ststs,new_client_master.*  FROM `enquiry`
 	   left JOIN calls_master ON enquiry.Call_type=calls_master.id
@@ -107,7 +107,7 @@ $userrole=$_SESSION['userrole'];
 		  
 		  </td>
 	   <td><?php echo $enquiry['dept_name']; ?></td>
-	    <td><?php echo $enquiry['first_name']; ?></td>
+	    <td><?php echo $enquiry['emp_name']; ?></td>
 	      <td><?php if($enquiry['client_ststs']==2){ 
 	               echo '<span style="color:green;text-align:center;"><b>Client Approved</b></span>';  
 				}else{ 
@@ -160,7 +160,7 @@ function client_masterss(v){
 	//  alert(v);
 	$.ajax({
 	type:"POST",
-	url:"/KerliERP/CRM/client_insert.php?id="+v,
+	url:"qvision/CRM/client_insert.php?id="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);
@@ -172,7 +172,7 @@ function client_masterss(v){
     {
     $.ajax({
     type:"POST",
-    url:"/KerliERP/CRM/enquiry_add.php",
+    url:"qvision/CRM/enquiry_add.php",
     success:function(data){
     $("#main_content").html(data);
     }
@@ -182,7 +182,7 @@ function client_masterss(v){
 	 // alert(v);
 	$.ajax({
 	type:"POST",
-	url:"/KerliERP/CRM/proposal_edit.php?id="+v,
+	url:"qvision/CRM/proposal_edit.php?id="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);
@@ -193,7 +193,7 @@ function proposal_view(v){
 	  //alert(v);
 	$.ajax({
 	type:"POST",
-	url:"/KerliERP/CRM/position_view.php?id="+v,
+	url:"qvision/CRM/position_view.php?id="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);

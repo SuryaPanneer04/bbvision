@@ -88,19 +88,19 @@ $userrole = $_SESSION['userrole'];
         $userrole = $_SESSION['userrole'];
 
         if ($userrole == 'ROLE-007') {
-          $datas = $con->query("SELECT enquiry.id as enquiry_id,enquiry.mail as enquiry_mailid,enquiry.*,calls_master.*,z_department_master.*,candidate_form_details.*  FROM `enquiry`
-	   INNER JOIN calls_master ON enquiry.Call_type=calls_master.id
-	  INNER join z_department_master ON enquiry.Department=z_department_master.id
-	  INNER JOIN candidate_form_details ON enquiry.employee=candidate_form_details.id  where enquiry.employee='$candidateid' order by enquiry.id ASC");
+          $datas = $con->query("SELECT enquiry.id as enquiry_id,enquiry.mail as enquiry_mailid,enquiry.*,calls_master.*,z_department_master.*,staff_master.*  FROM `enquiry`
+	   LEFT JOIN calls_master ON enquiry.Call_type=calls_master.id
+	  LEFT JOIN z_department_master ON enquiry.Department=z_department_master.id
+	  LEFT JOIN staff_master ON enquiry.employee=staff_master.candid_id  where enquiry.employee='$candidateid' order by enquiry.id ASC");
         } else {
-          $datas = $con->query("SELECT enquiry.id as enquiry_id,enquiry.mail as enquiry_mailid,enquiry.*,calls_master.*,z_department_master.*,candidate_form_details.*  FROM `enquiry`
-	   INNER JOIN calls_master ON enquiry.Call_type=calls_master.id
-	  INNER join z_department_master ON enquiry.Department=z_department_master.id
-	  INNER JOIN candidate_form_details ON enquiry.employee=candidate_form_details.id order by enquiry.id DESC");
+          $datas = $con->query("SELECT enquiry.id as enquiry_id,enquiry.mail as enquiry_mailid,enquiry.*,calls_master.*,z_department_master.*,staff_master.*  FROM `enquiry`
+	   LEFT JOIN calls_master ON enquiry.Call_type=calls_master.id
+	  LEFT JOIN z_department_master ON enquiry.Department=z_department_master.id
+	  LEFT JOIN staff_master ON enquiry.employee=staff_master.candid_id order by enquiry.id DESC");
           /* echo "SELECT enquiry.id as enquiry_id,enquiry.mail as enquiry_mailid,enquiry.*,calls_master.*,z_department_master.*,candidate_form_details.*  FROM `enquiry`
-	   INNER JOIN calls_master ON enquiry.Call_type=calls_master.id
-	  INNER join z_department_master ON enquiry.Department=z_department_master.id
-	  INNER JOIN candidate_form_details ON enquiry.employee=candidate_form_details.id order by enquiry.id DESC"; */
+	   LEFT JOIN calls_master ON enquiry.Call_type=calls_master.id
+	  LEFT JOIN z_department_master ON enquiry.Department=z_department_master.id
+	  LEFT JOIN candidate_form_details ON enquiry.employee=candidate_form_details.id order by enquiry.id DESC"; */
         }
         $cnt = 1;
         while ($enquiry = $datas->fetch(PDO::FETCH_ASSOC)) {
@@ -116,7 +116,7 @@ $userrole = $_SESSION['userrole'];
             <td><?php echo $enquiry['Feedback']; ?></td>
             <td><?php echo $enquiry['Follup']; ?></td>
             <td><?php echo $enquiry['dept_name']; ?></td>
-            <td><?php echo $enquiry['first_name']; ?></td>
+            <td><?php echo $enquiry['emp_name']; ?></td>
 
 
 
