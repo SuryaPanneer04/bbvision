@@ -78,7 +78,7 @@ $staff_id = $sfet['id'];
                                     $ass = $con->query("SELECT * FROM assets_master WHERE id IN ($aids)");
                                     if($ass){
                                         while ($afet = $ass->fetch()) {
-                                            echo $afet['name'] . ", ";
+                                            echo $afet['name'];
                                         }
                                     }
                                 }

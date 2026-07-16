@@ -42,7 +42,7 @@ table th {
 	<a href="qvision/attendance/qvision_attendance.csv">Download Template</a>
 	
 	
-	<form name="uploadfile" onsubmit = "return confirm('Are you sure you want to submit this form?');" action="qvision/attendance/attendance_data_insert.php" method="post" enctype="multipart/form-data">
+	<form id="uploadcsvform" name="uploadfile" action="qvision/attendance/attendance_data_insert.php" method="post" enctype="multipart/form-data">
   
  <div class="row">
    <div class="col-sm">
@@ -136,6 +136,39 @@ table th {
 	<!-- /.card -->
 	</div>
 	<script>
+		$('#uploadcsvform').submit(function(e) {
+    e.preventDefault();
+    
+    if(confirm('Are you sure you want to submit this form?')) {
+        let formData = new FormData(this);
+        formData.append('Upload', 'Upload'); 
+
+        $.ajax({
+            url: 'qvision/attendance/attendance_data_insert.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                let res = response.trim();
+                if(res.includes("SUCCESS")) {
+                    alert("Data Inserted Successfully!");
+                    attendance_upload(); 
+                } else if(res.includes("Already Existed")) {
+                    alert("Data Already Existed for these dates.");
+                    attendance_upload(); 
+                } else {
+                    // Ippo ungaluku error exact ah alert la varum!
+                    alert(res); 
+                }
+            },
+            error: function() {
+                alert('Upload Failed. Please try again.');
+            }
+        });
+    }
+});
+// Ungaloda existing attendance_delete() function kela irukum...
 		$(document).ready(function ()
 		{
 			$("#classaall").click(function () {
@@ -163,4 +196,5 @@ table th {
             }
         })
     }
+	
 	</script>

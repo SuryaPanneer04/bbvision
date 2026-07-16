@@ -268,7 +268,7 @@ if ($currentYearMonth != $check_doj) { // Checks if the DOJ and Payroll Month ar
 
 
 			$dayquerys = $con->query("SELECT count(*) FROM manual_att where date='$date' and emp_code='$emp_no'");
-			$count = $dayquery->fetchColumn();
+			$count = $dayquerys->fetchColumn();
 			if ($count > 0) {
 				$day_count = $day_count + 1;
 			}

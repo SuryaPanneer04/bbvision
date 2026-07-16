@@ -81,7 +81,7 @@ $userrole=$_SESSION['userrole'];
 			<?php 
 			$aids=$emp_res['asset_master_id'];
 			//echo $aids;
-			$ass=$con->query("select * from assets_master where name='$aids'");
+			$ass=$con->query("select * from assets_master where id in ('$aids')");
 			
 			//echo "select * from assets_master where id='$aids'";
 			
@@ -152,7 +152,7 @@ $userrole=$_SESSION['userrole'];
     {
     $.ajax({
     type:"POST",
-    url:"Recruitment/staff_asset/new_staff_asset.php",
+    url:"qvision/Recruitment/staff_asset/new_staff_asset.php",
     success:function(data){
     $("#main_content").html(data);
     }
@@ -162,7 +162,7 @@ $userrole=$_SESSION['userrole'];
     {
     $.ajax({
     type:"POST",
-    url:"Recruitment/staff_asset/staff_asset_allocate.php?id="+v,
+    url:"qvision/Recruitment/staff_asset/staff_asset_allocate.php?id="+v,
     success:function(data){
     $("#main_content").html(data);
     }
