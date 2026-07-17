@@ -1,36 +1,35 @@
 <?php
-require '../../config.php';
-include("../../user.php");
-$userid=$_SESSION['userid'];
-$asset_name=$_REQUEST['asset_name'];
-$staff_id=$_REQUEST['sid'];
-$reqid=$_REQUEST['reqid'];
-$cug_status=$_REQUEST['cug_sta'];
-echo $sim_id=$_REQUEST['cug'];
-$mail_id=$_REQUEST['mail_id'];
-/* $cou=count($asset_name);
-for($i=0;$i<$cou;$i++)
-{ */
-	$ins=$con->query("insert into staff_asset_list(asset_request_id,staff_id,asset_id,cug,sim_id,mail_id,status,created_by,created_on)values('$reqid','$staff_id','$asset_name','$cug_status','$sim_id','$mail_id',1,'$userid',now())");
-	
-	/* echo "insert into staff_asset_list(asset_request_id,staff_id,asset_id,cug,sim_id,mail_id,status,created_by,created_on)values('$reqid','$staff_id','$asset_name','$cug_status','$sim_id','$mail_id',1,'$userid',now())"; */
-	
-	
-	
-	$upd=$con->query("update assets_form_detail set status='2' where id='$asset_name'");
-	//echo "update assets_form_detail set status='2' where id='$asset_name'";
-	
-	
-	//echo "update assets_form_detail set status='2' where id='$asset_name[$i]'";
-	/* echo "insert into staff_asset_list(staff_id,asset_id,status,created_by,created_on)values('$staff_id','$asset_name[$i]','$userid',1,now())"; */
-//}
+require '../../../connect.php';
+include("../../../user.php");
+$userrole = $_SESSION['userrole'];
 
-	$upddate=$con->query("update staff_access_request set status='2' where id='$reqid'");
-	$upddate=$con->query("update sim_mapping set status='2' where sim_id='$sim_id'");
-	
-/* if($ins)
+$reqid = $_REQUEST['reqid'];
+$cugsta = isset($_REQUEST['cugsta']) ? $_REQUEST['cugsta'] : '';
+$simid = isset($_REQUEST['simid']) ? $_REQUEST['simid'] : '';
+$assets = isset($_REQUEST['View']) ? $_REQUEST['View'] : [];
+
+$staff_sql = $con->query("SELECT staff_id FROM staff_access_request WHERE id='$reqid'");
+if($staff_sql) {
+    $staff_row = $staff_sql->fetch(PDO::FETCH_ASSOC);
+    $staffid = $staff_row['staff_id'];
+    
+    if(!empty($assets) && !empty($staffid)) {
+        $count = count($assets);
+        for($i=0; $i<$count; $i++) {
+            $assetid = $assets[$i];
+            
+            $upd = $con->query("UPDATE staff_asset_list SET status=3 WHERE staff_id='$staffid' AND asset_id='$assetid'");
+            
+            $asset_form = $con->query("UPDATE assets_form_detail SET status=1 WHERE id='$assetid'");
+        }
+        
+        $con->query("UPDATE staff_access_request SET status=4 WHERE id='$reqid'");
+    }
+}
+
+if(isset($asset_form) && $asset_form)
 {
-	echo "<script>alert(' Inserted Updated');</script>";
-	header("location:/KerliERP/index.php");
-} */
+	echo "<script>alert('Asset Collected Successfully!');</script>";
+	header("location:../../../index.php");
+}
 ?>

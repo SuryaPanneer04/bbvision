@@ -20,7 +20,7 @@ $dep=$stafet['dep_id'];
 <a onclick="back_to_staff()" style="float: right;" data-toggle="modal" class="btn btn-primary">Back</a>
 </div>
 <div class="card-body" id="printableArea">
-<form role="form" name="fupname" action="" method="post" enctype="multipart/type">
+<form id="fupname" role="form" name="fupname" action="" method="post" enctype="multipart/form-data">
 
 <table class="table table-bordered">
 <tr>
@@ -145,7 +145,7 @@ while($simdis=$selcug->fetch())
 		 ev.preventDefault();
 var formData = new FormData(this);	  
            $.ajax({  
-                url:'Recruitment/staff_asset/staff_asset_allocate_submit.php',
+                url:'qvision/Recruitment/staff_asset/staff_asset_allocate_submit.php',
                 method:"POST",  
                 data:formData, 
 				cache: false,

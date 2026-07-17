@@ -45,8 +45,6 @@ $staff_id = $sfet['id'];
                 $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id' group by a.staff_id");
               }
 
-              //echo "SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id'";
-              //echo "SELECT sm.emp_name,s.stationaries,s.system_or_laptop,s.id_card,s.cug,s.access_card,s.erp_access,s.mail_id,s.id AS sid FROM staff_asset s join staff_master sm on s.emp_name=sm.id";
               $i = 1;
               while ($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC)) {
                 $staffid = $emp_res['staff_id'];
@@ -54,41 +52,63 @@ $staff_id = $sfet['id'];
                 <tr>
                   <td><?php echo $i; ?></td>
                   <td><?php echo $emp_res['emp_name']; ?></td>
-                  <td><?php
-                      $aids = $emp_res['asset_master_id'];
-                      $ass = $con->query("select * from assets_master where id in('$aids')");
-                      while ($afet = $ass->fetch()) {
-                        $dat = $afet['name'];
-                        echo $dat . ",";
-                      }
-                      ?>
-                  </td>
+                  
                   <td>
-                    <?php $disasset = $con->query("select * from assets_master where id in(SELECT asset_name FROM `staff_asset_list` s join assets_form_detail a on s.asset_id=a.id join assets_master m on a.asset_name=m.name where s.status=2)");
-                    while ($asdes = $disasset->fetch()) {
-                      $aname = $asdes['name'];
-                      echo $aname . ",";
+                    <?php
+                      $aids = trim($emp_res['asset_master_id']);
+                      $aids = rtrim($aids, ',');
+                      if(!empty($aids)){
+                          $ass = $con->query("SELECT name FROM assets_master WHERE id IN ($aids)");
+                          $asset_names = [];
+                          if($ass){
+                              while ($afet = $ass->fetch()) {
+                                  $asset_names[] = $afet['name'];
+                              }
+                              echo implode(", ", $asset_names);
+                          }
+                      } else {
+                          echo "-";
+                      }
+                    ?>
+                  </td>
+                  
+                  <td>
+                    <?php 
+                    $disasset = $con->query("SELECT DISTINCT m.name 
+                                             FROM staff_asset_list s 
+                                             JOIN assets_form_detail a ON s.asset_id=a.id 
+                                             JOIN assets_master m ON a.asset_name=m.name 
+                                             WHERE s.status=2 AND s.staff_id='$staffid'");
+                    $sub_names = [];
+                    if($disasset){
+                        while ($asdes = $disasset->fetch()) {
+                            $sub_names[] = $asdes['name'];
+                        }
+                        echo !empty($sub_names) ? implode(", ", $sub_names) : "-";
                     }
                     ?>
                   </td>
+                  
                   <td>
                     <?php
                     if ($emp_res['status'] == 2) {
                       echo "Pending";
+                    } else if (!empty($sub_names) || $emp_res['status'] == 4) {
+            
+                      echo "Returned"; 
                     }
                     ?>
                   </td>
+                  
                   <td>
                     <?php
-
-                    if ($emp_res['status'] == 4) {
+                    if (!empty($sub_names) || $emp_res['status'] == 4) {
                     ?>
                       <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_recollect(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> Collect</button>
-                  </td>
-                <?php
+                    <?php
                     }
-                ?>
-                </td>
+                    ?>
+                  </td>
                 </tr>
               <?php
                 $i++;

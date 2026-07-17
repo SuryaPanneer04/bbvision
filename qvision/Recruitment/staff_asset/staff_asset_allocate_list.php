@@ -78,21 +78,25 @@ $userrole=$_SESSION['userrole'];
       <td><?php echo $i; ?></td>
       <td><?php echo $emp_res['emp_name']; ?></td>
 	        <td>
-			<?php 
-			$aids=$emp_res['asset_master_id'];
-			//echo $aids;
-			$ass=$con->query("select * from assets_master where id in ('$aids')");
-			
-			//echo "select * from assets_master where id='$aids'";
-			
-			while($afet=$ass->fetch())
-			{
-				 $dat= $afet['name'];
-				 echo $dat.",";
-			}		
- ?>
- 
- </td>
+            <?php 
+            $aids = trim($emp_res['asset_master_id']);
+            $aids = rtrim($aids, ','); 
+            
+            if(!empty($aids)){
+                $ass = $con->query("SELECT name FROM assets_master WHERE id IN ($aids)");
+                $asset_names = [];
+                
+                if($ass){
+                    while($afet = $ass->fetch()) {
+                        $asset_names[] = $afet['name']; 
+                    }
+                    echo implode(", ", $asset_names);
+                }
+            } else {
+                echo "-";
+            }
+            ?>
+            </td>
  <td>
  
   <?php 

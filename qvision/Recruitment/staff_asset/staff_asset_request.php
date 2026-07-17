@@ -2,30 +2,25 @@
 require '../../../connect.php';
 include("../../../user.php");
 $userrole = $_SESSION['userrole'];
-
-// URL la irunthu action enna nu edukkurom (Default ah 'list' view)
+$created_by = $_SESSION['candidateid']; 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'list';
 
-// ============================================================================
-// 0. BACKEND INSERT LOGIC (DB Kooda connect pandra edam)
-// ============================================================================
 if ($action == 'insert') {
     $staff_id = $_POST['staff_id'];
     
-    // Manual ah type pandra text ah apdiye eduthukrom
     $assets_needed = $_POST['assets_needed'];
     
-    // Database la theliva Insert pandrom
-    $ins_sql = "INSERT INTO staff_access_request (staff_id, asset_master_id, cug_status, status) VALUES ('$staff_id', '$assets_needed', 'No', 1)";
-    $con->query($ins_sql);
-    $assets_request_id = $con->lastInsertId(); // Get the last inserted ID
-
-
+    $cand_sql = $con->query("SELECT candid_id FROM staff_master WHERE id='$staff_id'");
+    $cand_res = $cand_sql->fetch();
+    $candid_id = $cand_res['candid_id'];
     
-    echo "success";
-    exit; // Stop execution here so it only returns the AJAX response
-}
+    $ins_sql = "INSERT INTO staff_access_request (candid_id, staff_id, asset_master_id, cug_status, status, created_by) VALUES ('$candid_id', '$staff_id', '$assets_needed', 'No', 1, '$created_by')";
+    $con->query($ins_sql);
+    $assets_request_id = $con->lastInsertId();
 
+    echo "success";
+    exit; 
+}
 ?>
 <style>
 .card-body { max-width: 131% !important; }
@@ -35,9 +30,6 @@ if ($action == 'insert') {
 </head>
 
 <?php
-// ============================================================================
-// 1. ADD REQUEST FORM VIEW
-// ============================================================================
 if ($action == 'add') {
 ?>
     <div class="card card-primary">
@@ -90,9 +82,6 @@ if ($action == 'add') {
     </div>
 
 <?php
-// ============================================================================
-// 2. VIEW DETAILS VIEW
-// ============================================================================
 } elseif ($action == 'view') {
     $id = $_REQUEST['id'];
     $view_sql = $con->query("SELECT sm.emp_name, a.asset_master_id, a.status FROM staff_access_request a JOIN staff_master sm ON a.staff_id=sm.id WHERE a.id='$id'");
@@ -113,15 +102,24 @@ if ($action == 'add') {
                                 <td><?php echo $res['emp_name']; ?></td>
                             </tr>
                             <tr>
-                                <th>Requested Assets</th>
-                                <td>
-                                    <?php echo $res['asset_master_id']; ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td><?php echo ($res['status'] == 1) ? '<span style="color:orange; font-weight:bold;">Pending Allocation</span>' : '<span style="color:green; font-weight:bold;">Allocated</span>'; ?></td>
-                            </tr>
+    <th>Requested Assets</th>
+    <td>
+        <?php 
+       
+        $aids = $res['asset_master_id'];
+        if(!empty($aids)){
+            $ass_sql = $con->query("SELECT name FROM assets_master WHERE id IN ($aids)");
+            $asset_names = [];
+            while ($afet = $ass_sql->fetch()) {
+                $asset_names[] = $afet['name'];
+            }
+            echo implode(", ", $asset_names);
+        } else {
+            echo "-";
+        }
+        ?>
+    </td>
+</tr>
                         </table>
                     </div>
                 </div>
@@ -130,9 +128,6 @@ if ($action == 'add') {
     </div>
 
 <?php
-// ============================================================================
-// 3. MAIN LIST VIEW (Default)
-// ============================================================================
 } else {
 ?>
     <div class="card card-primary">
@@ -175,7 +170,7 @@ if ($action == 'add') {
       </div>
     </div>
 <?php
-} // End of Main List View
+} 
 ?>
 
 <script>
@@ -216,7 +211,6 @@ if ($action == 'add') {
     });
   }
 
-  // Proper Database Backend Insert Submit
   function submit_request(e) {
     e.preventDefault();
     var formData = $('#new_req_form').serialize();
@@ -226,9 +220,9 @@ if ($action == 'add') {
         url: "qvision/Recruitment/staff_asset/staff_asset_request.php?action=insert",
         data: formData,
         success: function(response) {
-            // Standard Professional Alert
+           
             alert("Asset Request Submitted Successfully!");
-            staff_asset_req_list(); // Flow padi thirumba list ku poyidum
+            staff_asset_req_list(); 
         },
         error: function() {
             alert("Error in saving data!");
