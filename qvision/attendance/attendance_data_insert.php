@@ -144,7 +144,7 @@ if (isset($_POST['Upload'])) {
             if (!empty($db_errors)) {
                 echo "DB Error: " . implode(" | ", $db_errors);
             } elseif ($inserted_count > 0) {
-                echo "SUCCESS";
+            echo "SUCCESS|" . $month . "|" . $year; 
             } elseif ($already_existed > 0) {
                 echo "Already Existed.";
             } elseif ($invalid_emp > 0) {

@@ -3,7 +3,8 @@ require '../../../connect.php';
 require '../../../user.php';
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
-$enquiry_id=$_REQUEST['id'];
+
+$enquiry_id = $_REQUEST['id'] ?? '';
 /* $cosel=$con->query("select * from cost_sheet_entry where status=3 and  created_by='$candidateid' limit 1" );
 $cofet=$cosel->fetch();
 $costno=$cofet['cost_sheet_no']; */
@@ -100,7 +101,7 @@ $(document).ready(function() {
 <script>
 		
 
-$(function () {
+//$(function () {
   //   $("#example1").DataTable({
   //     "responsive": true,
   //     "autoWidth": false,

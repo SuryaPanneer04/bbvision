@@ -248,17 +248,19 @@ $('#cpm').change(function(){
 //     }
 // }
 	   
-//pan number
-      
+//pan number validation fix
 $("#pannumber").change(function () {      
-var inputvalues = $(this).val();      
-  var regex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;    
-  if(!regex.test(inputvalues)){      
-  $("#pannumber").val("");    
-  alert("invalid PAN no");    
-  return regex.test(inputvalues);    
-  }    
-});      
+    var inputvalues = $(this).val().toUpperCase(); // Auto-convert to uppercase
+    $(this).val(inputvalues); // Set the capitalized value back to the input box
+    
+    var regex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/; // Added ^ for strict exact match
+    
+    if(!regex.test(inputvalues)){      
+        $("#pannumber").val("");    
+        alert("Invalid PAN No. Please enter a valid format (e.g., ABCDE1234F)");    
+        return false;    
+    }    
+});   
   
 //voter id
 $("#voternumber").change(function () {      
@@ -395,11 +397,18 @@ $(document).ready(function(){
             data: new FormData(this),
             contentType: false,
             processData: false,
-            success: function(data){
-      
-		alert('Educational qualifications form entry Successfully Completed.Then fill out the CERTIFICATIONS DETAILS');
+           success: function(data){
+    if(data == 1 || data == "1") 
+    {
+        alert("Application form Entry Successfully Completed. Then fill out the EDUCATIONAL QUALIFICATIONS");
         application();
-        }   
+    }
+    else
+    { 
+        alert("Entry Unsuccessfull! Database error.");
+        application();
+    }
+}
         });
     });
 	

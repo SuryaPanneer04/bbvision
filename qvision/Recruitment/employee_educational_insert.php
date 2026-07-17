@@ -15,7 +15,7 @@ $valid = 1;
 if( isset($_POST['employeeid']) || isset($_POST['examination_passed']) || isset($_POST['instute']) || isset($_POST['degree']) || isset($_POST['field']) || isset($_POST['passing'])  || isset($_POST['percentage']) || isset($_POST['attachment']) || isset($_POST['attach']) ){ 
 
 $candidateid=$_POST['cid'];
-$id=$_POST['employeeid'];
+$id = isset($_POST['employeeid']) ? $_POST['employeeid'] : array();
 $examination_passed=$_POST['examination_passed'];
 $examination_passed_count= count($examination_passed);
 $instute=$_POST['instute'];
@@ -24,19 +24,19 @@ $field=$_POST['field'];
 $passing=$_POST['passing'];
 $percentage=$_POST['percentage'];
 $filesArr3 = $_FILES["attachment"];
-$edu_attach = $_POST["attach"];
+$edu_attach = isset($_POST['attach']) ? $_POST['attach'] : array();
  
  for($i=0;$i<$examination_passed_count;$i++)
 {
 
-$empid = $id[$i];
+$empid = isset($id[$i]) ? $id[$i] : '';
 $examination= $examination_passed[$i];
 $college= $instute[$i];
 $course= $degree[$i];
 $fields= $field[$i];
 $passings= $passing[$i];
 $percentages= $percentage[$i];
-$education_attach= $edu_attach[$i];
+$education_attach = isset($edu_attach[$i]) ? $edu_attach[$i] : '';
 
 $status=1;
 $today = date("Y-m-d H:i:s"); 

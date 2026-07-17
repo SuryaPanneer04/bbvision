@@ -35,9 +35,9 @@ if( isset($_POST['emp_id']) || isset($_POST['position']) || isset($_POST['name']
     $contact_relation      = $_POST['cpr'];
     $contact_no            = $_POST['cpm'];
     $emp_status            = $_POST['emp_status'];
-	$aadarcard_attach      = $_POST['aadharattach']; 
-	$pancard_attach        = $_POST['panattach']; 
- 	$votercard_attach      = $_POST['voterattach']; 
+	$aadarcard_attach = isset($_POST['aadharattach']) ? $_POST['aadharattach'] : ''; 
+    $pancard_attach   = isset($_POST['panattach']) ? $_POST['panattach'] : ''; 
+    $votercard_attach = isset($_POST['voterattach']) ? $_POST['voterattach'] : '';
 	
    $status=1;
    $today = date("Y-m-d H:i:s"); 

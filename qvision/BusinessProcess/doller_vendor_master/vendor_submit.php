@@ -1,7 +1,6 @@
 <?php
 require '../../../connect.php';
 include("../../../user.php");
-$user_id =$_SESSION['userid'];
 
 
 $user_id =$_SESSION['userid'];
@@ -28,10 +27,11 @@ $status=$_REQUEST['status'];
 //$gst=$_REQUEST['gst'];
 $gst_number=$_REQUEST['gst_number'];
 $phoneno=$_REQUEST['phoneno'];
-$sql = $con->query("INSERT INTO `doller_vendor_mastor`(`id`, `vendor_name`, `address1`, `address2`, `area`, `town_city`, `state`, `district`, `country`, `pincode`, `account_name`, `account_no`, `swift_code`, `ifsc_code`, `mail_id`, `gst`, `contact`, `status`, `created_by`, `created_on`) 
-VALUES (NULL, '$txt_vendor_name', '$txt_address1', '$txt_address2', '$txt_area', '$txt_town', '$txt_state', '$txt_district', '$txt_country', '$txt_pincode', '$txt_account_name', '$txt_account_no', '$txt_swift_code', '$txt_ifsc_code', '$txt_mailid', '$gst_number', '$phoneno', '1', '$candidateid', now())");
-echo "INSERT INTO `doller_vendor_mastor`(`id`, `vendor_name`, `address1`, `address2`, `area`, `town_city`, `state`, `district`, `country`, `pincode`, `account_name`, `account_no`, `swift_code`, `ifsc_code`, `mail_id`, `gst`, `contact`, `status`, `created_by`, `created_on`) 
-VALUES (NULL, '$txt_vendor_name', '$txt_address1', '$txt_address2', '$txt_area', '$txt_town', '$txt_state', '$txt_district', '$txt_country', '$txt_pincode', '$txt_account_name', '$txt_account_no', '$txt_swift_code', '$txt_ifsc_code', '$txt_mailid', '$gst_number', '$phoneno', '1', '$candidateid', now())";
+$sql = $con->query("INSERT INTO `doller_vendor_mastor`(`vendor_name`, `address1`, `address2`, `area`, `town_city`, `state`, `district`, `country`, `pincode`, `account_name`, `account_no`, `swift_code`, `ifsc_code`, `mail_id`, `gst`, `contact`, `status`, `created_by`, `created_on`) 
+VALUES ('$txt_vendor_name', '$txt_address1', '$txt_address2', '$txt_area', '$txt_town', '$txt_state', '$txt_district', '$txt_country', '$txt_pincode', '$txt_account_name', '$txt_account_no', '$txt_swift_code', '$txt_ifsc_code', '$txt_mailid', '$gst_number', '$phoneno', '1', '$candidateid', now())");
+
+echo "INSERT INTO `doller_vendor_mastor`(`vendor_name`, `address1`, `address2`, `area`, `town_city`, `state`, `district`, `country`, `pincode`, `account_name`, `account_no`, `swift_code`, `ifsc_code`, `mail_id`, `gst`, `contact`, `status`, `created_by`, `created_on`) 
+VALUES ('$txt_vendor_name', '$txt_address1', '$txt_address2', '$txt_area', '$txt_town', '$txt_state', '$txt_district', '$txt_country', '$txt_pincode', '$txt_account_name', '$txt_account_no', '$txt_swift_code', '$txt_ifsc_code', '$txt_mailid', '$gst_number', '$phoneno', '1', '$candidateid', now())";
 
 /*$sql11=$con->query("insert into doller_vendor_mastor(vendor_name,address1,address2,area,town_city,state,district,country,pincode,account_name,account_no,swift_code,
   ifsc_code,mail_id,status,created_by,created_on)

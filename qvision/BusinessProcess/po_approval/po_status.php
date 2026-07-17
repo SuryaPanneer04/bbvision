@@ -51,8 +51,34 @@ else
 
 	/* $quote=$con->query("select * from po_generate where po_upload_status='1' or po_upload_status='2' order by id desc"); */
 	
-	$quote=$con->query("select distinct a.id,a.quote_no,a.cost_sheet_no,a.so_number,a.marketing_status,a.marketing_approved_by,
-	a.md_status,a.md_approved_by,a.finance_status,a.finance_approved_by,b.cost_sheet_no,b.enquiry_id,c.id as enqs_id,c.Company_name,c.Client,a.purchase_invoice_sts as pi_sts from po_generate a left join cost_sheet_entry b on(a.cost_sheet_no=b.cost_sheet_no) left join enquiry c  on(b.enquiry_id=c.id) where (a.po_upload_status='1' or a.po_upload_status='2') order by id desc");
+	$quote=$con->query("
+SELECT DISTINCT
+a.id,
+a.quote_no,
+a.cost_sheet_no,
+a.so_number,
+a.marketing_status,
+a.marketing_approved_by,
+a.md_status,
+a.md_approved_by,
+a.finance_status,
+a.finance_approved_by,
+b.cost_sheet_no,
+b.enquiry_id,
+c.id AS enqs_id,
+c.Company_name,
+d.client_name AS Client,
+a.purchase_invoice_sts AS pi_sts
+FROM po_generate a
+LEFT JOIN cost_sheet_entry b
+    ON a.cost_sheet_no = b.cost_sheet_no
+LEFT JOIN enquiry c
+    ON b.enquiry_id = c.id
+LEFT JOIN client_master d
+    ON c.Client_id = d.id
+WHERE a.po_upload_status IN ('1','2')
+ORDER BY a.id DESC
+");
 	
 	 /* echo "select a.id,a.quote_no,a.cost_sheet_no,a.so_number,a.marketing_status,a.marketing_approved_by,
 	a.md_status,a.md_approved_by,a.finance_status,a.finance_approved_by,b.cost_sheet_no,b.enquiry_id,c.id as enqs_id,c.Company_name,c.Client from po_generate a left join cost_sheet_entry b on(a.cost_sheet_no=b.cost_sheet_no) left join enquiry c  on(b.enquiry_id=c.id)where (a.po_upload_status='1' or a.po_upload_status='2') order by id desc"; */
