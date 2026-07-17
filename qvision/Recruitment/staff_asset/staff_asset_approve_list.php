@@ -72,7 +72,7 @@ $staff_id = $sfet['id'];
                   <td><?php echo $emp_res['emp_name']; ?></td>
                   <td><?php
                       $aids = $emp_res['asset_master_id'];
-                      $ass = $con->query("select * from assets_master where id='$aids'");
+                      $ass = $con->query("select * from assets_master where id in ('$aids')");
                       while ($afet = $ass->fetch()) {
                         $dat = $afet['name'];
                         echo $dat . ",";

@@ -1,20 +1,21 @@
 <?php
 require '../../../connect.php';
  $id=$_REQUEST['id'];
-$stmt = $con->prepare("SELECT name,s.asset_master_id as asset_master_id,s.cug_status as cug_status,s.*,a.*,f.*,m.*,sm.* FROM `staff_access_request` s join staff_asset_list a on s.id=a.asset_request_id join assets_form_detail f on a.asset_id=f.id join assets_master m on f.asset_name=m.name join sim_master sm on a.sim_id=sm.id where s.id='$id'");
+ 
+$stmt = $con->prepare("SELECT name,s.asset_master_id as asset_master_id,s.cug_status as cug_status,s.*,a.*,f.*,m.*,sm.* FROM `staff_access_request` s left join staff_asset_list a on s.id=a.asset_request_id left join assets_form_detail f on a.asset_id=f.id left join assets_master m on f.asset_name=m.name left join sim_master sm on a.sim_id=sm.id where s.id='$id'");
 $stmt->execute(); 
 $row = $stmt->fetch();
 
-$sid=$row['staff_id'];
-$access=$row['asset_master_id'];
- $cug_status=$row['cug_status'];
-$phone_no=$row['phone_no'];
-$mail_id=$row['mail_id'];
+$sid = isset($row['staff_id']) ? $row['staff_id'] : '';
+$access = isset($row['asset_master_id']) ? $row['asset_master_id'] : '';
+$cug_status = isset($row['cug_status']) ? $row['cug_status'] : '';
+$phone_no = isset($row['phone_no']) ? $row['phone_no'] : '';
+$mail_id = isset($row['mail_id']) ? $row['mail_id'] : '';
 
 $staff_mas=$con->query("select * from staff_master where id='$sid'");
 
 $stafet=$staff_mas->fetch();
-$dep=$stafet['dep_id'];
+$dep = isset($stafet['dep_id']) ? $stafet['dep_id'] : '';
 ?>
 <head>
     <link rel="stylesheet" href="Qvision\commonstyle.css">
@@ -39,7 +40,7 @@ $dep_sql1=$con->query("SELECT * FROM staff_master where id='$sid' ");
 
 $fet=$dep_sql1->fetch();		
 		?>
-		<input type="text" name="emp_name" id="emp_name" class="form-control" value="<?php echo $fet['emp_name'];?>" readonly>
+		<input type="text" name="emp_name" id="emp_name" class="form-control" value="<?php echo isset($fet['emp_name']) ? $fet['emp_name'] : '';?>" readonly>
 		</td>
 </tr>
 
@@ -49,24 +50,25 @@ $isel=$con->query("select distinct m.id as id,name,a.Serial_no as Serial_no from
 
 $i=0;
 $s=1;
-while($dfet=$isel->fetch())
-{
-	$mid=$dfet['id'];
-		 ?>
-	<tr>	 
-<td><?php echo $dfet['name'];?></td>
-<td><?php echo $dfet['Serial_no'];?></td>
+if($isel){
+    while($dfet=$isel->fetch())
+    {
+        $mid=$dfet['id'];
+             ?>
+        <tr>	 
+    <td><?php echo $dfet['name'];?></td>
+    <td><?php echo $dfet['Serial_no'];?></td>
 
-</tr>
+    </tr>
 
-</div>
- 
- <?php		 
- 
- 	$i++;
-	$s++;
+    </div>
+     
+     <?php		 
+     
+        $i++;
+        $s++;
+    }
 }
-
 ?>
 <?php 
 	if($cug_status=='Yes')
@@ -77,7 +79,7 @@ while($dfet=$isel->fetch())
 <td>CUG:</td>
 <td>
 <input type="hidden" name="cug_sta" id="cug_sta" value="<?php echo $cug_status;?>">
-<input type="text" class="form-control" name="cug" id="cug" value="<?php echo $row['phone_no'];?>" readonly>
+<input type="text" class="form-control" name="cug" id="cug" value="<?php echo $phone_no;?>" readonly>
 
 </td>
 </tr>

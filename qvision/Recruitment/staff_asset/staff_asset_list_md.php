@@ -59,30 +59,37 @@ $staff_id = $sfet['id'];
             </thead>
             <tbody>
               <?php
-              if ($staff_id == '') {
-                $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1");
-              } else {
-                $emp_sql = $con->query("SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status=4 and a.staff_id='$staff_id'");
-              }
-
-              //echo "SELECT sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id'";
-              //echo "SELECT sm.emp_name,s.stationaries,s.system_or_laptop,s.id_card,s.cug,s.access_card,s.erp_access,s.mail_id,s.id AS sid FROM staff_asset s join staff_master sm on s.emp_name=sm.id";
+              $emp_sql = $con->query("SELECT sm.emp_name, a.asset_master_id, a.id as sid, a.status as status FROM staff_access_request a JOIN staff_master sm ON a.staff_id=sm.id WHERE a.status = 4");
+              
               $i = 1;
               while ($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC)) {
               ?>
                 <tr>
                   <td><?php echo $i; ?></td>
+                  
                   <td><?php echo $emp_res['emp_name']; ?></td>
-                  <td><?php
-                      $aids = $emp_res['asset_master_id'];
-                      $ass = $con->query("select * from assets_master where name in('$aids')");
-                      while ($afet = $ass->fetch()) {
-                        $dat = $afet['name'];
-                        echo $dat . ",";
-                      }
-
-
-                      ?></td>
+                  
+                  <td>
+                    <?php
+                    $aids = trim($emp_res['asset_master_id']);
+                    $aids = rtrim($aids, ','); 
+                    
+                    if(!empty($aids)){
+                        $ass = $con->query("SELECT name FROM assets_master WHERE id IN ($aids)");
+                        $asset_names = [];
+                        
+                        if($ass){
+                            while($afet = $ass->fetch()) {
+                                $asset_names[] = $afet['name'];
+                            }
+                            echo implode(", ", $asset_names);
+                        }
+                    } else {
+                        echo "-";
+                    }
+                    ?>
+                  </td>
+                  
                   <td>
                     <?php
                     if ($emp_res['status'] == 1) {
@@ -96,17 +103,16 @@ $staff_id = $sfet['id'];
                     }
                     ?>
                   </td>
+                  
                   <td>
                     <?php
-
                     if ($emp_res['status'] == 4) {
                     ?>
                       <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_view(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> View</button>
-                  </td>
-                <?php
+                    <?php
                     }
-                ?>
-                </td>
+                    ?>
+                  </td>
                 </tr>
               <?php
                 $i++;

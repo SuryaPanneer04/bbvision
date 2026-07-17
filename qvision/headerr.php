@@ -1074,7 +1074,7 @@ function payable_list()
     {
         $.ajax({
             type: "POST",
-            url: "qvision/Recruitment/staff_asset/main_page.php",
+             url: "qvision/Recruitment/staff_asset/main_page.php",
             success: function (data) {
                 $("#main_content").html(data);
             }

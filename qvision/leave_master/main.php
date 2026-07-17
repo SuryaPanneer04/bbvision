@@ -61,8 +61,7 @@ require '../../connect.php';
           <tbody>
           <?php
 
-          $sql=$con->query("SELECT id,leave_name,no_of_days,status,case when status=1 then 'Active' else 'InActive' end as status FROM `master_leave` where  status=1");
-
+          $sql=$con->query("SELECT id,leave_name,no_of_days,status,case when status=1 then 'Active' else 'InActive' end as status FROM `master_leave`");
           $i=1;
           while($res = $sql->fetch(PDO::FETCH_ASSOC))
           {

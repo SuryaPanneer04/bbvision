@@ -66,38 +66,57 @@ $userrole = isset($_SESSION['userrole']) ? $_SESSION['userrole'] : '';
 	  <th>Action</th>
       </thead>
    <tbody>
+          <?php
+      $emp_sql = $con->query("
+        SELECT 
+            h.id AS hid, 
+            h.asset, 
+            h.mail_id, 
+            h.others, 
+            sm.emp_name, 
+            zd.dept_name 
+        FROM hod h 
+        LEFT JOIN staff_master sm ON h.emp_name = sm.id 
+        LEFT JOIN z_department_master zd ON h.dept_name = zd.id
+      ");
 
-      <!--th>Tools</th-->
-      <?php
-     // $emp_sql=$con->query("SELECT sm.dep_id,sm.emp_name,h.asset,h.mail_id,h.others,h.id AS hid FROM hod h join staff_master sm on h.emp_name=sm.id");
-$emp_sql=$con->query("SELECT candidate_form_details.mail,assets_master.name,z_department_master.dept_name,sm.dep_id,sm.emp_name,h.asset,h.mail_id,h.others,h.id AS hid FROM hod h 
-INNER join staff_master sm on h.emp_name=sm.candid_id
-INNER JOIN  z_department_master ON sm.dep_id =  z_department_master.id
-INNER JOIN  assets_master ON h.asset =  assets_master.id
-INNER JOIN  candidate_form_details ON sm.candid_id =  candidate_form_details.id");
-	  
-	 //echo "SELECT sm.emp_name,s.stationaries,s.system_or_laptop,s.id_card,s.cug,s.access_card,s.erp_access,s.mail_id,s.id AS sid FROM staff_asset s join staff_master sm on s.emp_name=sm.id";
-      $i=1;
-      while($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC))
-      {
-		  $assid=$emp_res['asset'];
-		  $dep_sql=$con->query("SELECT asset as assestname FROM staff_asset_master where id='$assid'");
-		$dep_sql_res=$dep_sql->fetch(PDO::FETCH_ASSOC);
-       ?>
-      <tr>
-      <td><?php echo $i; ?></td>
-	  <td><?php echo $emp_res['dept_name']; ?></td>
-      <td><?php echo $emp_res['emp_name']; ?></td>
-	        
-		    <td><?php echo $emp_res['mail']; ?></td>
-			<td><?php echo $dep_sql_res ? $dep_sql_res['assestname'] : ''; ?></td>
-	        <td><?php echo $emp_res['others']; ?></td>
-      <td>
-	  <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['hid']; ?>" onclick="staff_asset_edit(<?php echo $emp_res['hid']; ?>)"><i class="fa fa-edit"></i> Edit</button>
-	  </td>
-      </tr>
-      <?php
-	  $i++;
+      if($emp_sql === false) {
+          echo "<tr><td colspan='7'>SQL Error in Database Query</td></tr>";
+      } else {
+          $i=1;
+          while($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC))
+          {
+              $assid = trim($emp_res['asset']);
+              $assid = rtrim($assid, ',');
+              $asset_names_str = '-';
+              
+              if(!empty($assid)){
+                  $dep_sql = $con->query("SELECT asset FROM staff_asset_master WHERE id IN ($assid)");
+                  $anames = [];
+                  if($dep_sql){
+                      while($afet = $dep_sql->fetch(PDO::FETCH_ASSOC)) {
+                          $anames[] = $afet['asset'];
+                      }
+                      $asset_names_str = implode(", ", $anames); // Clean ah print aagum
+                  }
+              }
+           ?>
+          <tr>
+              <td><?php echo $i; ?></td>
+              <td><?php echo $emp_res['dept_name']; ?></td>
+              <td><?php echo $emp_res['emp_name']; ?></td>
+              
+              <td><?php echo $emp_res['mail_id']; ?></td>
+              
+              <td><?php echo $asset_names_str; ?></td>
+              <td><?php echo $emp_res['others']; ?></td>
+              <td>
+                  <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['hid']; ?>" onclick="staff_asset_edit(<?php echo $emp_res['hid']; ?>)"><i class="fa fa-edit"></i> Edit</button>
+              </td>
+          </tr>
+          <?php
+          $i++;
+          }
       }
       ?>
       </tbody>
