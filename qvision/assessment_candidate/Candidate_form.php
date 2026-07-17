@@ -7,15 +7,16 @@ require '../../connect.php';
         <table class="table table-bordered">
             <tr>
                 <td>
-                    <center><img src="../../qvision/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center>
+                    <center><img src="qvision/images/logo123.jpg" alt="BlueBase" style="width:100px;height:50px;"></center>
                 </td>
                 <td colspan="5">
-                    <center><b>Quadsel1 Systems Private Limited</b></center>
+                    <center><b>Bluebase Software Services Private Limited</b></center>
                 </td>
             </tr>
             <tr>
                 <td colspan="6">
                     <center><b>Application for Candidate</b></center>
+                    <a onclick="assessment_employee()" style="float: right; color: white; cursor: pointer; margin-top: -30px;" class="btn btn-primary">Back</a>
                 </td>
             </tr>
             <tr>
@@ -156,7 +157,7 @@ require '../../connect.php';
                     //window.location.href="login/logout.php";
                     assessment_employee();
                 } else {
-                    alert("Form Data has not been Submitted");
+                    alert("Form Data has not been Submitted. Error: " + data);
                     assessment_employee();
                 }
             }

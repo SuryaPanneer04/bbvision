@@ -10,8 +10,7 @@ if(isset($_REQUEST['submit']))
 	
 if($sql)
 {	
-	echo "<script>alert(' Inserted Updated');</script>";
-	// header("location:../../index.php");
+	echo "1";
 }
 }
 ?>

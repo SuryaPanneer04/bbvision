@@ -13,6 +13,7 @@ if($sql)
 }
 else
 {
-	echo 0;
+    $errorInfo = $con->errorInfo();
+	echo "0 - " . $errorInfo[2];
 }
 ?>

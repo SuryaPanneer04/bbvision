@@ -10,8 +10,7 @@ if(isset($_REQUEST['submit']))
 	
 if($sql)
 {
-	echo "<script>alert(' Inserted Updated');</script>";
-	header("location:/qvision/index.php");
+	echo "<script>alert('Inserted Successfully'); window.location.href='../../index.php';</script>";
 }
 }
 ?>

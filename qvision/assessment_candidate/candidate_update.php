@@ -25,6 +25,7 @@ $date=date('Y-m-d');
 }
 else
 {
-	echo "1";
+    $errorInfo = $con->errorInfo();
+	echo "1 - " . $errorInfo[2];
 }
 ?>

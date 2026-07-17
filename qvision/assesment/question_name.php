@@ -13,7 +13,7 @@ $userrole=$_SESSION['userrole'];
           </div>
           <div class="col-sm-6">
 		
-		  <a onclick=" add_question()" style="float: right;" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> ADD</a>
+		  <a onclick="add_question()" style="float: right;" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> ADD</a>
 	
 		
 		
@@ -88,7 +88,7 @@ $userrole=$_SESSION['userrole'];
     type:"POST",
     url:"qvision/assesment/new_department.php",
     success:function(data){
-    $(".content").html(data);
+    $("#main_content").html(data);
     }
     })
   }
@@ -100,7 +100,7 @@ $userrole=$_SESSION['userrole'];
       url: "qvision/assesment/edit_department.php",
       data: { id: v },
       success: function(data){
-          $(".content").html(data);
+          $("#main_content").html(data);
       },
       error: function(xhr){
           console.log(xhr.status);

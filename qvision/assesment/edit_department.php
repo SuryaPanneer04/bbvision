@@ -10,7 +10,7 @@ $sta=$row['status'];
 <div class="card mb-3">
 <div class="card-header">
 <i class="fa fa-table"></i> QUESTION DETAILS EDIT
-<a id="back_btn" style="float: right; color: white; cursor: pointer;" class="btn btn-primary">Back</a>
+<a onclick="return back_ctc()" style="float: right; color: white; cursor: pointer;" class="btn btn-primary">Back</a>
 </div>
 <div class="card-body" id="printableArea">
 <form role="form" name="edit_form" id="edit_form" method="POST" action="qvision/assesment/update_question.php">
@@ -59,8 +59,9 @@ else{
 </div>
 </div>
 </div>
+
 <script>
-$(document).off('click', '#back_btn').on('click', '#back_btn', function() {
+function back_ctc() {
     question_name();
-});
+}
 </script>

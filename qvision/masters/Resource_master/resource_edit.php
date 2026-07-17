@@ -82,17 +82,17 @@ function update_resource(v)
 	$.ajax({
 		type:"GET",
 		data: data + "&" + "id="+id,
-		url:"qvision/masters/resource_master/resource_update.php",
+		url:"qvision/masters/Resource_master/resource_update.php",
 		success:function(data)
 		{
-			if(data==1)
+			if(data.trim() == "1")
 		{
 			alert("Record Updated Successfully");
 			resource_master();
 		}
 		else
 		{
-			alert("Record Not Updated");
+			alert("Record Not Updated. Error: " + data);
 			resource_master();
 		}
 		}

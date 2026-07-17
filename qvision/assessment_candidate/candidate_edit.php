@@ -13,7 +13,10 @@ $dis = $sql->fetch(PDO::FETCH_ASSOC)
         <td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
         </tr>
         <tr>
-        <td colspan="6"><center><b>Application for Candidate</b></center></td>
+        <td colspan="6">
+            <center><b>Application for Candidate</b></center>
+            <a onclick="assessment_employee()" style="float: right; color: white; cursor: pointer; margin-top: -30px;" class="btn btn-primary">Back</a>
+        </td>
         </tr>
 		 <tr>
 		<td>Company:</td>
@@ -212,7 +215,7 @@ function candidate_update()
 			}
 			else
 			{
-				alert("Form Data has not been Submitted");
+				alert("Form Data has not been Submitted. Error: " + data);
 				assessment_employee();
 				
 			}	
