@@ -76,7 +76,7 @@ $userrole = isset($_SESSION['userrole']) ? $_SESSION['userrole'] : '';
             sm.emp_name, 
             zd.dept_name 
         FROM hod h 
-        LEFT JOIN staff_master sm ON h.emp_name = sm.id 
+        LEFT JOIN staff_master sm ON h.emp_name = sm.candid_id 
         LEFT JOIN z_department_master zd ON h.dept_name = zd.id
       ");
 

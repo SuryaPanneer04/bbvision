@@ -29,4 +29,9 @@ $user=$_SESSION['userid'];
   {
 	  echo 0;
   }
+  else
+  {
+      $errorInfo = $con->errorInfo();
+      echo "Error: " . $errorInfo[2];
+  }
 ?>

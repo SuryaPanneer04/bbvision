@@ -7,16 +7,16 @@ $user_id=$_SESSION['userid'];
 if(isset($_POST['submit']))
 {
 	$id=$_POST['pro_id'];
-	$one=$_POST['one1'];
-	$two=$_POST['two2'];
-	$three=$_POST['three3'];
-	$four=$_POST['four4'];
-	$five=$_POST['five5'];
-	$six=$_POST['six6'];
-	$seven=$_POST['seven7'];
-	$eight=$_POST['eight8'];
-	$nine=$_POST['nine9'];
-	$over_time=$_POST['over_time10'];
+	$one=addslashes($_POST['one1']);
+	$two=addslashes($_POST['two2']);
+	$three=addslashes($_POST['three3']);
+	$four=addslashes($_POST['four4']);
+	$five=addslashes($_POST['five5']);
+	$six=addslashes($_POST['six6']);
+	$seven=addslashes($_POST['seven7']);
+	$eight=addslashes($_POST['eight8']);
+	$nine=addslashes($_POST['nine9']);
+	$over_time=addslashes($_POST['over_time10']);
 	
 	$date = date('Y-m-d');
 

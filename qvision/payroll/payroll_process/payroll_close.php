@@ -77,7 +77,7 @@ function payroll_close_page(v) {
 
     $.ajax({
         type: 'GET',
-        url: '/qvision/payroll/payroll_process/payroll_close_update.php',
+        url: 'qvision/payroll/payroll_process/payroll_close_update.php',
         data: { payroll_master_id: v },
 
         success: function(data) {

@@ -41,7 +41,7 @@ $data=$sql->fetch();
         </tr-->
         <tr>
         <td>Employee Code</td>
-        <td colspan="5"><input type="text" class="form-control" id="candidate_code" name="candidate_code" value="<?php echo $data['emp_code'];?>" ></td>
+        <td colspan="5"><input type="text" class="form-control" id="candidate_code" name="candidate_code" value="<?php echo $data['prefix_code'].$data['emp_code'];?>" ></td>
         </tr>
        <tr>
         <td>Name Of The Employee</td>
@@ -528,6 +528,10 @@ else
 					alert("Upadted successfully");
 					//nsole.warn("data:"+data);
 					staff_list();
+				}
+				else
+				{
+					alert("Update failed! Server says: " + data);
 				}
 				
 			}
