@@ -48,6 +48,7 @@ $userrole = $_SESSION['userrole'];
 		
 		while($data =$check_staff->fetch(PDO::FETCH_ASSOC))
 	    {
+			
 			array_push($staff_id,$data['candid_id']);	
 	    }
 	      $staff_list = implode("','",$staff_id);
@@ -55,23 +56,55 @@ $userrole = $_SESSION['userrole'];
 		
  if($userrole =='R001')//MD
  { 
-      $datas=$con->query("SELECT a.id as costsheet_id,a.status as cs_status,a.*,b.*,e.*,f.* from cost_sheet_entry a 
-		    left join new_client_master b on(b.id = a.client_id) 
-		    left join product_services f on (f.id = a.business_id)
-		    left join staff_master e ON e.candid_id=a.candid_id  where a.status ='0'
-		    group by a.cost_sheet_no  order by a.id desc");
+      $datas=$con->query("
+							SELECT 
+								a.id AS costsheet_id,
+								a.status AS cs_status,
+								a.cost_sheet_no,
+								a.business_id,
+								a.quote_type,
+								a.candid_id,
+								b.org_name,
+								e.emp_name AS employee_name,
+								f.*
+							FROM cost_sheet_entry a
+							LEFT JOIN new_client_master b 
+								ON b.id = a.client_id
+							LEFT JOIN product_services f 
+								ON f.id = a.business_id
+							LEFT JOIN staff_master e 
+								ON e.candid_id = a.candid_id
+							WHERE a.status='0'
+							GROUP BY a.cost_sheet_no
+							ORDER BY a.id DESC
+							");
 			
 			
  }
  else
  {
-	  $datas=$con->query("SELECT a.id as costsheet_id,a.status as cs_status,a.*,b.*,e.*,f.* from cost_sheet_entry a 
-			left join new_client_master b on(b.id = a.client_id) 
-			left join product_services f on (f.id = a.business_id)
-			left join staff_master e ON e.candid_id=a.candid_id  where a.status ='1' 
-			group by a.cost_sheet_no  order by a.id desc");
-			
-			/* ` */
+	$datas=$con->query("
+						SELECT 
+							a.id AS costsheet_id,
+							a.status AS cs_status,
+							a.cost_sheet_no,
+							a.business_id,
+							a.quote_type,
+							a.candid_id AS cs_candid_id,
+							b.org_name,
+							e.emp_name AS employee_name,
+							f.*
+						FROM cost_sheet_entry a
+						LEFT JOIN new_client_master b 
+							ON b.id = a.client_id
+						LEFT JOIN product_services f 
+							ON f.id = a.business_id
+						LEFT JOIN staff_master e 
+							ON e.candid_id = a.candid_id
+						WHERE a.status='1'
+						GROUP BY a.cost_sheet_no
+						ORDER BY a.id DESC
+						");
 			
 	
  }	 
@@ -142,7 +175,7 @@ $userrole = $_SESSION['userrole'];
 		  <td><?php if($data['quote_type']=='1'){ echo "INR"; }else{ echo "Doller";}?></td>
 		 
 		  <td><?php echo $data['org_name']; ?></td>
-		  <td><?php echo $data['emp_name']; ?></td>
+		  <td><?php echo $data['employee_name']; ?></td>
 		  <td><?php if($data['cs_status']==1){ 
 	               echo '<span style="color:green;text-align:center;"><b>Cost Sheet Generated & </b></span>'; 
 	               echo '<span style="color:red;text-align:center;"><b> Waiting for Approval</b></span>'; 

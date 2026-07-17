@@ -43,17 +43,32 @@ $candidateid = $_SESSION['candidateid'];
         if ($candidateid == 2) {
 
           $emp_sql = $con->query("SELECT  a.id as aid,a.emp_name as eid,a.dep_name,b.dept_name,c.emp_name,a.status,d.emp_name as person_name FROM appraisal_details a LEFT JOIN z_department_master b ON a.dep_name=b.id  LEFT JOIN staff_master c ON a.emp_name=c.id LEFT JOIN staff_master d ON a.person_id=d.id where (a.dep_name=2 OR a.dep_name=3) AND a.from_date='$f_date' AND a.to_date='$t_date' GROUP BY `emp_name`");
+          
           //(a.status=0 OR a.status=4) AND 
         } elseif ($candidateid == 4) {
           $emp_sql = $con->query("SELECT  a.id as aid,a.emp_name as eid,a.dep_name,b.dept_name,c.emp_name,a.status,d.emp_name as person_name FROM appraisal_details a LEFT JOIN z_department_master b ON a.dep_name=b.id  LEFT JOIN staff_master c ON a.emp_name=c.id LEFT JOIN staff_master d ON a.person_id=d.id where (a.dep_name=3) AND a.from_date='$f_date' AND a.to_date='$t_date' GROUP BY `emp_name`");
           //(a.status=0 OR a.status=4) AND 
         } else {
-          $emp_sql = $con->query("SELECT  a.id as aid,a.emp_name as eid,a.dep_name,b.dept_name,c.emp_name,a.status,d.emp_name as person_name FROM appraisal_details a 
-        LEFT JOIN z_department_master b ON a.dep_name=b.id  
-        LEFT JOIN staff_master c ON a.emp_name=c.id 
-        LEFT JOIN staff_master d ON a.person_id=d.id where ( (a.status=0 OR a.status=4) AND 
-        (a.dep_name != 3 AND a.dep_name != 2)) AND a.from_date='$f_date' AND a.to_date='$t_date' GROUP BY `emp_name`");
-        }
+
+    $emp_sql = $con->query("
+    SELECT
+        a.id AS aid,
+        a.emp_name AS eid,
+        a.dep_name,
+        b.dept_name,
+        c.emp_name,
+        a.status,
+        d.emp_name AS person_name
+    FROM appraisal_details a
+    LEFT JOIN z_department_master b
+        ON a.dep_name = b.id
+    LEFT JOIN staff_master c
+        ON a.emp_name = c.id
+    LEFT JOIN staff_master d
+        ON a.person_id = d.id
+    ");
+
+}
         $i = 1;
         while ($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC)) {
         ?>
@@ -97,7 +112,7 @@ $candidateid = $_SESSION['candidateid'];
   function view_appraisal_approve(v) {
     $.ajax({
       type: "POST",
-      url: "/ssinfo1/qvision/appraisal/appraisal_approve_view.php?id=" + v,
+      url: "qvision/appraisal/appraisal_approve_view.php?id=" + v,
       success: function(data) {
         $("#main_content").html(data);
       }

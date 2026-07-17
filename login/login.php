@@ -37,7 +37,7 @@ if (isset($_SESSION['user'])) {
         integrity="sha256-kksNxjDRxd/5+jGurZUJd1sdR2v+ClrCl3svESBaJqw=" crossorigin="anonymous" />
 
     <!-- Font Awesome CDN -->
-    <script src="https://kit.fontawesome.com/23412c6a8d.js"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- Custom Style-->
     <link rel="stylesheet" href="./css/Style.css">
@@ -74,12 +74,25 @@ if (isset($_SESSION['user'])) {
 
 
                         </div>
-                        <div class="form-group">
-                            <div class="input-icon" style=" margin-left: 20px;">
+                       <div class="form-group" style="position: relative;">
+                            <div class="input-icon" style="margin-left: 20px;">
                                 <i class="fas fa-user-lock"></i>
                             </div>
-                            <input type="password" name="InputPassword" placeholder="Password" class="form-input" Autocomplete="off">
 
+                            <input type="password" id="password" name="InputPassword" placeholder="Password" class="form-input" autocomplete="off" style="padding-right: 45px;">
+
+                            <span onclick="togglePassword()" style="
+                                position: absolute;
+                                right: 15px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                cursor: pointer;
+                                color: #666;
+                                font-size: 18px;
+                                z-index: 10;
+                                ">
+                                <i class="fas fa-eye" id="toggleIcon"></i>
+                            </span>
                         </div>
 
                         <input type="submit" class="btn btn-primary btn-block" style="margin-top: 71px;margin-left: 206px;width:100px;font-size:20px;" value="Login" />
@@ -105,6 +118,22 @@ if (isset($_SESSION['user'])) {
                 items: 1
             });
         });
+    </script>
+    <script>
+        function togglePassword() {
+            var password = document.getElementById("password");
+            var icon = document.getElementById("toggleIcon");
+
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                password.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
     </script>
 </body>
 
