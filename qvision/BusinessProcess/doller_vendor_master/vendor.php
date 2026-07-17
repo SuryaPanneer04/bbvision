@@ -119,7 +119,7 @@ $(document).ready(function() {
 		//alert(v);
 	$.ajax({
 	type:"POST",
-	url:"qvision/BusinessProcess/doller_vendor_master/vendor_edit?id="+v,
+	url:"/bbvision/qvision/BusinessProcess/doller_vendor_master/vendor_edit.php?id="+v,
 	 
 	success:function(data)
 	{

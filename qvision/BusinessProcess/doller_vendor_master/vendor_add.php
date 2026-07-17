@@ -61,7 +61,7 @@ $userrole=$_SESSION['userrole'];
 		   <td></td>
 		   
 		   <td colspan="2"><input type="text" class="form-control" id="txt_district" name="txt_district" placeholder ="District"></td>
-		    <td colspan="2"><input type="text" class="form-control" id="txt_country" name="txt_state" placeholder ="State"></td>
+		    <td colspan="2"><input type="text" class="form-control" id="txt_state" name="txt_state" placeholder ="State"></td>
 		</tr>
 		<tr>
 		   <td></td>
@@ -113,7 +113,7 @@ function insert_vendor()
 	data: data + "&" + "id="+id,
 	url:"qvision/BusinessProcess/doller_vendor_master/vendor_submit.php",
 	success:function(data)
-	{      
+{      
 		alert("Entry Successfully");
 		vendor_master()
 				  
