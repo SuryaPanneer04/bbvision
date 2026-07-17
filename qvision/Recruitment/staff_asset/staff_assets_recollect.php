@@ -40,9 +40,9 @@ $staff_id = $sfet['id'];
             <tbody>
               <?php
               if ($userrole == 'R003' || $candidateid == '42') {
-                $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 group by a.staff_id");
+                $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 ORDER BY a.id DESC");
               } else {
-                $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 and a.staff_id='$staff_id' group by a.staff_id");
+                $emp_sql = $con->query("SELECT a.staff_id as staff_id,sm.emp_name,a.asset_master_id,a.id as sid,a.status as status FROM staff_access_request a join staff_master sm on a.staff_id=sm.id where a.status!=1 ORDER BY a.id DESC");
               }
 
               $i = 1;
@@ -78,7 +78,7 @@ $staff_id = $sfet['id'];
                                              FROM staff_asset_list s 
                                              JOIN assets_form_detail a ON s.asset_id=a.id 
                                              JOIN assets_master m ON a.asset_name=m.name 
-                                             WHERE s.status=2 AND s.staff_id='$staffid'");
+                                             WHERE s.status=2 AND s.asset_request_id='".$emp_res['sid']."' AND s.staff_id='$staffid'");
                     $sub_names = [];
                     if($disasset){
                         while ($asdes = $disasset->fetch()) {
