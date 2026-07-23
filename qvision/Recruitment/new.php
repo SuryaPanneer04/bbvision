@@ -130,9 +130,9 @@ else
     </td>
       </tr>
 
-       <?php 
-if($emp_pd_sts!=0){
-	?>
+      <?php 
+
+?>
         <tr>  
         <td colspan="6"> 
 		<input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
@@ -141,7 +141,7 @@ if($emp_pd_sts!=0){
 		<input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
 		</td>
 		</tr>
-<?php } ?>
+<?php  ?>
 
         </table>
         <!-- /.post -->
@@ -160,19 +160,17 @@ $(document).ready(function(){
             contentType: false,
             processData:false,
             success: function(data){
-      if(data=="")
-      { 
-        alert("Entry Unsuccessfull");
-		//console.warn("data");
-		application();
-      }
-      else
-      {
-		alert("Application form Entry Successfully Completed.Then fill out the EDUCATIONAL QUALIFICATIONS");
-	   // console.warn("data");
-		application();
-      }
-    }   
+    if($.trim(data) == "1")
+    {
+        alert("Application form Entry Successfully Completed. Then fill out the EDUCATIONAL QUALIFICATIONS");
+        application();
+    }
+    else
+    {
+        alert("DB Error (Data store aagala): " + data);
+        console.log("Full Error: ", data);
+    }
+}  
         });
     });
 	
@@ -398,15 +396,12 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
            success: function(data){
-    if(data == 1 || data == "1") 
-    {
-        alert("Application form Entry Successfully Completed. Then fill out the EDUCATIONAL QUALIFICATIONS");
+    if(data == 1 || data == "1") { 
+        alert("Application form Entry Successfully Completed.");
         application();
-    }
-    else
-    { 
-        alert("Entry Unsuccessfull! Database error.");
-        application();
+    } else {
+        // Backend fail aana SQL error alert la varum
+        alert("Entry Failed! Reason: " + data);
     }
 }
         });
@@ -558,22 +553,16 @@ $(document).ready(function(){
             contentType: false,
             processData:false,
            
-            success: function(data){
-      if(data==0)
-      { 
-        alert("Entry Unsuccessfull");
-		console.warn("datass");
-		application();
-      }
-      else
-      {
-		alert('Certification Details form entry Successfully Completed.Then fill out the EMPLOYEMENT DETAILS');
-        console.warn("data");
-
-		application();
-      }
-      
-    }   
+      success: function(data){
+    if(data == 1 || data == "1"){
+        alert("Application form Entry Successfully Completed. Then fill out the EDUCATIONAL QUALIFICATIONS");
+        application();
+    } else {
+        // Ippo thaan unmaiyana DB error alert aagum
+        alert("Entry Failed! Error: " + data);
+        console.log(data);
+    }
+}  
         });
     });
 	

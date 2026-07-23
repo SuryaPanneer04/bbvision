@@ -1,8 +1,7 @@
 <?php
 require '../../../connect.php';
 
-
-$payroll_master = $con->query("SELECT * FROM payroll_master WHERE flag=2 ORDER BY id DESC LIMIT 1");
+$payroll_master = $con->query("SELECT * FROM payroll_master WHERE flag=2 ORDER BY id ASC LIMIT 1");
 $res = $payroll_master->fetch();
 
 if(!$res){

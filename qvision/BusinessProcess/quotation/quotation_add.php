@@ -6,15 +6,9 @@ $stmt = $con->prepare("SELECT a.id as costsheet_id,a.*,b.*,e.*,d.*,f.mapping_id 
 		 inner join client_master b on(b.id=a.client_id) 
 		 
 		 inner join company_master d on(d.id=a.company_id)
-		 inner join `product/services` f on (f.id = a.business_id)
+		 LEFT JOIN product_services f on (f.id = a.business_id)
 		 inner join candidate_form_details e on(e.id=a.candid_id) where a.id='$costsheet_id'  and a.status ='1' "); 
 
-echo "SELECT a.id as costsheet_id,a.*,b.*,c.*,e.*,d.*,f.mapping_id from cost_sheet_entry a 
-		 inner join client_master b on(b.id=a.client_id) 
-		 inner join doller_vendor_mastor c on(c.id=a.vendor_id)
-		 inner join company_master d on(d.id=a.company_id)
-		 inner join `product/services` f on (f.id = a.business_id)
-		 inner join candidate_form_details e on(e.id=a.candid_id) where a.id='$costsheet_id'  and a.status ='1' " ;
 $stmt->execute(); 
 $row = $stmt->fetch();
 if($row['business_id'] =='1'){
@@ -39,6 +33,7 @@ $position_id = $row['position'];
 <style>
 .form-control{
 -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 0%);
+}
 .table>tbody>tr>td{
     padding: 4px !important;
 }
@@ -54,11 +49,10 @@ $position_id = $row['position'];
 	}
 	</style>
     <link rel="stylesheet" href="Qvision\commonstyle.css">
-    </head>
- <div class="card card-info">
+</head>
+<div class="card card-info">
 	  <div class="card-header">
 	     <h3 class="card-title"><font size="5">QUOTE/PROPOSAL ENTRY DETAILS</font></h3>
-		  <div class="form-group row">
 		   <div class="form-group row">
 		    <div class="col-sm-3">
 			   <input type="hidden" class="form-control" id="cost_sheet_id" name="cost_sheet_id" value=" <?php echo $row['costsheet_id']; ?>" readonly>
@@ -66,7 +60,7 @@ $position_id = $row['position'];
 			   <input type="hidden" class="form-control" id="mapping_id" name="mapping_id" value=" <?php echo $row['mapping_id']; ?>" readonly>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control" id="company_id" name="company_id" readonly="readonly"> <!--onchange="showDiv(this)"-->
+				<select class="form-control" id="company_id" name="company_id" readonly="readonly"> 
 					
 					<?php $query = $con->query("SELECT * FROM company_master where id='$company_id'");
 						  while ($row_fetch = $query->fetch()) {?>
@@ -75,7 +69,7 @@ $position_id = $row['position'];
 				</select>
 			</div>
 			<div class="col-sm-3">
-				<select class="form-control" id="client_id" name="client_id" readonly="readonly"> <!--onchange="showDiv(this)"-->
+				<select class="form-control" id="client_id" name="client_id" readonly="readonly"> 
 					
 					<?php $query = $con->query("SELECT * FROM client_master where id ='$client_id'");
 						  while ($row_fetch = $query->fetch()) {?>
@@ -84,7 +78,7 @@ $position_id = $row['position'];
 				</select>
 			</div>
 			<div class="col-sm-2">
-				<select class="form-control" id="quote_type" name="quote_type" readonly="readonly"> <!--onchange="showDiv(this)"-->
+				<select class="form-control" id="quote_type" name="quote_type" readonly="readonly"> 
 					
 					<?php if($quote_type =='1'){ ?>
 					<option value="1">INR</option>
@@ -93,9 +87,11 @@ $position_id = $row['position'];
 					<?php } ?>
 				</select>
 			</div>
-		  </div>
+		  
      </div>
+	
 	<form action="" method="post" enctype="multipart/form-data">
+        <div class="card-body">
 
 	  <table id="dataTable" width="300px" border="1" style="border-collapse:collapse;margin-bottom: 0px !important;" class="table table-bordered">
 		<tr>
@@ -137,32 +133,33 @@ $position_id = $row['position'];
 		  <td>
 			<INPUT type="text" id="cost1" name="cost[]" onchange="totalIt()" class="form-control sumtotal" value="<?php echo $cost['unit_rate']; ?>"> </td>
 		  <td>
-			<INPUT type="text" id="price1" name="price[]" readonly="readonly" class="form-control sumtotal" value="<?php echo $cost['amount']; ?>"> </td>
+			<INPUT type="text" id="price1" name="price[]" readonly="readonly" class="form-control sumtotal" value="<?php echo $cost['total_price']; ?>"> </td>
 		  <td>
 		    <INPUT type="button" class="btn btn-success" value="Add " onclick="addRow('dataTable')" />
 	        <INPUT type="button" class="btn btn-danger" value="Delete" onclick="deleteRow('dataTable')" />
 		   </td>
 		</tr>
+       </table>
 	   <table id="dataTable" width="300px" border="1" style="border-collapse:collapse;" class="table table-bordered" >
-		<tr>
+			<tr>
 		  <td colspan="5"><b>Logistics</b></td>
 		 
 		  <td colspan="3" align="right">
-		    <INPUT type="text" id="logistics" name="logistics" class="form-control sumtotal" style="width:40% !important;"  value="<?php echo $cost['logistics']; ?>">
+		    <INPUT type="text" id="logistics" name="logistics" class="form-control sumtotal" style="width:40% !important;"  value="<?php echo $cost['log_amt']; ?>">
 		  </td>
 		</tr>
 		<tr>
 		  <td colspan="5"><b>Engineer</b></td>
 		   <td colspan="3" align="right">
-		    <INPUT type="text" id="eng" name="eng" class="form-control sumtotal" style="width:40% !important;"  value="<?php echo $cost['eng']; ?>">
+		    <INPUT type="text" id="eng" name="eng" class="form-control sumtotal" style="width:40% !important;"  value="<?php echo $cost['eng_amt']; ?>">
 		  </td>
 		</tr>
 		<tr>
 		  <td colspan="5"><b>Margin</b>
-		   <INPUT type="text" id="margin_per" name="margin_per" class="form-control" style="width:40% !important;"  value="<?php echo $cost['margin_per']; ?>">
+		   <INPUT type="text" id="margin_per" name="margin_per" class="form-control" style="width:40% !important;"  value="<?php echo $cost['com_per']; ?>">
 		</td>
 		 <td colspan="3" align="right"> 
-		    <INPUT type="text" id="margin_amt" name="margin_amt" class="form-control sumtotal" style="width:40% !important;" p value="<?php echo $cost['margin_amt']; ?>">
+		    <INPUT type="text" id="margin_amt" name="margin_amt" class="form-control sumtotal" style="width:40% !important;" p value="<?php echo $cost['com_amt']; ?>">
 		  </td>
 		</tr>
 		<tr>
@@ -175,7 +172,7 @@ $position_id = $row['position'];
 		<?php $cnt=$cnt+1; } ?>
 		<tr>
 		 <td colspan="5"><b>Quotation date</b><input type="date" style="float:left;" class="form-control" name="quote_date" id="quote_date" >
-		 </td colspan="1">
+         </td>
 		 <td><b>GST</b>
 		 <select class="form-control" id="gst" name="gst" required>
 			<option value="">----- Choose GST % -----</option>
@@ -187,11 +184,7 @@ $position_id = $row['position'];
 		</tr>
 		
 	  </table>	
-	  </table>
-	 
 	
-   
-	  <div class="card-body">
 	    <table class="table table-bordered">
 		 <tr><th colspan="2"  style="text-align:center;">TERMS & CONDITIONS</th></tr>
 		  <tr>
@@ -203,13 +196,16 @@ $position_id = $row['position'];
 			<td><b>100% IN ADVANCE ALONG WITH FORMAL PURCHASE ORDER.<br/></b>
 			PAYMENTS SHOULD BE MADE EITHER BY CHEQUE, DD, RTGS AND NEFT IN FAVOUR OF QUADSEL SYSTEMS PVT LTD, PAYABLE AT CHENNAI. CASH PAYMENTS WILL BE NULL & VOID.<br/><br/>
 			<?php 
-			  //$Quote	    = $_REQUEST['Quote_type'];
-			 //$mapping	= $_REQUEST['product_service'];
+
+             // ADD THIS TO FIX BANK DETAILS ERROR
+             $bank_name = "";
+             $account_no = "";
+             $ifsc_code = "";
+             $vender_id = "";
 
 			if(($row['business_id'] == '1')OR($row['business_id'] =='2')){
 				 if($quote_type =='1'){ 
 					$stmt = $con->query("select * from doller_vendor_mastor where vendor_type = '$quote_type' ");
-					 ///echo "select * from doller_vendor_mastor where vendor_type = '$quote_type' ";
 					 while ($row1 = $stmt->fetch()) {
 						$bank_name = $row1['account_name'];
 						$account_no = $row1['account_no'];
@@ -219,30 +215,25 @@ $position_id = $row['position'];
 					} 
 				 }else{
 					  $stmt = $con->query("select * from doller_vendor_mastor where vendor_type = '$quote_type' ");
-					 //echo "select * from doller_vendor_mastor where vendor_type = '$quote_type' ";
 					 while ($row1 = $stmt->fetch()) {
-						//$rows[] = $row;
 					} 
 				 }
 			}
 			?>
-			<b>BANK DETAILS FOR NEFT / RTGS / IMPS 
-			<div class="form-group row">
+			<b>BANK DETAILS FOR NEFT / RTGS / IMPS </b>
+			<div class="form-group row" style="margin:0;">
 			    <div class="col-sm-2">BANK NAME :</div>
-				<div class="col-sm-1"><input type="text" id="bank_name" style ="border:none;" readonly value="<?php echo $bank_name;?>" >
+				<div class="col-sm-4"><input type="text" id="bank_name" style="border: 1px solid #000;" value="<?php echo $bank_name;?>" >
 				<input type="hidden" id="vendor_id" readonly value="<?php echo $vender_id;?>"></div>
-				
 			</div>
-			<div class="form-group row">
+			<div class="form-group row" style="margin:0;">
 			     <div class="col-sm-2">CURRENT A/C NO :</div>
-				 <div class="col-sm-1"><input type="text" id="acc_no" style ="border:none;" readonly value="<?php echo $account_no;?>"></div>
+				 <div class="col-sm-4"><input type="text" id="acc_no" style="border: 1px solid #000;" value="<?php echo $account_no;?>"></div>
 			</div>
-			
-			<div class="form-group row">
+			<div class="form-group row" style="margin:0;">
 			     <div class="col-sm-2">IFSC CODE :</div>
-				 <div class="col-sm-1"><input type="text" id="ifsc_code" style ="border:none;" readonly value="<?php echo $ifsc_code;?>"></div>
+				 <div class="col-sm-4"><input type="text" id="ifsc_code" style="border: 1px solid #000;" value="<?php echo $ifsc_code;?>"></div>
 			</div>
-			</b>
             </td>
 		  </tr>
 		  
@@ -260,15 +251,15 @@ $position_id = $row['position'];
 			<td>AS MENTIONED ABOVE.<br/></td>
 		  </tr>
 		</table>
-		</div>
+		
 		<br/><br/>
 	   <div class="form-group row">
 			<div class="col-sm-12"><p><b> For SS INFORMATION SYSTEMS PVT LTD, </b></p></div> 
 			
 	  </div>
 	   <div class="form-group row">
-		<div class="col-sm-12"><b><?php echo $row['first_name'];?></div>
-	  </div><b>
+		<div class="col-sm-12"><b><?php echo $row['first_name'];?></b></div>
+	  </div>
 	<?php $query1=  $con->prepare("select designation_name from designation_master where id ='$position_id'");
          	$query1->execute(); 
             $row1 = $query1->fetch();
@@ -283,10 +274,10 @@ $position_id = $row['position'];
 				  <div class="col-sm-12"><?php echo $row['mail'];?>
 				  <input type="hidden" id="candid_id" value ="<?php echo $row['candid_id'];?>" readonly></div>
 				 
-			</div></b>
-		
+			</div>
+            
+        </div>
 	</form>	  
-	<!-- Sub Total: <input type="text" readonly="readonly" id="total"><br><input type="submit" value="Create Invoice">-->
   </div>
 			
 <script>
@@ -549,7 +540,7 @@ $('.sumtotal').keyup(function () {
   }
 
 </script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+
 <script>
   $("input").blur(function() {
     if ($(this).attr("data-selected-all")) {
@@ -582,7 +573,6 @@ $('.sumtotal').keyup(function () {
   }
 
 </script>
-<script>
 
 <script type="text/javascript">
 function showDiv(id){

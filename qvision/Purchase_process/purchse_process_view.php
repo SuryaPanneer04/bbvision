@@ -45,15 +45,19 @@ $cost_sheet_id=$feth['cost_sheet_id'];
 	  a.status as po_status,b.id,b.cost_sheet_no FROM purchase_vendor_master a left join cost_sheet_entry b on(a.cost_sheet_id=b.id) where a.purchase_type='$pur_type' and a.cost_sheet_id='$cost_sheet_id'" );
 	 /* echo "SELECT a.id as po_id,a.warrenty,a.price,a.upload,a.cost_sheet_id,a.purchase_type,a.so_number,a.vendor_id,
 	  a.status as po_status,b.id,b.cost_sheet_no FROM purchase_vendor_master a left join cost_sheet_entry b on(a.cost_sheet_id=b.id) where a.purchase_type='$pur_type' and a.cost_sheet_id='$cost_sheet_id'"; */
-     $emp_sql->execute();
 	 $count=$emp_sql->rowCount();
       $cnt=1;
       while($data =$emp_sql->fetch(PDO::FETCH_ASSOC))
 	  {
-$vendor=$data['vendor_id'];
-$vendor_sql=$con->query("SELECT id ,vendor_name from doller_vendor_mastor where id='$vendor'" );  
-$v_data =$vendor_sql->fetch(PDO::FETCH_ASSOC);
-$vendor_name=$v_data['vendor_name'];
+$vendor = $data['vendor_id'];
+$vendor_name = "Vendor Not Found"; // Default fallback text
+if (!empty($vendor)) {
+    $vendor_sql = $con->query("SELECT id, vendor_name FROM doller_vendor_mastor WHERE id='$vendor'");
+    $v_data = $vendor_sql->fetch(PDO::FETCH_ASSOC);
+    if ($v_data && isset($v_data['vendor_name'])) {
+        $vendor_name = $v_data['vendor_name'];
+    }
+}
        ?>
       <tr>
       <td><?php echo $cnt; ?>.</td>

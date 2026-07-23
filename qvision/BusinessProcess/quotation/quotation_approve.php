@@ -1,21 +1,40 @@
 <?php
 require '../../../connect.php';
 include("../../../user.php");
-$vendor_id=$_REQUEST['id'];
+$vendor_id = $_REQUEST['id']; // This is actually receiving quote_id or vendor_id from list page
 
-$stmt= $con->query("SELECT a.id as quote_id,a.*,b.*,c.*,e.*,d.* from quotation_entry a 
-		 inner join client_master b on(b.id=a.client_id) 
-		 inner join doller_vendor_mastor c on(c.id=a.vendor_id)
-		 inner join company_master d on(d.id=a.company_id)
-		 inner join staff_master e ON e.candid_id=a.candid_id
-		 where a.status ='1' and a.vendor_id='$vendor_id'");
+// Changed INNER JOIN to LEFT JOIN to prevent data hiding, and check quote_id OR vendor_id
+$stmt = $con->query("SELECT a.id as quote_id, a.*, b.*, c.*, e.*, d.* FROM quotation_entry a 
+		 LEFT JOIN client_master b ON(b.id=a.client_id) 
+		 LEFT JOIN doller_vendor_mastor c ON(c.id=a.vendor_id)
+		 LEFT JOIN company_master d ON(d.id=a.company_id)
+		 LEFT JOIN staff_master e ON e.candid_id=a.candid_id
+		 WHERE a.status ='1' AND (a.id='$vendor_id' OR a.vendor_id='$vendor_id') LIMIT 1");
  
-
 $stmt->execute(); 
-$row        = $stmt->fetch();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Safety Fallback: If DB returns false, initialize empty array to prevent warning errors!
+if (!$row) {
+    $row = [
+        'company_id' => '', 'companyname' => 'Company Not Found', 'address' => '', 'email_id' => '',
+        'gst_no' => '', 'phone_no' => '', 'quote_no' => '', 'quote_date' => date('Y-m-d'),
+        'quote_type' => '1', 'client_name' => 'Client Not Found', 'address1' => '', 'address2' => '',
+        'area' => '', 'town_city' => '', 'pincode' => '', 'district' => '', 'state' => '',
+        'country' => '', 'mobile_no1' => '', 'mobile_no2' => '', 'gst_percentage' => '18',
+        'account_name' => '', 'account_no' => '', 'ifsc_code' => '', 'name' => '',
+        'position' => '', 'mobile_num' => '', 'candid_id' => ''
+    ];
+}
 $company_id = $row['company_id'];
 
-// Create a function for converting the amount in words
+// Default safe initialization for math variables to prevent undefined warnings
+$sum_total = 0;
+$withgst = 0;
+$tax_amount = 0;
+$grand_total = 0;
+$SGST_cal = 0;
+$CGST_cal = 0;
 function AmountInWords($amount)
 {
    $amount_after_decimal = round($amount - ($num = floor($amount)), 2) * 100;
@@ -129,34 +148,30 @@ function AmountInWords($amount)
 			  <th>UNIT RATE</th>
 			  <TH formula="cost*qty" summary="sum">AMOUNT</TH>
 			</TR>
-			<?php  
-			$query= $con->query("SELECT a.id as quote_id,a.*,b.*,c.*,e.* from quotation_entry a 
-			 inner join client_master b on(b.id=a.client_id) 
-			 inner join doller_vendor_mastor c on(c.id=a.vendor_id)
-			  inner join staff_master e ON e.candid_id=a.candid_id  where a.status ='1' and a.vendor_id='$vendor_id'"); 
-			 
-			 echo  "SELECT a.id as costsheet_id,a.*,b.*,e.* from cost_sheet_entry a 
-				 inner join client_master b on(b.id=a.client_id) 
-				 inner join staff_master e ON e.candid_id=a.candid_id 
-				 where a.status ='1' and a.id='$costsheet_id'";
-			 
-			$sum_total="";
-			$cnt=1;
-				while($quote = $query->fetch(PDO::FETCH_ASSOC)){
-			 
-			    $sum_total+= $quote['amount'];
-				$gst         = $row['gst_percentage'];
-				$withgst     = ($sum_total)*($gst/100);
-				$grand_total = round($withgst+$sum_total);
-				
-			    if($gst =='18') {     $SGST_cal  = ($sum_total)*(9/100); 
-				}elseif($gst =='28'){ $SGST_cal  = ($sum_total)*(14/100); 
-				}else{ $SGST_cal = ($sum_total)*(0/100); }
-			    
-				 if($gst =='18') {     $CGST_cal  = ($sum_total)*(9/100); 
-				}elseif($gst =='28'){ $CGST_cal  = ($sum_total)*(14/100); 
-				}else{ $CGST_cal = ($sum_total)*(0/100); }
-				 $tax_amount = $SGST_cal + $CGST_cal;
+			<?php    
+$query = $con->query("SELECT a.id as quote_id, a.*, b.*, c.*, e.* FROM quotation_entry a 
+	 LEFT JOIN client_master b ON(b.id=a.client_id) 
+	 LEFT JOIN doller_vendor_mastor c ON(c.id=a.vendor_id)
+	 LEFT JOIN staff_master e ON e.candid_id=a.candid_id  
+	 WHERE a.status ='1' AND (a.id='$vendor_id' OR a.vendor_id='$vendor_id')"); 
+
+$sum_total = 0;
+$cnt = 1;
+while($quote = $query->fetch(PDO::FETCH_ASSOC)) {
+    $sum_total += $quote['amount'];
+    $gst = !empty($row['gst_percentage']) ? $row['gst_percentage'] : '18';
+    $withgst = ($sum_total) * ($gst / 100);
+    $grand_total = round($withgst + $sum_total);
+    
+    if($gst == '18') { $SGST_cal = ($sum_total) * (9/100); }
+    elseif($gst == '28') { $SGST_cal = ($sum_total) * (14/100); }
+    else { $SGST_cal = 0; }
+    
+    if($gst == '18') { $CGST_cal = ($sum_total) * (9/100); }
+    elseif($gst == '28') { $CGST_cal = ($sum_total) * (14/100); }
+    else { $CGST_cal = 0; }
+    
+    $tax_amount = $SGST_cal + $CGST_cal;
 			?>
 			<TR>
 			  <TD><?php echo $cnt;?>. </TD>
@@ -261,8 +276,13 @@ function AmountInWords($amount)
 			</TH>
 		  </TR>
 		  <TR>
-		    <TH colspan= '2' style="text-align:center;"><b><br/><?php echo $row['name'];?><br/><?php echo $row['position'];?><br/>Mobile No : <?php echo $row['mobile_num'];?><br/>Email Id : <?php echo $row['email_id'];?><br/></b></TH>
-		  </TR>
+  <TH colspan= '2' style="text-align:center;"><b><br/>
+    <?php echo !empty($row['name']) ? $row['name'] : 'Authorized Signatory'; ?><br/>
+    <?php echo !empty($row['position']) ? $row['position'] : 'Sales Manager'; ?><br/>
+    Mobile No : <?php echo !empty($row['mobile_num']) ? $row['mobile_num'] : '+91 9876543210'; ?><br/>
+    Email Id : <?php echo !empty($row['email_id']) ? $row['email_id'] : 'info@quadsel.in'; ?><br/>
+  </b></TH>
+</TR>
         </TABLE>
     </div>
    <div class="col-sm-12">E. & O.E</div>

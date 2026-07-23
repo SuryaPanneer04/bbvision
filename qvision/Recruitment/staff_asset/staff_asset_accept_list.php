@@ -69,8 +69,7 @@ $staff_id = $sfet['id'];
                                 }
                                 ?>
                             </td>
-                            
-                            <!-- Fix 2: 'name' ku bathila 'id' vechu asset thedurom -->
+                        
                             <td>
                                 <?php
                                 $aids = $emp_res['asset_master_id'];
@@ -85,7 +84,6 @@ $staff_id = $sfet['id'];
                                 ?>
                             </td>
                             
-                            <!-- Fix 3: Status list la illana enna status nu exact ah kaatum -->
                             <td>
                                 <?php
                                 if ($emp_res['status'] == 1) { echo "Pending"; }

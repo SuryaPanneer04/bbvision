@@ -56,7 +56,7 @@ if(($userrole =='R008')||($userrole =='R005')||($userrole =='R004')) {
 		  $datas=$con->query("SELECT enquiry.id as enquiry_id,enquiry.it_name as client_name,enquiry.status as enquiry_status,enquiry.approved_by as approved_by,enquiry.mail as enquiry_mailid,enquiry.created_by as enquiry_created,enquiry.*,calls_master.*,z_department_master.*,staff_master.* FROM `enquiry`
 		   left JOIN calls_master ON (enquiry.Call_type=calls_master.id)
 		   left join z_department_master ON (enquiry.Department=z_department_master.id)
-		   left JOIN staff_master ON (enquiry.employee=staff_master.id)  
+		   left JOIN staff_master ON (enquiry.employee=staff_master.candid_id) 
 		   where (enquiry.status='3' OR enquiry.status='4' OR enquiry.status='5' OR enquiry.status='6' OR enquiry.status='7' OR enquiry.status='8' OR enquiry.status='9' OR enquiry.status='10' OR enquiry.status='11') and enquiry.created_by='$candidateid' and enquiry.id='$enq_id' order by enquiry.id desc");
 		   
 	}else{
@@ -64,7 +64,7 @@ if(($userrole =='R008')||($userrole =='R005')||($userrole =='R004')) {
 		$datas=$con->query("SELECT enquiry.id as enquiry_id,enquiry.it_name as client_name,enquiry.status as enquiry_status,enquiry.approved_by as approved_by,enquiry.mail as enquiry_mailid,enquiry.created_by as enquiry_created,enquiry.*,calls_master.*,z_department_master.*,staff_master.* FROM `enquiry`
 		   left JOIN calls_master ON (enquiry.Call_type=calls_master.id)
 		   left join z_department_master ON (enquiry.Department=z_department_master.id)
-		   left JOIN staff_master ON (enquiry.employee=staff_master.id)  
+		   left JOIN staff_master ON (enquiry.employee=staff_master.candid_id)  
 		   where (enquiry.status='3' OR enquiry.status='4' OR enquiry.status='5' OR enquiry.status='6' OR enquiry.status='7' OR enquiry.status='8' OR enquiry.status='9' OR enquiry.status='10' OR enquiry.status='11') order by enquiry.id desc");
 	}
 		    /* echo "SELECT enquiry.id as enquiry_id,enquiry.client as client_name,enquiry.status as enquiry_status,enquiry.approved_by as approved_by,enquiry.mail as enquiry_mailid,enquiry.created_by as enquiry_created,enquiry.*,calls_master.*,z_department_master.*,staff_master.* FROM `enquiry`

@@ -115,39 +115,51 @@ $row_query = "SELECT * FROM quotation_entry ORDER BY id DESC ";
 	 } 
 }
 
-$specification = $_REQUEST['item'];
- $row_count   = count($specification);
-$qty         = $_REQUEST['qty'];
-$unit        = $_REQUEST['unit'];
-$unit_rate   = $_REQUEST['cost'];
-$total       = $_REQUEST['price'];
-$gst         = $_REQUEST['gst'];
+// ... (Mela iruka Quote Generation logic apdiye irukatum, flow matha venam) ...
 
-$client_id      = $_REQUEST['client_id'];
-$company_id     = $_REQUEST['company_id'];
-$cost_sheet_id     = $_REQUEST['cost_sheet_id'];
-$quote_date_str     = $_REQUEST['quote_date'];
+// Array error avoid panna isset() use pandrom
+$specification = isset($_REQUEST['item']) ? $_REQUEST['item'] : []; 
+$row_count   = count($specification);
+$qty         = isset($_REQUEST['qty']) ? $_REQUEST['qty'] : [];
+$unit        = isset($_REQUEST['unit']) ? $_REQUEST['unit'] : [];
+$unit_rate   = isset($_REQUEST['cost']) ? $_REQUEST['cost'] : [];
+$total       = isset($_REQUEST['price']) ? $_REQUEST['price'] : [];
+$gst         = isset($_REQUEST['gst']) ? $_REQUEST['gst'] : 0;
 
- $quote_date = date('Y-m-d', strtotime($quote_date_str));
+// DB Integers-ku empty string ponal crash aagum, so 0 set pandrom
+$client_id      = !empty($_REQUEST['client_id']) ? $_REQUEST['client_id'] : 0;
+$company_id     = !empty($_REQUEST['company_id']) ? $_REQUEST['company_id'] : 0;
+$cost_sheet_id  = !empty($_REQUEST['cost_sheet_id']) ? $_REQUEST['cost_sheet_id'] : 0;
+$quote_date_str = !empty($_REQUEST['quote_date']) ? $_REQUEST['quote_date'] : date('d-m-Y');
 
+$quote_date = date('Y-m-d', strtotime($quote_date_str));
 
-$quote_type    = $_REQUEST['quote_type'];
-$business_id   = $_REQUEST['mapping_id'];
-$candid_id     = $_REQUEST['candid_id'];
-$vendor_id     = $_REQUEST['vendor_id'];
+$quote_type    = !empty($_REQUEST['quote_type']) ? $_REQUEST['quote_type'] : '';
+$business_id   = !empty($_REQUEST['mapping_id']) ? $_REQUEST['mapping_id'] : 0;
+$candid_id     = !empty($_REQUEST['candid_id']) ? $_REQUEST['candid_id'] : 0;
+$vendor_id     = !empty($_REQUEST['vendor_id']) ? $_REQUEST['vendor_id'] : 0;
 
- for($i=0;$i<$row_count;$i++)
+for($i=0; $i<$row_count; $i++)
 {
-	
- $specifications = $specification[$i];
- $qtys           = $qty[$i];
- $units          = $unit[$i];
- $unit_rates     = $unit_rate[$i];
- $totals         = $total[$i];
+    // Oruvela user "12' Laptop" nu single quote form la type panna DB crash aagama iruka addslashes()
+    $specifications = addslashes($specification[$i]); 
+    $qtys           = $qty[$i];
+    $units          = $unit[$i];
+    $unit_rates     = $unit_rate[$i];
+    $totals         = $total[$i];
 
-  $insert_query=$con->query("insert into  quotation_entry(quote_no,specification,qty,unit,unit_rate,amount,gst_percentage,company_id,client_id,quote_type,business_id,vendor_id,candid_id,cost_sheet_id,quote_date,status,flag,created_by,created_on) values('$QUOTE_NO','$specifications','$qtys','$units','$unit_rates','$totals','$gst',$company_id','$client_id','$quote_type','$business_id','$vendor_id','$candid_id','$cost_sheet_id','$quote_date','1','1','$user_id',NOW())");  
-  
-echo "insert into  quotation_entry(quote_no,specification,qty,unit,unit_rate,amount,gst_percentage,company_id,client_id,quote_type,business_id,vendor_id,candid_id,quote_date,status,flag,created_by,created_on) values('$QUOTE_NO','$specifications','$qtys','$units','$unit_rates','$totals','$gst','$company_id','$client_id','$quote_type','$business_id','$vendor_id','$candid_id','$quote_date','1','1','$user_id',NOW())";
+    // Single quote fix panniyaachu & syntax perfect ah iruku
+    $insert_query = $con->query("insert into quotation_entry(quote_no,specification,qty,unit,unit_rate,amount,gst_percentage,company_id,client_id,quote_type,business_id,vendor_id,candid_id,cost_sheet_id,quote_date,status,flag,created_by,created_on) values('$QUOTE_NO','$specifications','$qtys','$units','$unit_rates','$totals','$gst','$company_id','$client_id','$quote_type','$business_id','$vendor_id','$candid_id','$cost_sheet_id','$quote_date','1','1','$user_id',NOW())");  
+    
+    // Debugging puriyurathukaga mattum intha echo (Insert error iruntha screen la kamika)
+    if($insert_query) {
+        echo "Row ".($i+1)." Saved successfully!<br>";
+    } else {
+        // Enna error nu exact ah screen la print panni kamikum
+        echo "Error in Row ".($i+1).": "; 
+        print_r($con->errorInfo()); 
+        echo "<br>"; 
+    }
 }
 
 

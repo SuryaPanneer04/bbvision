@@ -1,17 +1,21 @@
 <?php
 require '../../connect.php';
 require '../../user.php';
-$quoteid=$_REQUEST['id'];
+$quoteid = $_REQUEST['id'];
 
-$sql=$con->query("select * from purchase_requistion_entry where id='$quoteid'");
-$fet=$sql->fetch();
-$fstatus=$fet['req_status'];
-$candidiateid=$_SESSION['candidateid'];
+$sql = $con->query("select * from purchase_requistion_entry where id='$quoteid'");
+$fet = $sql ? $sql->fetch() : false;
+
+$fstatus = '';
+if ($fet && isset($fet['req_status'])) {
+    $fstatus = $fet['req_status'];
+}
+$candidiateid = $_SESSION['candidateid'];
 ?>
    <div class="card card-info">
               <div class="card-header">
        	            
-			<a onclick="return back()" style="float: right;" data-toggle="modal" class="btn btn-danger"></i>Back</a>
+			<a onclick="return back()" style="float: right;" data-toggle="modal" class="btn btn-danger">Back</a>
               </div>
 			
    <form method="POST" enctype="multipart/form-data">
@@ -22,17 +26,25 @@ $candidiateid=$_SESSION['candidateid'];
 			<td colspan="6"><center><b>Quote Detail</b></center></td>
         </tr>
 	  
-		<input type='hidden' id='id' name='id' value=<?php echo $quoteid; ?>>
+		<input type='hidden' id='id' name='id' value="<?php echo $quoteid; ?>">
 		
 		
 		<tr>
 			<td>Purchase Person:</td>
 			<?php 
-			$sta=$con->query("select * from z_user_master where candidate_id='101'");
-			$sfet=$sta->fetch();
-			?>
-			<td colspan="5"><input type="text" class="form-control" name="qdate" id="qdate" value="<?php echo $sfet['user_name']; ?>" readonly>
-			</td>
+$sta=$con->query("select * from z_user_master where candidate_id='41'");
+
+// --- BUG FIX STARTS HERE ---
+$sfet = $sta ? $sta->fetch() : false;
+$user_name = '';
+
+if($sfet && isset($sfet['user_name'])) {
+    $user_name = $sfet['user_name'];
+}
+// --- BUG FIX ENDS HERE ---
+?>
+<td colspan="5"><input type="text" class="form-control" name="qdate" id="qdate" value="<?php echo $user_name; ?>" readonly>
+</td>
 		</tr>
 	<?php 
         //finance
@@ -44,6 +56,10 @@ $candidiateid=$_SESSION['candidateid'];
 		{
 			$fstas="Purchase Approved";
 		}
+		else
+        {
+            $fstas=""; // safe fallback
+        }
 		//service
 		//echo $sstatus;
 		
@@ -124,7 +140,7 @@ $candidiateid=$_SESSION['candidateid'];
 		?>
       </table>
 	  <?php
-	  if($candidiateid==101 && $fstatus==2){
+	  if($candidiateid ==41 && $fstatus==2){
 		  ?>
 		<div class="card-header">
                
@@ -212,38 +228,21 @@ $candidiateid=$_SESSION['candidateid'];
 </style>
 
 <script>
-
-/* $(document).ready(function(){
-	//alert("hii");
-//document.getElementById('remark').style.visibility = "hidden";
-$('#remark').hide();
-}) */
-</script>
-<script>
-/* function reject_po(v)
-{
-	//alert("hii");
-	$('#remark').show();
-	
-	
-} */
 function back()
 	{
 		purchase_requisition_approve();
 	}
-
-	</script>
+</script>
 
 <script>
-
 function approve_pu()
 {
-	
 	var id=$('#id').val();
 	
 	$.ajax({
 		type:"post",
 		data:"id="+id,
+        // --- PATH BUG FIX ---
 		url:"qvision/Purchase_process/requistion_purcahse_submit.php?id="+id,
 		success:function(data)
 		{
@@ -252,6 +251,3 @@ function approve_pu()
 	})
 }
 </script>
-
-
-

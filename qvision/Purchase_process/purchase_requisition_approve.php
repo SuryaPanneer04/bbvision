@@ -40,11 +40,13 @@ $count=$sql->rowcount();
 <td><?php  $fstatus=$quote_list['req_status'];
 if($fstatus=='2')
 {
-	echo '<span style="color:green;text-align:center;"><b> Waiting For Purchase Approval <b/></span>';
+    // Fix: Changed <b/> to </b>
+	echo '<span style="color:green;text-align:center;"><b> Waiting For Purchase Approval </b></span>';
 }
 elseif($fstatus=='4')
 {
-	echo '<span style="color:green;text-align:center;"><b> Purchase Approved <b/></span>';
+    // Fix: Changed <b/> to </b>
+	echo '<span style="color:green;text-align:center;"><b> Purchase Approved </b></span>';
 }
 ?></td>	  
 
@@ -65,41 +67,49 @@ elseif($fstatus=='4')
      </div>
 
 <script>
-
-
 function purchase_status_view(v)
 {
-	  //alert(v);
-	$.ajax({
-	type:"POST",
-	url:"/ssinfo1/qvision/Purchase_process/purchase_status_view.php?id="+v,
-	success:function(data)
-	{
-		$("#main_content").html(data);
-	}
-	})
+    // Validate ID silently
+    if(!v || v === 0) {
+        console.warn("Validation Error: Invalid or missing Requisition ID.");
+        return; 
+    }
+
+    $.ajax({
+        type: "POST",
+        // --- RELATIVE PATH FIX: Removed /bbvision/ or /qvision/ from the start ---
+        url: "qvision/Purchase_process/purchase_status_view.php?id=" + v,
+        success: function(data)
+        {
+            $("#main_content").html(data);
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX Request Failed: " + status + " - " + error);
+            console.error("Requested URL: " + this.url);
+            alert("Error 404: Unable to load the requested page. Please verify the file path or contact the administrator.");
+        }
+    });
 }
+
 function back_ctc()
-	{
-		lead()
-	}
+{
+    lead();
+}
 	
-	$(function () 
-	{
+$(function () 
+{
     $("#example1").DataTable({
-      "responsive": true,
-      "autoWidth": false,
+        "responsive": true,
+        "autoWidth": false,
     });
     $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
     });
-  });
-
-	
-    </script>
+});
+</script>

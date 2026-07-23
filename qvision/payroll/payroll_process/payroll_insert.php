@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require '../../../connect.php';
 
 
@@ -105,12 +108,8 @@ $approvecount = 0; // Approved Leave count
 
 $DateFromDOJ = []; // Initialize $DateFromDOJ as an empty array
 
-// Assuming $currentYearMonth and $out_log_dateTS are defined somewhere in your script
-$currentYearMonth = $year . '-' . sprintf('%02d', $month); // Example definition
-$out_log_dateTS = strtotime('now'); // Example definition
-
 // Counting days from the JOINING DATE
-if ($currentYearMonth != $check_doj) { // Checks if the DOJ and Payroll Month are the same to calculate the working days
+if ($currentYearMonth == $check_doj) { // Checks if the DOJ and Payroll Month are the same to calculate the working days
     $DateFromDOJ = []; // Ensure $DateFromDOJ is empty before populating it
 
     // Loop through each day from $dateOfJoining to $out_log_dateTS
@@ -123,7 +122,7 @@ if ($currentYearMonth != $check_doj) { // Checks if the DOJ and Payroll Month ar
     $leaveCheckDate = $DateFromDOJ; // Optionally assign $DateFromDOJ to $leaveCheckDate if needed
 }
 
-		elseif ($currentYearMonth != $check_doe) //Checks the DOE[Date Of Exit] and Payroll Month are same to calculate the working days.
+		elseif ($currentYearMonth == $check_doe) //Checks the DOE[Date Of Exit] //Checks the DOE[Date Of Exit] and Payroll Month are same to calculate the working days.
 		{
 
 			$DateTillDOE = [];
@@ -157,46 +156,28 @@ if ($currentYearMonth != $check_doj) { // Checks if the DOJ and Payroll Month ar
 			$day = date('D', strtotime($date));
 
 
-			$dayquery = $con->query("SELECT COUNT(*) as total_count, COUNT(date) as leave_count FROM `daily_attendance` WHERE candid_id='$candid' and month='$monthssss' and year='$year' and status=2");
-
-				// echo "<pre>";
-				// echo "SELECT COUNT(*) as total_count, COUNT(date) as leave_count FROM `daily_attendance` WHERE candid_id='$candid' and month='$monthssss' and year='$year' and status=2";
-				// echo "</pre>";
-
-				// Fetching the result
-				$getleavecnt = $dayquery->fetch(PDO::FETCH_ASSOC);
-
-				if($getleavecnt) {
-				    $leavecntt = $getleavecnt['leave_count']; //dailyatt_leavecnt
-				} else {
-				    $leavecntt = 0; //dailyatt_leavecnt
-				}
-
-				// echo "<pre>";
-				// echo 'Leave count: ' . $leavecntt;
-				// echo "</pre>";
-
-					set_time_limit(300);
-
-
-			$halfdayquery = $con->query("SELECT COUNT(*) ,count(date) as leave_count FROM `daily_attendance` WHERE candid_id='$candid' and month='$monthssss' and year='$year' and status=2 and halfday=1");
-			//echo "SELECT COUNT(*) ,count(date) as leave_count FROM `daily_attendance` WHERE candid_id='$candid' and month='$monthssss' and year='$year' and status=2 and halfday=1";			//$halfcount = $halfdayquery->fetchColumn();
-			$halfgetleavecnt = $halfdayquery->fetch(PDO::FETCH_ASSOC);
-
-			if($halfgetleavecnt)
-			{
-				$halfleave_get=$halfgetleavecnt['leave_count']; //dailyatt_leavecnt
-                $halfleavecntt=$halfleave_get * 0.5;
-           //   echo $halfleave_get.'**';
-
-			}
+			// FETCH FULL DAY LOP FROM bb_attendance (status = 0)
+			$dayquery = $con->query("SELECT COUNT(*) as leave_count FROM bb_attendance WHERE emp_code='$emp_no' AND MONTH(in_log_date)='$monthssss' AND YEAR(in_log_date)='$year' AND status=0");
 			
-			else
-			{
-				$halfleavecntt=0; //dailyatt_leavecnt
-
+			$getleavecnt = $dayquery->fetch(PDO::FETCH_ASSOC);
+			if($getleavecnt) {
+			    $leavecntt = $getleavecnt['leave_count']; 
+			} else {
+			    $leavecntt = 0; 
 			}
 
+			set_time_limit(300);
+
+			// FETCH HALF DAY LOP FROM bb_attendance (status = 5)
+			$halfdayquery = $con->query("SELECT COUNT(*) as leave_count FROM bb_attendance WHERE emp_code='$emp_no' AND MONTH(in_log_date)='$monthssss' AND YEAR(in_log_date)='$year' AND status=5");
+			
+			$halfgetleavecnt = $halfdayquery->fetch(PDO::FETCH_ASSOC);
+			if($halfgetleavecnt) {
+				$halfleave_get = $halfgetleavecnt['leave_count']; 
+			    $halfleavecntt = $halfleave_get * 0.5;
+			} else {
+				$halfleavecntt = 0; 
+			}
 
 
 
@@ -516,7 +497,7 @@ if ($currentYearMonth != $check_doj) { // Checks if the DOJ and Payroll Month ar
 				// echo "</pre>";
 
 				// Prepare the data for insertion
-				$data = array($date, $month, $year, $emp_code, $emp_name, 'Loss Of Pay', $totalDaysOflop, $daysss, $days_worked, 1, 'created_by_user', $date);
+				$data = array($date, $month, $year, $emp_code, $emp_name, 'Loss Of Pay', $totalDaysOflop, $daysss, $days_worked, 1, 'created_by_user',1, $date);
 
 				// Prepare and execute the SQL statement
 				$stmt = $con->prepare("INSERT INTO payroll_salary_deduction (date, payroll_month, payroll_year, employee_code, employee_name, deduction, amount, total_no_of_days, days_worked, status, created_by, created_on) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");

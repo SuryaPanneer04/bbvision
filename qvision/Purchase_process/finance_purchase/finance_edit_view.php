@@ -23,9 +23,12 @@ if($statu==1)
 	$status="InActive";
 }
 
-$stmts = $con->prepare("SELECT id as po_id,vendor_name from doller_vendor_mastor where id='$vendor_id'" ); 		
+$stmts = $con->prepare("SELECT id as po_id, vendor_name FROM doller_vendor_mastor WHERE id='$vendor_id'"); 		
 $stmts->execute(); 
-$rows = $stmts->fetch();
+$rows = $stmts->fetch(PDO::FETCH_ASSOC);
+if (!$rows) {
+    $rows = ['vendor_name' => 'Vendor Not Found'];
+}
 ?>
 
 <style>
@@ -68,13 +71,15 @@ $rows = $stmts->fetch();
 <td><b>Quantity</b></td>
 <td colspan="2"><input type="text" class="form-control" id="txt_org_name" value="<?php echo $row['qty'];?>" name="txt_org_name" readonly></td>
 <?php
-$stmtz = $con->prepare("SELECT a.id,a.cost_sheet_no,b.cost_sheet_id,b.specification,c.product_name,c.request_remarks,c.quantity as extra_qty from cost_sheet_entry a left join purchase_vendor_master b on(a.id=b.cost_sheet_id) left join purchase_requistion_entry c on(a.description=c.description) where b.specification='$specification' and a.id='$cost_id'" ); 
-
-
-		/* echo "SELECT a.id,a.cost_sheet_no,b.cost_sheet_id,b.specification,c.product_name,c.request_remarks,c.quantity as extra_qty from cost_sheet_entry a left join purchase_vendor_master b on(a.id=b.cost_sheet_id) left join purchase_requistion_entry c on(a.description=c.description) where b.specification='$specification' and a.id='$cost_id'" ; */
+$stmtz = $con->prepare("SELECT a.id,a.cost_sheet_no,b.cost_sheet_id,b.specification,c.product_name,c.request_remarks,c.quantity as extra_qty FROM cost_sheet_entry a LEFT JOIN purchase_vendor_master b ON(a.id=b.cost_sheet_id) LEFT JOIN purchase_requistion_entry c ON(a.description=c.description) WHERE b.specification='$specification' AND a.id='$cost_id'"); 
 $stmtz->execute(); 
-$rowz = $stmtz->fetch();
-
+$rowz = $stmtz->fetch(PDO::FETCH_ASSOC);
+if (!$rowz) {
+    $rowz = [
+        'extra_qty' => '0',
+        'request_remarks' => 'No Remarks Found'
+    ];
+}
 ?>
 <td><b>Purchase Request</b></td>
 <td colspan="2"><input type="text" class="form-control" id="txt_org_name" value="<?php echo $rowz['extra_qty'];?>" name="txt_org_name" readonly></td>

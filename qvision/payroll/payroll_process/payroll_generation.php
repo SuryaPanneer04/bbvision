@@ -5,7 +5,7 @@ require '../../../connect.php';
 $sql = "SELECT month, year, flag 
 FROM payroll_master
 WHERE flag IN (1,2)
-ORDER BY id DESC 
+ORDER BY id ASC 
 LIMIT 1";
 
 $staff_payroll_sql = $con->query($sql);

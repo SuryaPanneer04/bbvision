@@ -177,8 +177,18 @@ hr{
 		//$ac_number = $acc_sql_res['acc_number'];
 		
 		//Days of working		
-		$days_sql=$con->query("SELECT total_no_of_days,days_worked FROM payroll_salary_deduction where employee_code='$employee_id' and payroll_month='$m' and payroll_year='$y' and total_no_of_days is not null limit 0,1");
-		// echo "<pre>";
+		// Days of working (Dynamically summing up the rows from bb_attendance)
+		$days_sql = $con->query("SELECT SUM(total_days) as total_no_of_days, SUM(working_days) as days_worked FROM bb_attendance WHERE emp_code='$employee_id' AND MONTH(in_log_date)='$m' AND YEAR(in_log_date)='$y'");
+		
+		$row_check = $days_sql->fetch(PDO::FETCH_ASSOC);
+		
+		// If attendance is empty or null, fallback to the original payroll table
+		if($row_check['total_no_of_days'] == null) {
+			$days_sql = $con->query("SELECT total_no_of_days,days_worked FROM payroll_salary_deduction where employee_code='$employee_id' and payroll_month='$m' and payroll_year='$y' and total_no_of_days is not null limit 0,1");
+		} else {
+			// Re-run the query to reset the pointer for the while loop below
+			$days_sql = $con->query("SELECT SUM(total_days) as total_no_of_days, SUM(working_days) as days_worked FROM bb_attendance WHERE emp_code='$employee_id' AND MONTH(in_log_date)='$m' AND YEAR(in_log_date)='$y'");
+		}
     // echo "SELECT total_no_of_days,days_worked FROM payroll_salary_deduction where employee_code='$employee_id' and payroll_month='$m' and payroll_year='$y' and total_no_of_days is not null limit 0,1";
     // echo "</pre>";
 		
@@ -207,10 +217,12 @@ while($days_sql_res = $days_sql->fetch(PDO::FETCH_ASSOC))
 
 	if ($days_sql_res !='') {
 		
-		$month_days = $days_sql_res['total_no_of_days'];//float value like30.0
+		// BUG FIX: Calculate exact calendar days for the month instead of relying on DB sum
+		$month_days = cal_days_in_month(CAL_GREGORIAN, $m, $y); 
 		
-		$work_days=$days_sql_res['days_worked'];//working days
+		$work_days = $days_sql_res['days_worked'];//working days
 		
+	
 		
 	
 	} 
@@ -264,31 +276,47 @@ while($days_sql_res = $days_sql->fetch(PDO::FETCH_ASSOC))
 		?>
 
    <?php 
+   // FETCH SALARY STRUCTURE
    $salstrcutre=$con->query("SELECT * FROM `joining_detail_sal_structure` where candid_id='$candid_id'");
-   // echo "SELECT * FROM `joining_detail_sal_structure` where candid_id='$candid_id'";
    $getdetails=$salstrcutre->fetch(PDO::FETCH_ASSOC);
-   //echo $getdetails['basic_month']."jji";
 
-   if($m<10)
-   {
+   // 🚨 BUG FIX: PHP FATAL ERROR CRASH PREVENTION 🚨
+   // Convert all NULL or Empty values from Database into 0 to prevent math calculation crash. 
+   if (!is_array($getdetails)) {
+       $getdetails = [];
+   }
+   $getdetails['basic_month'] = floatval($getdetails['basic_month'] ?? 0);
+   $getdetails['HRA_month'] = floatval($getdetails['HRA_month'] ?? 0);
+   $getdetails['otherallowances_permonth'] = floatval($getdetails['otherallowances_permonth'] ?? 0);
+   $getdetails['employee_PF_month'] = floatval($getdetails['employee_PF_month'] ?? 0);
+   $getdetails['employee_ESIC_month'] = floatval($getdetails['employee_ESIC_month'] ?? 0);
+   $getdetails['professionaltax_permonth'] = floatval($getdetails['professionaltax_permonth'] ?? 0);
+
+   // PREVENT DIVISION BY ZERO ERROR
+   if(empty($month_days) || $month_days <= 0) {
+       $month_days = 1;
+   }
+
+   // DATE FORMAT FOR ARREAR PAY
+   if($m<10) {
     $mmm='0'.$m;
     $arrmy=$y.'-'.$mmm;
-   }
-   else
-   {
+   } else {
     $arrmy=$y.'-'.$m;
    }
 
-
-$arrerpay=$con->query("SELECT remark,sum(amount) as arrearamt FROM `arrear_pay` WHERE emp_id='$candid_id' and payroll_month='$arrmy'");
-//echo "SELECT remark,sum(amount) as arrearamt FROM `arrear_pay` WHERE emp_id='$candid_id' and payroll_month='$arrmy'";
-$arrdetails=$arrerpay->fetch(PDO::FETCH_ASSOC);
-if($arrdetails)
-{
-$reamrkofarrear=$arrdetails['remark'];
- $arrearamt_get=$arrdetails['arrearamt'];
-}
-
+   // ARREAR PAY FETCH
+   $arrerpay=$con->query("SELECT remark,sum(amount) as arrearamt FROM `arrear_pay` WHERE emp_id='$candid_id' and payroll_month='$arrmy'");
+   $arrdetails=$arrerpay->fetch(PDO::FETCH_ASSOC);
+   
+   // FIX: Prevent undefined variable crashes later in the table
+   $reamrkofarrear = '';
+   $arrearamt_get = 0;
+   
+   if($arrdetails) {
+       $reamrkofarrear = $arrdetails['remark'] ?? '';
+       $arrearamt_get = floatval($arrdetails['arrearamt'] ?? 0);
+   }
    ?>
 		<div class="col-md-12" style="text-align: end;">
 	    <input class="button btn-danger" type="button" value="PRINT" onclick="printDiv()"> 
