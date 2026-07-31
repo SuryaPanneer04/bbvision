@@ -41,7 +41,7 @@ $userrole=$_SESSION['userrole'];
       </thead>
       <tbody>
       <?php
-      $emp_sql=$con->query("SELECT *,c.id as cid,c.status as status FROM `candidate_form_details` c left join company_master cm on c.company_name=cm.companyname join jobdescription_master d on c.position=d.id join z_department_master z on c.department=z.id where  c.status=32 order by c.id desc");
+      $emp_sql=$con->query("SELECT *,c.id as cid,c.status as status FROM `candidate_form_details` c left join company_master cm on c.company_name=cm.companyname join jobdescription_master d on c.position=d.id join z_department_master z on c.department=z.id where c.status IN (3, 6, 9, 12, 15, 32) order by c.id desc");
       $i=1;
       while($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC))
       {
@@ -56,14 +56,21 @@ $userrole=$_SESSION['userrole'];
 		  <td><?php echo $emp_res['tittle']; ?></td>
 		  <td><?php echo $emp_res['phone']; ?></td>
 		  <td><?php echo $emp_res['mail']; ?></td>
-		  <td>
+<td>
 <?php
-if(($emp_res['status']==32))  
-{
-echo '<span style="color:blue;text-align:center;"><b>Rejected</b></span>';
-
+if ($emp_res['status'] == 32) {
+    echo '<span style="color:blue;text-align:center;"><b>Rejected</b></span>';
+} else if ($emp_res['status'] == 12) {
+    echo '<span style="color:red;text-align:center;"><b>Rejected in Assessment</b></span>';
+} else if ($emp_res['status'] == 3) {
+    echo '<span style="color:red;text-align:center;"><b>Rejected (Wait List)</b></span>';
+} else if ($emp_res['status'] == 6) {
+    echo '<span style="color:red;text-align:center;"><b>Technical One Rejected</b></span>';
+} else if ($emp_res['status'] == 9) {
+    echo '<span style="color:red;text-align:center;"><b>Rejected by MD</b></span>';
+} else if ($emp_res['status'] == 15) {
+    echo '<span style="color:red;text-align:center;"><b>Technical Two Rejected</b></span>';
 }
-
 ?>
 </td>
 		     <!--td>

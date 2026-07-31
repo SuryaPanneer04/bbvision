@@ -66,7 +66,7 @@ $userrole=$_SESSION['userrole'];
       </thead>
       <tbody>
       <?php
-      $emp_sql=$con->query("SELECT *,s.status as status,s.id as sid FROM resource_form_detail s left join jobdescription_master m on s.position=m.id join source_master sm on s.source=sm.id left join resource_feedback rf on s.id=rf.resource_id where s.old_status=0 order by s.id desc");
+      $emp_sql=$con->query("SELECT *,s.status as status,s.id as sid FROM resource_form_detail s left join jobdescription_master m on s.position=m.id join source_master sm on s.source=sm.id left join resource_feedback rf on s.id=rf.resource_id where s.old_status=0 group by s.id order by s.id desc");
 //echo "SELECT *,s.status as status,s.id as sid FROM resource_form_detail s left join jobdescription_master m on s.position=m.id join source_master sm on s.source=sm.id left join resource_feedback rf on s.id=rf.resource_id where s.old_status=0 order by s.id desc";
       $i=1;
       while($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC))

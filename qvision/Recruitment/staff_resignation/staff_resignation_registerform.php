@@ -1,24 +1,38 @@
-<!-- 
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+/* 
     /// EVENTS SCHEDULE FOR RESIGNATION AUTO APPROVE AFTER 1 WEEK FROM APPLIED DATE // SUCCESS QUERY ///
 
 CREATE EVENT IF NOT EXISTS resignation_auto_approve ON SCHEDULE AT CURRENT_TIMESTAMP DO UPDATE `resignation_form_details` SET `hod_reason`='Auto Updated' ,`notice_period`=(DATE_SUB(now(), INTERVAL -60 DAY) ),`hod_accept_status`='Yes',`approved_date`=now(),notice_days= 60,`status`=2 ,`modified_by`='0',`modified_on`=now() WHERE (DATE_SUB(`applied_date`, INTERVAL -7 DAY) <= now()) && status = 1
 
 
-CREATE EVENT `resignation_auto_approve` ON SCHEDULE EVERY 1 DAY STARTS '2023-01-13 10:34:49.000000' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE `resignation_form_details` SET `hod_reason`='Auto Updated' ,`notice_period`=(DATE_SUB(now(), INTERVAL -60 DAY) ),`hod_accept_status`='Yes',`approved_date`=now(),notice_days= 60,`status`=2 ,`modified_by`='0',`modified_on`=now() WHERE (DATE_SUB(`applied_date`, INTERVAL -7 DAY) <= now()) && status = 1  -->
-
-
-
-<?php
+CREATE EVENT `resignation_auto_approve` ON SCHEDULE EVERY 1 DAY STARTS '2023-01-13 10:34:49.000000' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE `resignation_form_details` SET `hod_reason`='Auto Updated' ,`notice_period`=(DATE_SUB(now(), INTERVAL -60 DAY) ),`hod_accept_status`='Yes',`approved_date`=now(),notice_days= 60,`status`=2 ,`modified_by`='0',`modified_on`=now() WHERE (DATE_SUB(`applied_date`, INTERVAL -7 DAY) <= now()) && status = 1  
+*/
 require '../../../connect.php';
 include("../../../user.php");
-$candid = $_SESSION['candidateid'];
+$candid = isset($_SESSION['candidateid']) ? $_SESSION['candidateid'] : 0;
 
-$staffsel = $con->query("select e.id,e.emp_name,r.emp_name as report_name from staff_master e left join staff_master r on e.reporting_person = r.id where e.candid_id='$candid'");
-$data1=$staffsel->fetch();
+$emp_id = '';
+$emp_name = '';
+$reporting_person = '';
 
- $emp_id=$data1['id'];  //Emp Staff Master ID.
- $emp_name = $data1['emp_name'];
- $reporting_person = $data1['report_name'];
+if ($con) {
+	$staffsel = $con->query("select e.id, e.emp_name, e.reporting_person as rep_id, r.emp_name as report_name from staff_master e left join staff_master r on e.reporting_person = r.id where e.candid_id='$candid'");
+	if ($staffsel) {
+		$data1 = $staffsel->fetch();
+		$emp_id = isset($data1['id']) ? $data1['id'] : '';  //Emp Staff Master ID.
+		$emp_name = isset($data1['emp_name']) ? $data1['emp_name'] : '';
+		$reporting_person = isset($data1['report_name']) ? $data1['report_name'] : '';
+		
+		$current_user = isset($_SESSION['username']) ? $_SESSION['username'] : 'UNKNOWN';
+		$db_error = "Logged in as: " . $current_user . " | candid_id: " . $candid . " | report_name: " . $reporting_person;
+	} else {
+	    $errorInfo = $con->errorInfo();
+		$db_error = "SQL Error: " . (isset($errorInfo[2]) ? $errorInfo[2] : 'Unknown SQL error');
+	}
+}
 ?>
 <head>
     <link rel="stylesheet" href="Qvision\commonstyle.css">
@@ -36,6 +50,7 @@ $data1=$staffsel->fetch();
 
      <div class="card-header">
         <center><h3 class="card-title"><b>E-Resignation </b></h3></center>
+		<!-- DEBUG INFO: candid=<?php echo $candid; ?> | emp_id=<?php echo $emp_id; ?> | emp_name=<?php echo $emp_name; ?> -->
         <a onclick="back_to_resignationform()" style="float: right;" data-toggle="modal" class="btn">Back</a>
     </div>
 			
@@ -44,13 +59,16 @@ $data1=$staffsel->fetch();
     <table class="table table-bordered">
       
         <tr>
-			<td colspan="6"><center><b>Resignation Form</b></center></td>
+			<td colspan="6">
+				<center><b>Resignation Form</b></center>
+				<center><span style="color:red; font-size:12px;"><?php echo isset($db_error) ? $db_error : ''; ?></span></center>
+			</td>
         </tr>
 	   
         <tr>
 		<td> Reporting Person :</td>
         <td>
-            <input type="text" class="form-control" id="report_to" name="report_to" value="<?php echo $reporting_person; ?>" readonly>
+            <input type="text" class="form-control" id="report_to" name="report_to" value="<?php echo htmlspecialchars($reporting_person); ?>" readonly>
         </td>
 		</tr>
 
@@ -116,6 +134,7 @@ $data1=$staffsel->fetch();
             processData: false,
             success:function(data)
 		    {   
+			data = $.trim(data);
             if(data==0){ 
               alert("Form Data has not been Submitted");
               $('#salary_view').hide();
@@ -126,7 +145,11 @@ $data1=$staffsel->fetch();
               $('#salary_view').hide();
 		      staff_resignation_form()
             }
-		}
+		    },
+            error:function(xhr, status, error) {
+                alert("Server Error: " + error);
+                $('#salary_view').hide();
+            }
         });
     });
 

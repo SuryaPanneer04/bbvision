@@ -35,7 +35,7 @@ $sta=$row['status'];
 <tr>
 <td>Title</td>
 <td colspan="5">
-<input type="hidden" class="form-control" id="id" name="id" value="<?php echo $id;?>">
+<input type="hidden" class="form-control" id="jd_id" name="id" value="<?php echo $id;?>">
 <input type="text" class="form-control" id="jd_tittle" name="jd_tittle" value="<?php echo  $row['tittle'];?>">
 </td>
 </tr>
@@ -67,7 +67,7 @@ $sta=$row['status'];
 <td>Status</td>
 <td colspan="2">
 
-<select class="form-control" name="status" id="status">
+<select class="form-control" name="status" id="jd_status">
 <?php
 
 if($sta==0)
@@ -100,14 +100,15 @@ else{
 <script>
 function jd_update()
     {
-		var id=$('#id').val();
+		var id=$('#jd_id').val();
 		var title=$('#jd_tittle').val();
-		var status=$('#status').val();
+		var status=$('#jd_status').val();
         let approve = $('#approve_level').val()
         let round = $('#round_level').val()
     $.ajax({
     type:"POST",
-    url:"qvision/masters/job_description/update_jobdescription.php?title="+title+"&status="+status+"&id="+id+"&approve="+approve+"&round="+round,
+    url:"qvision/masters/job_description/update_jobdescription.php",
+    data: {title: title, status: status, id: id, approve: approve, round: round},
     success:function(data){
 		if(data==1)
 		{

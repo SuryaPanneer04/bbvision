@@ -59,7 +59,7 @@ $candidateid=$_SESSION['candidateid'];
     LEFT JOIN z_department_master b ON a.dep_name=b.id  
     LEFT JOIN staff_master c ON a.emp_name=c.id 
     LEFT JOIN staff_master d ON a.person_id=d.id 
-    where a.from_date = '$f_date' and a.to_date = '$t_date' group by emp_name"); 
+    where a.from_date = '$f_date' and a.to_date = '$t_date' group by a.emp_name"); 
     // print_r($emp_sql);
     // die();
 
@@ -68,7 +68,7 @@ $candidateid=$_SESSION['candidateid'];
       LEFT JOIN z_department_master b ON a.dep_name=b.id  
       LEFT JOIN staff_master c ON a.emp_name=c.id 
       LEFT JOIN staff_master d ON a.person_id=d.id 
-      where a.from_date = '$f_date' and a.to_date = '$t_date' and a.person_id='$candidateid'  group by emp_name"); 
+      where a.from_date = '$f_date' and a.to_date = '$t_date' and a.person_id='$candidateid'  group by a.emp_name"); 
 	  //where a.person_id='$candidateid'  DISTINCT
   }
       $i=1;

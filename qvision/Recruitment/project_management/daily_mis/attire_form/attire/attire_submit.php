@@ -25,9 +25,9 @@ $yes4=$_REQUEST['yes4'];
 //$no4=$_REQUEST['no4'];
 $remark4=$_REQUEST['remark4'];
 $to_date=$_REQUEST['to_date'];
-echo $in=$_REQUEST['in'];
+$in=$_REQUEST['in'];
 
-echo $out=$_REQUEST['out'];
+$out=$_REQUEST['out'];
 
 
 

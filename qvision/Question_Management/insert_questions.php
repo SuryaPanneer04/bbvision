@@ -4,13 +4,13 @@ require '../../connect.php';
 
 $qn_name=$_REQUEST['qn_name'];
 $section=$_REQUEST['section'];
-$Questions=$_REQUEST['Questions'];
+$Questions=addslashes($_REQUEST['Questions']);
 
- $Option_A=$_REQUEST['Option_A'];
-$Option_B=$_REQUEST['Option_B'];
-$Option_C=$_REQUEST['Option_C'];
-$Option_D=$_REQUEST['Option_D'];
-$answer_key=$_REQUEST['answer_key'];
+ $Option_A=addslashes($_REQUEST['Option_A']);
+$Option_B=addslashes($_REQUEST['Option_B']);
+$Option_C=addslashes($_REQUEST['Option_C']);
+$Option_D=addslashes($_REQUEST['Option_D']);
+$answer_key=addslashes($_REQUEST['answer_key']);
 
 
 

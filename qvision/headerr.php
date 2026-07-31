@@ -1781,13 +1781,13 @@ function stock_form()
     }
     function site_master()
     {
-      /*   $.ajax({
+        $.ajax({
             type: "POST",
-            url: "qvision/appraisal/appraisal_approve_md.php",
+            url: "qvision/masters/site_master/site.php",
             success: function (data) {
                 $("#main_content").html(data);
             }
-        }) */
+        });
     }
     function location_master()
     {

@@ -3,7 +3,7 @@ require '../../../connect.php';
 
 $jdnameid=$_REQUEST['id'];
 $postappid=$_REQUEST['postappid'];
-$getclientlocationnme=$con->query("SELECT * FROM `jobdescription_form_details` WHERE jobdescription_id='$postappid' and client_org_name='$jdnameid'");
+$getclientlocationnme=$con->query("SELECT * FROM `jobdescription_form_details` WHERE jobdescription_id='$postappid' and client_org_name='$jdnameid' AND status=5");
 
 while($location=$getclientlocationnme->fetch(PDO::FETCH_ASSOC))
 { 

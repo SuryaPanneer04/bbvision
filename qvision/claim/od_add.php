@@ -6,7 +6,7 @@ $userrole = $_SESSION['userrole'];
 $candidateid = $_SESSION['candidateid'];
 ?>
 <head>
-    <link rel="stylesheet" href="Qvision\commonstyle.css">
+    <link rel="stylesheet" href="qvision/commonstyle.css">
 </head>
 <style>
 .card-primary:not(.card-outline)>.card-header {
@@ -33,7 +33,7 @@ $candidateid = $_SESSION['candidateid'];
             <tr>
                 <td>Employee Name</td>
                 <?php
-                $stmts = $con->prepare("SELECT user_id, full_name, candidate_id FROM z_user_master WHERE user_group_code='$userrole'");
+                $stmts = $con->prepare("SELECT user_id, full_name, candidate_id FROM z_user_master WHERE candidate_id='$candidateid'");
                 $stmts->execute();
                 $rows = $stmts->fetch();
                 $emp_name = $rows['full_name'];

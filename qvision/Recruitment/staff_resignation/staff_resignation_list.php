@@ -118,7 +118,7 @@ else{
 		  <button class="btn btn-info btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="approve(<?php echo $emp_res['id']; ?>)"> <i class="fa fa-mail">Action</i></button> <?php }  ?>
 		  
 		  
-		  <input type="hidden" name="canid" id="canid" value="<?php echo $emp_res['cid']; ?>">
+		  <input type="hidden" name="canid" id="canid_<?php echo $emp_res['id']; ?>" value="<?php echo $emp_res['cid']; ?>">
 		 </td>
       </tr>
       <?php
@@ -149,7 +149,7 @@ else{
 	  
 	  function staff_view(v)
 	  {
-		  var cid=$('#canid').val();
+		  var cid=$('#canid_'+v).val();
 	$.ajax({
 	type:"POST",
 	url:"qvision/Recruitment/staff_resignation/staff_view.php?id="+v+"&cid="+cid,
@@ -163,7 +163,7 @@ else{
 	 
 	  function approve(v)
 	  {
-		  var cid=$('#canid').val();
+		  var cid=$('#canid_'+v).val();
 	$.ajax({
 	type:"POST",
 	url:"qvision/Recruitment/staff_resignation/staff_resign_approve.php?id="+v+"&cid="+cid,

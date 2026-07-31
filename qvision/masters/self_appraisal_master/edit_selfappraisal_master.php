@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 <?php
 require '../../../connect.php';
 include("../../../user.php");
@@ -11,6 +9,8 @@ $stmt = $con->prepare("SELECT a.id as aid,b.dept_name FROM self_appraisal_master
 $stmt->execute();
 $row = $stmt->fetch();
 ?>
+<!DOCTYPE html>
+<html>
 
 <head>
   <link rel="stylesheet" href="Qvision\commonstyle.css">

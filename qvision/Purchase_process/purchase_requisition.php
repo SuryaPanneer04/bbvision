@@ -276,7 +276,7 @@ $(document).ready(function(e){
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '/ssinfo1/qvision/Purchase_process/purchase_requistion_insert.php',
+            url: 'qvision/Purchase_process/purchase_requistion_insert.php',
             data: new FormData(this),
             dataType: 'json',
             contentType: false,
@@ -329,7 +329,7 @@ $("#quote_type").change(function(e){
 	$.ajax({
 		type:'GET',
 		data:'Quote_type='+Quote_type+'&product_service='+product_service,
-		url:'/qvision/BusinessProcess/quotation/getbank_details.php',
+		url:'qvision/BusinessProcess/quotation/getbank_details.php',
 		dataType: 'json',
 		success:function(data)
 		{
@@ -353,7 +353,7 @@ $("#emp_id").change(function(e){
 	//$('#designation').val('');
 	$.ajax({
 		type:"POST",
-		url:"/qvision/BusinessProcess/quotation/getemp_details.php?id=" +value, 
+		url:"qvision/BusinessProcess/quotation/getemp_details.php?id=" +value, 
 		dataType: 'json',
 		success:function(data)
 		{
@@ -910,7 +910,7 @@ $("#gst").change(function(e){
 	$.ajax({
 		
 		type:"POST",
-		url:"/qvision/BusinessProcess/quotation/getemp_details.php?id=" +value, 
+		url:"qvision/BusinessProcess/quotation/getemp_details.php?id=" +value, 
 		dataType: 'json',
 		success:function(data)
 		{

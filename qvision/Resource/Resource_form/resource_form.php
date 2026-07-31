@@ -95,6 +95,7 @@ require '../../../connect.php';
 			</td>
 		</tr>
 		
+		<tr>
 		<td>Post Applied for: *</td>
 <td colspan="5">
     <select class="form-control" id="position" name="position" onchange="getclientandlocation(this.value);" required>
@@ -115,6 +116,7 @@ require '../../../connect.php';
         ?>
     </select>
 </td>
+		</tr>
 
 		<tr>
 	     <td>Client Org Name*</td>
@@ -285,7 +287,7 @@ function getclientandlocation(val) {
 
   $.ajax({
     type: "POST",
-    url: "/qvision/Resource/Resource_form/clientandloactionget.php?id=" + id,
+    url: "qvision/Resource/Resource_form/clientandloactionget.php?id=" + id,
     success: function (data) {
       var data2 = data.split("||");
       var twodataln = data2.length;
@@ -309,7 +311,7 @@ function getclientandlocation(val) {
 
 	   $.ajax({
 	type:"POST",
-	url:"/qvision/Resource/Resource_form/getloactionfromorgname.php?id="+val+"&postappid="+postappid,
+	url:"qvision/Resource/Resource_form/getloactionfromorgname.php?id="+val+"&postappid="+postappid,
 	success:function(data)
 	{
 		  var data2=data.split("||");
@@ -547,12 +549,13 @@ $(document).ready(function(){
 
         $.ajax({
             type: 'POST',
-            url:'/qvision/Resource/Resource_form/resource_form_submit.php', 
+            url:'qvision/Resource/Resource_form/resource_form_submit.php', 
             data: new FormData(this),
             contentType: false,
             processData: false,
             success:function(data)
 		    {   
+			data = $.trim(data);
             if(data==0){ 
               alert("Form Data has not been Submitted");
 			  console.warn("data:"+data);
@@ -563,7 +566,10 @@ $(document).ready(function(){
 			  console.warn("data:"+data);
 		      resource_list();
             }
-		}
+		    },
+		    error:function(xhr, status, error) {
+			    alert("Server Error: " + error);
+		    }
         });
     });
 

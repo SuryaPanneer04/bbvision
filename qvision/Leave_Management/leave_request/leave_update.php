@@ -172,7 +172,7 @@ function update_leave(status)
 
  	$.ajax({
 	type:'GET',
-	data:"status="+status+"&leavetype="+leavetpy,
+	data: {status: status, leavetype: leavetpy},
 	url:"qvision/Leave_Management/leave_request/leave_status_update.php?leavetpy="+leavetpy,
 	success:function(data)
 	{      
@@ -193,7 +193,7 @@ function insert_remark(){
 		  var leavetpy=document.getElementById('leavetpy').value;
 			  $.ajax({
 			  type:"GET",
-			  data:"remark="+remark+"&candid_id="+candid_id+"&leavedate="+date+"&date="+old_date+"&leavetpy_get="+leavetpy,
+			  data: {remark: remark, candid_id: candid_id, leavedate: date, date: old_date, leavetpy_get: leavetpy},
 			  url:"qvision/Leave_Management/leave_request/leave_status_update.php",
 			  success:function(data)
 			  {

@@ -25,7 +25,7 @@ $userrole=$_SESSION['userrole'];
       </thead>
       <tbody>
       <?php
-      $emp_sql=$con->query("SELECT *,l.id as id FROM location_master l left join site_master s on l.site_id=s.id where l.status=1 ");
+      $emp_sql=$con->query("SELECT *,l.id as id, l.status as loc_status FROM location_master l left join site_master s on l.site_id=s.id");
       $i=1;
       while($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC))
       {
@@ -36,7 +36,7 @@ $userrole=$_SESSION['userrole'];
       <td><?php echo $emp_res['location']; ?></td>
 	  <td>
 	  <?php
-	  if($emp_res['status']==1)
+	  if($emp_res['loc_status']==1)
 	  {
 		 echo '<span style="color:green;text-align:center;"><b>Active</b></span>';
 	  }

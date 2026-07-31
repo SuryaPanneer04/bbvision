@@ -87,12 +87,22 @@ require '../../connect.php';
                                         $correct_answers = count($cou);
                                     ?>
                                         <tr>
-                                            <td class="center"><?php echo $cnt++; ?>.</td>
+                                            <td class="center"><?php echo $cnt; ?>.</td>
                                             <td><?php echo htmlspecialchars($row_qn['first_name'] . ' ' . $row_qn['last_name']); ?></td>
                                             <td><?php echo htmlspecialchars($row_qn['created_on']); ?></td>
                                             <td><?php echo htmlspecialchars($row_qn['phone']); ?></td>
                                             <td><?php echo $total_questions; ?></td>
                                             <td><?php echo $correct_answers; ?></td>
+                                            <td>
+                                                <?php 
+                                                    if($row_qn['status'] == 1) { echo "<span class='badge badge-warning'>Pending</span>"; } 
+                                                    else if($row_qn['status'] == 2) { echo "<span class='badge badge-success'>Accepted</span>"; }
+                                                    else if($row_qn['status'] == 3) { echo "<span class='badge badge-danger'>Rejected</span>"; } 
+                                                    else { echo "<span class='badge badge-secondary'>Unknown</span>"; }
+                                                ?>
+                                            </td>
+                                            <td><a class="btn btn-success btn-sm" style="color:white;cursor:pointer;" onclick="updatestatus(2, <?php echo $eid; ?>)">Accept</a></td>
+                                            <td><a class="btn btn-danger btn-sm" style="color:white;cursor:pointer;" onclick="updatestatus(3, <?php echo $eid; ?>)">Reject</a></td>
                                         </tr>
 
                                     <?php
@@ -113,59 +123,19 @@ require '../../connect.php';
 </div>
 
 <script>
-    function updatestatus1(sta, id) {
-
-
-        $.ajax({
-            // alert(sta);
-            type: "GET",
-            url: "qvision/Question_Management/status.php",
-            data: 'sta=' + sta + '&id=' + id,
-            //data:{sta: sta,id:id}
-
-            success: function(data) {
-                {
-                    if (data == 1) {
-                        alert('Update Successfully');
-                        candicate_results()
-                    } else {
-                        alert("not updated");
-                    }
-
-                }
-            }
-        });
-
-
-
-    }
-</script>
-<script>
     function updatestatus(sta, id) {
-        //alert(sta);
-        //alert(id);
-
         $.ajax({
-            // alert(sta);
             type: "GET",
-            url: "qvision/Question_Management/statusss.php",
+            url: "qvision/assesment_question/status_update.php",
             data: 'sta=' + sta + '&id=' + id,
-            //data:{sta: sta,id:id}
-
             success: function(data) {
-                {
-                    if (data == 1) {
-                        alert('Update Successfully');
-                        candicate_results()
-                    } else {
-                        alert("not updated");
-                    }
-
+                if (data == 1) {
+                    alert('Update Successfully');
+                    assessment_result();
+                } else {
+                    alert("not updated");
                 }
             }
         });
-
-
-
     }
 </script>

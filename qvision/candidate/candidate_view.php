@@ -211,7 +211,7 @@ $status=$fet['cstatus'];
 		<a href="/Qvisionnew/qvision/Resource/Resource_form/resume_upload/<?php echo $fet['resume'];?>" download="<?php echo $fet['resume']; ?>" style="font-weight: 900;"><?php echo $fet['resume']; ?></a>
 		</tr>
 
-<!-- ?php
+<?php
 if($status!='37' AND $status!='23' AND $status!='22' AND $status!='16' AND $status!='19' AND $status!='40')
 {
  ?>
@@ -220,12 +220,12 @@ if($status!='37' AND $status!='23' AND $status!='22' AND $status!='16' AND $stat
        <td colspan="2">
 		<select class="form-control" id="round_type" name="round_type" onchange="get_qn(this.value)" >
 		<option value="">Select round</option>
-		< ?php $stmt22 = $con->query("SELECT * FROM interview_rounds where status=1");
+		<?php $stmt22 = $con->query("SELECT * FROM interview_rounds where status=1");
 		while ($row22 = $stmt22->fetch()) 
 		{
 		?>
 		<option value="<?php echo $row22['id'];?>"> <?php echo $row22['name'];?></option>
-		< ?php 
+		<?php 
 		}
 		?>
 		</select>
@@ -242,13 +242,13 @@ if($status!='37' AND $status!='23' AND $status!='22' AND $status!='16' AND $stat
 	   <input type="hidden" name="rid" id="rid" value="<?php echo $rid; ?>">
 	   <input type="button" class="btn btn-success" name="save" onclick="candidate_update()" style="float:right;" value="Save"> </td>
      </tr>
-	< ?php
+	<?php
 }
 else
 {
 	
 }
-?  -->
+?>
  </table>
         <!-- /.post -->
 
@@ -542,7 +542,7 @@ $k=0;
 while($md_row = $md_sql->fetch(PDO::FETCH_ASSOC))
 {
 ?>
-<tr>
+<tr> 
 <td><?php echo $md_row['Sec_name']; ?></td>
 <td colspan="2">
 <input type="text" class="form-control" id="section_name1" name="section_name1" value="<?php echo  $md_row['feedback']; ?>" readonly></td>
@@ -572,7 +572,7 @@ function candidate_update()
 	$.ajax({
 		type:'GET',
 		data: data + "&" + "field=" +field,
-		url:'/ssinfo1/qvision/candidate/candidate_question_allocate.php',
+		url:'qvision/candidate/candidate_question_allocate.php',
 		success:function(data)
 		{
 			if(data==0)
@@ -596,7 +596,7 @@ function get_qn(v)
 	var id=v;
 	$.ajax({
 		type:"GET",
-		url:"/ssinfo1/qvision/candidate/get_qn.php?id=" +v,
+		url:"qvision/candidate/get_qn.php?id=" +v,
 		success:function(data)
 		{
 		$('#assessment_round').html(data);	

@@ -23,13 +23,6 @@ input[type=text], select {
   width: 100% !important;
 }
 
-
-
-
-
-
-
-
 </style>	
 <head> 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -60,7 +53,7 @@ input[type=text], select {
                                 <select class="form-control" name="name" id="asses" onchange="change_asses()">
                                     <option value="0">-- SELECT ASSESMENT --</option>
 									<?php                                                       
-                                    $asses_sql = $con->query("SELECT * FROM assets_master");
+                                    $asses_sql = $con->query("SELECT * FROM question_name_master where status=1");
                                     while ($asses_sql_res = $asses_sql->fetch(PDO::FETCH_ASSOC)) {
                                     ?>
                                         <option value="<?php echo $asses_sql_res['id']; ?>"><?php echo $asses_sql_res['name']; ?></option>

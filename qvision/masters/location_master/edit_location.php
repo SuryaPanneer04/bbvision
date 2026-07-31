@@ -27,7 +27,7 @@ $sid=$row['site_id'];
 
 </div>
 <div class="card-body" id="printableArea">
-<form role="form" name="" action="" method="post" enctype="multipart/type">
+<form role="form" id="edit_loc_form" action="" method="post" enctype="multipart/type">
 
 <table class="table table-bordered">
 <!-- <tr>
@@ -102,12 +102,10 @@ function back(){
 <script>
 function update_location()
     {
-		  var id=0;
-	//alert(id);
-    var data = $('form').serialize();
+    var data = $('#edit_loc_form').serialize();
     $.ajax({
     type:"POST",
-	data: data + "&" + "id="+id,
+	data: data,
     url:"qvision/masters/location_master/update_location.php",
     success:function(){
   alert("Updated Successfully");

@@ -37,7 +37,7 @@ $candid = $_SESSION['candidateid'];
 
 //$query=$con->query("insert into salary_advance(emp_id,advance_amount,emi_status,emi_period,start_date,end_date,emi_amount,created_by,created_on) values('$emp_code','$amount','$emi_status','$emi_period','$start_date','$end_date','$emi_amount','$candid',now())");
 
-$query=$con->query("insert into salary_advance(emp_id,advance_amount,emi_period,start_date,end_date,emi_amount,created_by,created_on) values('$candid','$amount','$emi_period','$start_date','$end_date','$emi_amount','$candid',now())");
+$query=$con->query("insert into salary_advance(emp_id,advance_amount,emi_period,start_date,end_date,emi_amount,created_by,created_on) values('$emp_code','$amount','$emi_period','$start_date','$end_date','$emi_amount','$candid',now())");
 
 if($query){
 	echo 1;

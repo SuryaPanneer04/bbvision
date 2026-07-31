@@ -278,9 +278,10 @@ function resource_update()
 	$.ajax({
 		type:'GET',
 		data: data + "&" + "field="+field,
-		url:'qvision/resource/resource_form/resource_update.php',
+		url:'qvision/Resource/Resource_form/resource_update.php',
 		success:function(data)
 		{
+			data = $.trim(data);
 			if(data==0)
 			{
 				alert("Update Failed");
@@ -291,7 +292,10 @@ function resource_update()
 			   alert("Updated successfully");	
 			   resource_list();
 			}	
-		}       	
+		},
+		error:function(xhr, status, error) {
+			alert("Server Error: " + error);
+		}
 	});
 }
 

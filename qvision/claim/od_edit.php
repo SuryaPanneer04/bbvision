@@ -14,7 +14,7 @@ $date=$row['date'];
 $newDate = date("d-m-Y", strtotime($date));
 ?>
 <head>
-    <link rel="stylesheet" href="Qvision\commonstyle.css">
+    <link rel="stylesheet" href="qvision/commonstyle.css">
     </head>
 		<style>
 .card-primary:not(.card-outline)>.card-header{
@@ -118,7 +118,7 @@ background-color: #f1cc61 !important;
 	<tr id="dep2">
 		<td>Attach File</td>
 		
-		  <td colspan="5"><a href="/kerli/payroll/claim/Uploads/<?php echo $row['file']; ?>" download="<?php echo $row['file']; ?>"><?php echo $row['file']; ?></a>	</td>
+		  <td colspan="5"><a href="qvision/claim/Uploads/<?php echo $row['file']; ?>" download="<?php echo $row['file']; ?>"><?php echo $row['file']; ?></a>	</td>
      </tr>
     
     <tr>
@@ -169,29 +169,18 @@ var formData = new FormData(this);
  }
  
 $( document ).ready(function() {
-   //alert( "ready!" );
-
-
-  function travelstatus(value)
-{
-	//alert(value)
-if(value=='1')
-{
-
-document.getElementById('dep1').style.visibility = "visible";
-document.getElementById('dep2').style.visibility = "visible";
-
-}
-else
-{
-
-document.getElementById('dep1').style.visibility = "collapse";
-document.getElementById('dep2').style.visibility = "collapse";
-
-}
-}
-
+   travelstatus(document.getElementById('traveltpyee').value);
 });
+
+function travelstatus(value) {
+    if(value == '1' || value == '4') {
+        document.getElementById('dep1').style.visibility = "visible";
+        document.getElementById('amount').setAttribute('readonly', 'readonly');
+    } else {
+        document.getElementById('dep1').style.visibility = "collapse";
+        document.getElementById('amount').removeAttribute('readonly');
+    }
+}
 
 function kms_cal(b) {
 	

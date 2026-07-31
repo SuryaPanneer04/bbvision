@@ -82,38 +82,37 @@ src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
       
     
     $emp_sql=$con->query("SELECT * FROM candidate_form_details 
-WHERE dob <= CURDATE() -- Ensure no future dates
-AND DATE_ADD(dob, INTERVAL (YEAR(CURDATE()) - YEAR(dob)) + 
-IF(DAYOFYEAR(CURDATE()) > DAYOFYEAR(dob), 1, 0) YEAR) 
+WHERE STR_TO_DATE(dob, '%d.%m.%Y') IS NOT NULL 
+AND STR_TO_DATE(dob, '%d.%m.%Y') <= CURDATE() 
+AND DATE_ADD(STR_TO_DATE(dob, '%d.%m.%Y'), INTERVAL (YEAR(CURDATE()) - YEAR(STR_TO_DATE(dob, '%d.%m.%Y'))) + 
+IF(DAYOFYEAR(CURDATE()) > DAYOFYEAR(STR_TO_DATE(dob, '%d.%m.%Y')), 1, 0) YEAR) 
 BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
 ");
     
-    
-    $i=1;
+    ?>
+      <table class="table" style="margin-left: 170px; font-weight: bold; width: 60%;">
+      <?php
+      $i=1;
       while($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC))
       {
        ?>
       <tr>
-    <br>
-	<align="center" style="width: 18px; margin-left: 170px; font-weight: bold;"> 
-    <td><?php echo $emp_res['first_name']; ?></td>
-	  <td><?php echo $emp_res['dob']; ?></td>
-	  <td><?php echo $emp_res['comments']; ?></td>
-	  </br>
-	  	  <!--td><!--?php echo "Happy Birthday".$emp_res['first_name'].""; ?--></td-->
-	  <td>
-	  </tr>
-	 <?php
-	  $i++;
+        <td><?php echo $emp_res['first_name']; ?></td>
+        <td><?php echo $emp_res['dob']; ?></td>
+        <td><?php echo $emp_res['comments']; ?></td>
+      </tr>
+      <?php
+        $i++;
       }
       ?>
+      </table>
 	<br>
         <div class="content-wrapper" id="main_content">
 								<div class="output-container">
 		<!--h2>How to Insert Emoji using PHP in Comments</h2-->
 
 		<div class="comment-form-container">
-			<form id="frm-comment" >
+			<form id="frm-comment" onsubmit="event.preventDefault(); comment_add();">
 				
 
 				<div class="input-row">
@@ -142,11 +141,18 @@ BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
       
 		function comment_add()
 {
+  var data = $('#frm-comment').serialize();
   $.ajax({
     type:"POST",
+    data: data + "&submit=1",
     url:"qvision/Recruitment/birthday_list/comment_add.php",
     success:function(data){
-      $("#main_content").html(data);
+      if(data.trim() == "Success") {
+        alert("Comment Added successfully");
+        $('#comment').val('');
+      } else {
+        alert("Error adding comment: " + data);
+      }
     }
   })
 }

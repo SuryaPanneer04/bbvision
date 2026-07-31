@@ -11,7 +11,7 @@ function leave_app_list()
             type: "POST",
             url:"qvision/Leave_Management/leave_request/approved_list.php",
             success: function (data) {
-                $("#main_content").html(data);
+                $("#leave_view").html(data);
             }
         })
 }
@@ -21,7 +21,7 @@ function leave_reject_list()
             type: "POST",
             url:"qvision/Leave_Management/leave_request/rejected_list.php",
             success: function (data) {
-                $("#main_content").html(data);
+                $("#leave_view").html(data);
             }
         })
 }
@@ -174,16 +174,7 @@ function leave_reject_list()
 
 
 <script>
- function leave_request()
-    {
-        $.ajax({
-            type: "POST",
-            url: base_url + "qvision/Leave_Management/leave_request/leave_request.php",
-            success: function (data) {
-                $("#main_content").html(data);
-            }
-        })
-    }
+
  function leave_master_view()
 {
 	

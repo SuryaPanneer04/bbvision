@@ -1,7 +1,11 @@
 <?php
 require '../../connect.php';
 require '../../user.php';
-$candidateid=$_SESSION['candidateid'];
+$candidateid = isset($_REQUEST['id']) ? $_REQUEST['id'] : (isset($_SESSION['candidateid']) ? $_SESSION['candidateid'] : '');
+
+if ($candidateid == '') {
+    die("Candidate ID is missing. Please access this page with a valid candidate ID.");
+}
 $sql=$con->query("select * from candidate_form_details  
 INNER JOIN designation_master ON candidate_form_details.position = designation_master.id where candidate_form_details.id='$candidateid'");
 $data=$sql->fetch();
@@ -35,148 +39,122 @@ else
 </ul>
 </div> <!-- /.card-header -->
 <div class="card-body">
+<form id="masterForm" enctype="multipart/form-data" novalidate>
 <div class="tab-content">
     <div class="active tab-pane" id="for_employment">
 
                                     <!--Employee personal details -->
 	
-	<form id="fupForm" enctype="multipart/form-data">
+	
     <!-- Post -->
     <table class="table table-bordered">
         <tr>
         <td colspan="6"><center><b>Application for Employment</b></center></td>
         </tr>
         <tr>
+        <tr>
         <td>Post Applied for:</td>
-        <td colspan="5"><input type="text" class="form-control" id="position" name="position" value="" ></td>
+        <td colspan="5"><input type="text" class="form-control" id="position" name="position" value="<?php echo isset($sts['position']) && $sts['position'] != '' ? $sts['position'] : (isset($data['designation_name']) ? $data['designation_name'] : ''); ?>" ></td>
         </tr>
         <tr>
         <td colspan="6"><center><b>Personal Details</b></center></td>
         </tr>
         <tr>
         <td>Name of the candidate:</td>
-        <td colspan="5"><input type="text" class="form-control" id="name" name="name" value="" ></td>
+        <td colspan="5"><input type="text" class="form-control" id="name" name="name" value="<?php echo isset($sts['name']) && $sts['name'] != '' ? $sts['name'] : (isset($data['first_name']) ? $data['first_name'] : ''); ?>" ></td>
         </tr>
         <tr>
         <td>Father's Name:</td>
-        <td colspan="5"><input type="text" class="form-control" id="fathers_name" name="fathers_name" value=""  ></td>
+        <td colspan="5"><input type="text" class="form-control" id="fathers_name" name="fathers_name" value="<?php echo isset($sts['fathers_name']) && $sts['fathers_name'] != '' ? $sts['fathers_name'] : (isset($data['father_name']) ? $data['father_name'] : ''); ?>"  ></td>
         </tr>
         <tr>
         <td>Date of Birth:</td>
-        <td colspan="5"><input type="date" class="form-control" id="DOB" name="DOB" value="" ></td>
+        <td colspan="5"><input type="date" class="form-control" id="DOB" name="DOB" value="<?php echo isset($sts['DOB']) && $sts['DOB'] != '' ? $sts['DOB'] : (isset($data['dob']) ? $data['dob'] : ''); ?>" ></td>
         </tr>
         <tr>
         <td>Communication Address:</td>
-        <td colspan="5"><input type="text" class="form-control" id="communication_address" name="communication_address" value=""  ></td>
+        <td colspan="5"><input type="text" class="form-control" id="communication_address" name="communication_address" value="<?php echo isset($sts['communication_address']) && $sts['communication_address'] != '' ? $sts['communication_address'] : (isset($data['address']) ? $data['address'] : ''); ?>"  ></td>
         </tr>
         <tr>
         <td>Permanent Address:</td>
-        <td colspan="5"><input type="text" class="form-control" id="permanent_address" name="permanent_address" value="" ></td>
+        <td colspan="5"><input type="text" class="form-control" id="permanent_address" name="permanent_address" value="<?php echo isset($sts['permanent_address']) && $sts['permanent_address'] != '' ? $sts['permanent_address'] : (isset($data['paddress']) ? $data['paddress'] : ''); ?>" ></td>
         </tr>
         <tr>
         <td>Telephone no. (Mobile/others):</td>
-        <td colspan="5"><input type="text" class="form-control" id="mobile_num" name="mobile_num" value="" onchange="CheckIndianNumber(this.value)" maxlength="10" ></td>
+        <td colspan="5"><input type="text" class="form-control" id="mobile_num" name="mobile_num" value="<?php echo isset($sts['mobile_num']) && $sts['mobile_num'] != '' ? $sts['mobile_num'] : (isset($data['phone']) ? $data['phone'] : ''); ?>" onchange="CheckIndianNumber(this.value)" maxlength="10" ></td>
         </tr>
         <tr>
         <td>Email ID:</td>
-        <td colspan="5"><input type="text" class="form-control" id="email_id" name="email_id" value="" onchange="ValidateEmail(this.value)" ></td>
+        <td colspan="5"><input type="text" class="form-control" id="email_id" name="email_id" value="<?php echo isset($sts['email_id']) && $sts['email_id'] != '' ? $sts['email_id'] : (isset($data['mail']) ? $data['mail'] : ''); ?>" onchange="ValidateEmail(this.value)" ></td>
         </tr>
 	    <tr>
         <td>Aadhar Number:*</td>
-		<td colspan="2"><input type="text" class="form-control" id="adharnumber" name="adharnumber" value="" maxlength="14" placeholder="Enter Adhaar No. with Space" required></td>
+		<td colspan="2"><input type="text" class="form-control" id="adharnumber" name="adharnumber" value="<?php echo isset($sts['aadhar_num']) && $sts['aadhar_num'] != '' ? $sts['aadhar_num'] : (isset($data['adharnumber']) ? $data['adharnumber'] : ''); ?>" maxlength="14" placeholder="Enter Adhaar No. with Space" required></td>
         <td colspan='2' style="border-right:none;"><input type="file" class="form-control file" id="file" name="files[]" /></td>
-		<!--<td colspan='2' style="border-left:none;">
-	    <a href="qvision/Recruitment/uploads/<?php echo $sts['adharcard_number'];?>" download="<?php echo $sts['adharcard_number'];?>" ><?php echo $sts['adharcard_number'];?></a> 
-	   <input type="hidden"  name="aadharattach" >
-	  </td>-->
+		<td colspan='2' style="border-left:none;">
+	    <a href="qvision/Recruitment/uploads/<?php echo isset($sts['adharcard_number']) ? $sts['adharcard_number'] : '';?>" download="<?php echo isset($sts['adharcard_number']) ? $sts['adharcard_number'] : '';?>" ><?php echo isset($sts['adharcard_number']) ? $sts['adharcard_number'] : '';?></a> 
+	   <input type="hidden" value="<?php echo isset($sts['adharcard_number']) ? $sts['adharcard_number'] : '';?>" name="aadharattach" >
+	  </td>
         </tr>
 		<tr>
         <td>Pan Number:*</td>
-        <td colspan="2"><input type="text" class="form-control" id="pannumber" name="pannumber" value="" maxlength="10" placeholder="Enter Pancard No" required></td>
+        <td colspan="2"><input type="text" class="form-control" id="pannumber" name="pannumber" value="<?php echo isset($sts['pan_num']) && $sts['pan_num'] != '' ? $sts['pan_num'] : (isset($data['pannumber']) ? $data['pannumber'] : ''); ?>" maxlength="10" placeholder="Enter Pancard No" required></td>
         <td colspan='2' style="border-right:none;"><input type="file" class="form-control file" id="file1" name="files1[]" /></td>
 		<td colspan='2' style="border-left:none;">
-	    <!--<a href="qvision/Recruitment/uploads/<?php echo $sts['pan_number'];?>" download="<?php echo $sts['pan_number'];?>" ><?php echo $sts['pan_number'];?></a> -->
-	    <input type="hidden" value="" name="panattach" >
+	    <a href="qvision/Recruitment/uploads/<?php echo isset($sts['pan_number']) ? $sts['pan_number'] : '';?>" download="<?php echo isset($sts['pan_number']) ? $sts['pan_number'] : '';?>" ><?php echo isset($sts['pan_number']) ? $sts['pan_number'] : '';?></a> 
+	    <input type="hidden" value="<?php echo isset($sts['pan_number']) ? $sts['pan_number'] : '';?>" name="panattach" >
 	    </td>
 	   </tr>
 	   
 	   <tr>
         <td>Voter ID:</td>
-        <td colspan="2"><input type="text" class="form-control" id="voternumber" name="voternumber" value="" maxlength="10" placeholder="Enter Votert No."></td>
+        <td colspan="2"><input type="text" class="form-control" id="voternumber" name="voternumber" value="<?php echo isset($sts['Voter_no']) && $sts['Voter_no'] != '' ? $sts['Voter_no'] : (isset($data['voternumber']) ? $data['voternumber'] : ''); ?>" maxlength="10" placeholder="Enter Votert No."></td>
         <td colspan='2' style="border-right:none;"><input type="file" class="form-control file" id="file2" name="files2[]" /></td>
 		<td colspan='2' style="border-left:none;">
-	    <!--<a href="qvision/Recruitment/uploads/" download="<?php echo $sts['voter_id'];?>" ><?php echo $sts['voter_id'];?></a> -->
+	    <a href="qvision/Recruitment/uploads/<?php echo isset($sts['voter_id']) ? $sts['voter_id'] : '';?>" download="<?php echo isset($sts['voter_id']) ? $sts['voter_id'] : '';?>" ><?php echo isset($sts['voter_id']) ? $sts['voter_id'] : '';?></a> 
+	    <input type="hidden" value="<?php echo isset($sts['voter_id']) ? $sts['voter_id'] : '';?>" name="voterattach" >
 	    </td>
 	   </tr>
 
       <tr>		
        <td>Reference Contact Person Name :</td>
        <td colspan="5">
-        <input type="text" class="form-control" id="cpn" name="cpn" value="" >
+        <input type="text" class="form-control" id="cpn" name="cpn" value="<?php echo isset($sts['contact_person']) ? $sts['contact_person'] : '';?>" >
        </td>
       </tr>
        
       <tr>		
        <td>Reference Contact Person Relationship :</td>
        <td colspan="5">
-        <input type="text" class="form-control" id="cpr" name="cpr" value="" >
+        <input type="text" class="form-control" id="cpr" name="cpr" value="<?php echo isset($sts['emergency_contact_relationship']) ? $sts['emergency_contact_relationship'] : '';?>" >
     </td>
       </tr>
 
       <tr>		
        <td>Reference Contact Person Mobile.No :</td>
        <td colspan="5">
-        <input type="text" class="form-control" id="cpm" name="cpm" value=""  maxlength="10">
+        <input type="text" class="form-control" id="cpm" name="cpm" value="<?php echo isset($sts['emergency_num']) ? $sts['emergency_num'] : '';?>"  maxlength="10">
     </td>
       </tr>
 
-       <?php 
-if($emp_pd_sts!=0){
-	?>
         <tr>  
         <td colspan="6"> 
 		<input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
 		<input type="hidden" name="id" id="id" value="<?php echo $emp_pd_id;?>">
 		<input type="hidden" name="emp_status" id="emp_status" value="<?php echo $emp_pd_sts;?>">
-		<input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
+		
 		</td>
 		</tr>
-<?php } ?>
 
         </table>
         <!-- /.post -->
-    </form>
+    
     </div>
 	
 <script>                               //Application for Employment
 $(document).ready(function(){
     // Submit form data via Ajax
-    $("#fupForm").on('submit', function(e){
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: 'qvision/Recruitment/submit.php',
-            data: new FormData(this),
-            contentType: false,
-            processData:false,
-            success: function(data){
-      if(data=="")
-      { 
-        alert("Entry Unsuccessfull");
-		//console.warn("data");
-		application();
-      }
-      else
-      {
-		alert("Application form Entry Successfully Completed.Then fill out the EDUCATIONAL QUALIFICATIONS");
-	   // console.warn("data");
-		application();
-      }
-    }   
-        });
-    });
-	
-// File type validation
+    // File type validation
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $(".file").change(function() {
         for(i=0;i<this.files.length;i++){
@@ -263,15 +241,15 @@ $("#pannumber").change(function () {
 });   
   
 //voter id
-$("#voternumber").change(function () {      
-var inputvalues = $(this).val();      
-  var regex = /^([a-zA-Z]){3}([0-9]){7}?$/g;   
-  if(!regex.test(inputvalues)){      
-  $("#voternumber").val("");    
-  alert("invalid voter no");    
-  return regex.test(inputvalues);    
-  }    
-});   
+// $("#voternumber").change(function () {      
+// var inputvalues = $(this).val();      
+//   var regex = /^([a-zA-Z]){3}([0-9]){7}?$/g;   
+//   if(!regex.test(inputvalues)){      
+//   $("#voternumber").val("");    
+//   alert("invalid voter no");    
+//   return regex.test(inputvalues);    
+//   }    
+// });   
 
 </script>
                                    <!--Employee Education -->
@@ -285,7 +263,7 @@ $edu_sts=0;
 ?>
  
     <div class="tab-pane" id="education_qualification">
-	<form id="fupForm1" class="form-horizontal" method="POST" enctype="multipart/form-data">
+	
     <table class="table table-bordered" id="new_tab">
     <tr>
     <td colspan="10"><center><b>Educational Qualifications (In descending order of qualifications attained)</b></center></td>
@@ -309,8 +287,8 @@ $edu_sts=0;
         $sel=$con->query("select * from emp_qualification where emp_id='$candidateid' order by id asc");	
 		$i=1;
         $educationRowcount = $sel->rowCount();
-		if($educationRowcount){
-			$getcount=0;
+		if($educationRowcount > 0){
+			$getcount=1;
 		}
 		else
 		{
@@ -357,7 +335,7 @@ if($getcount == 0){ ?>
 	  <input type="file" class="form-control" id="attachment_1" name="attachment[]" />
 	  </td>
 	  <td style="border-left:none;">
-	  <!--<a href="qvision/Recruitment/education_certificate/" download="<?php echo $row['attachment']; ?>" ><?php echo $row['attachment']; ?></a> 
+	  <!-- <a href="qvision/Recruitment/education_certificate/" download="<?php echo $row['attachment']; ?>" ><?php echo $row['attachment']; ?></a> -->
 	   <input type="hidden" value="" name="attach[]" id="attachhh">
 	  </td>
     </tr>
@@ -369,49 +347,21 @@ if($getcount == 0){ ?>
     </table>
 	
     <table>
-<?php 
-if($edu_sts!=1){
-?>
     <tr> 
 	<td colspan="6">
 		<input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
-		<input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
+		
     </td>
 	</tr>
-<?php } ?>
 
     </table>
-    </form>
+    
     <!-- /.tab-pane -->
     </div>
 	
 <script>                            //Educational Qualifications
 $(document).ready(function(){
     // Submit form data via Ajax
-    $("#fupForm1").on('submit', function(e){
-        e.preventDefault();
-
-        $.ajax({
-            type: 'POST',
-            url: 'qvision/Recruitment/employee_educational_insert.php',  
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-           success: function(data){
-    if(data == 1 || data == "1") 
-    {
-        alert("Application form Entry Successfully Completed. Then fill out the EDUCATIONAL QUALIFICATIONS");
-        application();
-    }
-    else
-    { 
-        alert("Entry Unsuccessfull! Database error.");
-        application();
-    }
-}
-        });
-    });
-	
     // File type validation  //Educational Qualifications
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $("#attachment_1").change(function() {
@@ -467,7 +417,7 @@ else
 
 ?>	
    <div class="tab-pane" id="certification_details" >
-    <form   method="POST" id="emp_education"  enctype="multipart/form-data">
+    
     <table class="table table-bordered" id="new_tab1">
     <tr>
     <td colspan="10"><center><b>Certification Details</b></center></td>
@@ -530,18 +480,14 @@ else
    ?> 	
      </table>
     <table>
-<?php 
-if($certificate_sts!=1){
-?>
     <tr>
 	<td>
 	 <input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
-	 <input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
+	 
 	</td>
 	</tr>
-<?php } ?>
     </table>
-    </form>
+    
     <!-- /.tab-pane -->
     </div>
     <!-- /.tab-pane -->
@@ -549,34 +495,6 @@ if($certificate_sts!=1){
 <script>                        //Certification Details
 $(document).ready(function(){           
     // Submit form data via Ajax
-    $("#emp_education").on('submit', function(e){
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: 'qvision/Recruitment/employee_certificate_insert.php',
-            data: new FormData(this),
-            contentType: false,
-            processData:false,
-           
-            success: function(data){
-      if(data==0)
-      { 
-        alert("Entry Unsuccessfull");
-		console.warn("datass");
-		application();
-      }
-      else
-      {
-		alert('Certification Details form entry Successfully Completed.Then fill out the EMPLOYEMENT DETAILS');
-        console.warn("data");
-
-		application();
-      }
-      
-    }   
-        });
-    });
-	
     // File type validation
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $("#certifcatefile_1").change(function() {
@@ -657,7 +575,7 @@ else
     </tr>
       </table>
       
-	  <form method="POST" id="emp_educations"  enctype="multipart/form-data">
+	  
     <table class="table table-bordered" id="new_tab2">
     <tr>
     <td colspan="10"><center><b>Employment Details</b></center></td>
@@ -757,19 +675,16 @@ else
     }
    
 }
+?>
 
-// Ensure that $emp_exp_sts is set before checking its value
-if ( $emp_exp_sts !=0) {
-?>  
     <tr>
         <td>
             <input type="hidden" name="cid" id="cid" value="<?php echo htmlspecialchars($candidateid); ?>">
-            <input type="submit" name="submit" id="yes" class="btn btn-success submitBtn" value="SUBMIT"/>
-            <button type="button" class="btn btn-danger" name="no" id="no" onclick="noexp()">SUBMIT</button>
+            
+            
         </td>
     </tr>
-<?php } ?>
-</form>
+
 
     
 	
@@ -811,31 +726,6 @@ if ( $emp_exp_sts !=0) {
 <script>                     // Employment Details
 $(document).ready(function(){
     // Submit form data via Ajax
-    $("#emp_educations").on('submit', function(e){
-        e.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: 'qvision/Recruitment/employee_employment_insert.php',
-            data: new FormData(this),
-            contentType: false,
-            processData:false,
-            success: function(data){
-      if(data==0)
-      { 
-        alert("Entry Unsuccessfull");
-		application();
-      }
-      else
-      {
-		alert('Application form Entry Successfully Completed.');
-       // application();
-       window.location.href= 'login/login.php';
-      }
-      
-    }   
-        });
-    });
-	
     // File type validation
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $("#file").change(function() {
@@ -942,6 +832,11 @@ function noexp(){
     <!-- /.tab-pane -->
     </div>
     <!-- /.tab-content -->
+    <div class="text-center mt-3 mb-3">
+       <input type="hidden" name="cid" id="master_cid" value="<?php echo htmlspecialchars($candidateid); ?>">
+       <button type="submit" class="btn btn-success btn-lg">Submit All Details</button>
+    </div>
+    </form>
     </div><!-- /.card-body -->
     </div>
     <!-- /.nav-tabs-custom -->
@@ -974,3 +869,57 @@ function printDiv(divName) {
 
 
 
+
+
+
+<script>
+$(document).ready(function() {
+    $("#masterForm").on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        
+        // 1. Submit Personal Details
+        $.ajax({
+            type: 'POST',
+            url: 'qvision/Recruitment/submit.php',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(res1) {
+                // 2. Submit Educational Qualifications
+                $.ajax({
+                    type: 'POST',
+                    url: 'qvision/Recruitment/employee_educational_insert.php',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(res2) {
+                        // 3. Submit Certification Details
+                        $.ajax({
+                            type: 'POST',
+                            url: 'qvision/Recruitment/employee_certificate_insert.php',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(res3) {
+                                // 4. Submit Employment Details
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'qvision/Recruitment/employee_employment_insert.php',
+                                    data: formData,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function(res4) {
+                                        alert("Application form Entry Successfully Completed.");
+                                        window.location.href = 'login/login.php';
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>

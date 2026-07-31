@@ -19,7 +19,7 @@ $date=$row['date'];
 $newDate = date("d-m-Y", strtotime($date));
 ?>
 <head>
-    <link rel="stylesheet" href="Qvision\commonstyle.css">
+    <link rel="stylesheet" href="qvision/commonstyle.css">
     </head>
 		<style>
 .card-primary:not(.card-outline)>.card-header{
@@ -111,7 +111,7 @@ background-color: #f1cc61 !important;
     <tr id="dep3">
 		<td>Attach File</td>
 		
-		  <td colspan="5"><a href="/kerli/payroll/claim/Uploads/<?php echo $row['file']; ?>" download="<?php echo $row['file']; ?>"><?php echo $row['file']; ?></a>	</td>
+		  <td colspan="5"><a href="qvision/claim/Uploads/<?php echo $row['file']; ?>" download="<?php echo $row['file']; ?>"><?php echo $row['file']; ?></a>	</td>
      </tr>
 <?php
 	/*

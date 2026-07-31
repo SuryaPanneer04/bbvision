@@ -26,7 +26,7 @@ $userrole=$_SESSION['userrole'];
       </thead>
       <tbody>
       <?php
-      $emp_sql=$con->query("SELECT * FROM jobdescription_master where status=1");
+      $emp_sql=$con->query("SELECT * FROM jobdescription_master");
       $i=1;
       while($emp_res = $emp_sql->fetch(PDO::FETCH_ASSOC))
       {

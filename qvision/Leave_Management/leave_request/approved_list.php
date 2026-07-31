@@ -90,7 +90,7 @@ function update_leave(status,leave,candid_id)
 
  	$.ajax({
 	type:'GET',
-	data: 'status='+status+'&leave='+leave+'&candid_id='+candid_id,
+	data: {status: status, leave: leave, candid_id: candid_id},
 	url:"qvision/Leave_Management/leave_request/leave_approve_update.php",
 	success:function(data)
 	{      
@@ -106,7 +106,7 @@ function reject_leave(status,leave)
 
  	$.ajax({
 	type:'GET',
-	data: 'status='+status+'&leave='+leave,
+	data: {status: status, leave: leave},
 	url:"qvision/Leave_Management/leave_request/leave_reject_update.php",
 	success:function(data)
 	{      

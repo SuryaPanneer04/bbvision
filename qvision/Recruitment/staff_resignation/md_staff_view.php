@@ -1,11 +1,28 @@
 <?php
 require '../../../connect.php';
 require '../../../user.php';
-$candidateid=$_REQUEST['cid'];
-$resignid=$_REQUEST['id'];
-$sql=$con->query("SELECT s.prefix_code,s.emp_code,s.emp_name as ename,r.candidate_id as cid,r.id as id,z.dept_name as depname,dm.div_name as divname,dd.designation_name as desname,rh.emp_name as reportPerson,r.* FROM `resignation_form_details` r left join staff_master s on r.candidate_id=s.candid_id left join z_department_master z on z.id=s.dep_id  left join division_master dm on dm.id=s.div_id left join designation_master dd on dd.id=s.design_id left join staff_master rh on r.reporting_person = rh.id where r.id='$resignid'");
+$candidateid = isset($_REQUEST['cid']) ? $_REQUEST['cid'] : '';
+$resignid = isset($_REQUEST['id']) ? $_REQUEST['id'] : '';
 
-$data=$sql->fetch();
+$data = array(
+	'prefix_code' => '', 'emp_code' => '', 'ename' => '', 'depname' => '',
+	'desname' => '', 'reportPerson' => '', 'applied_date' => '', 'reason' => '',
+	'remarks' => '', 'hod_accept_status' => '', 'hod_reason' => '',
+	'notice_period' => '', 'notice_days' => '', 'handling_projects' => '',
+	'approved_date' => '', 'hod_rejoin_remark' => '', 'hr_accept_status' => '',
+	'relieving_date' => '', 'relieve_days_count' => '', 'hr_rejoin_remark' => ''
+);
+
+if ($con && $resignid !== '') {
+	$sql=$con->query("SELECT s.prefix_code,s.emp_code,s.emp_name as ename,r.candidate_id as cid,r.id as id,z.dept_name as depname,dm.div_name as divname,dd.designation_name as desname,rh.emp_name as reportPerson,r.* FROM `resignation_form_details` r left join staff_master s on r.candidate_id=s.candid_id left join z_department_master z on z.id=s.dep_id  left join division_master dm on dm.id=s.div_id left join designation_master dd on dd.id=s.design_id left join staff_master rh on r.reporting_person = rh.id where r.id='$resignid'");
+	
+	if ($sql) {
+		$fetched = $sql->fetch();
+		if ($fetched) {
+			$data = array_merge($data, $fetched);
+		}
+	}
+}
 ?>
 
 <style>

@@ -46,13 +46,19 @@ hr{
 	 $candid_id = $_REQUEST['employee'];
 	//get payroll_master details
 		
-	$staff_payroll_sql=$con->query("select id,month,year,flag from payroll_master where id = $payroll_id");
+	$staff_payroll_sql=$con->query("select id,month,year,flag from payroll_master where id = '$payroll_id'");
 	$staff_payroll_res=$staff_payroll_sql->fetch(PDO::FETCH_ASSOC);
+	
+	if (!$staff_payroll_res) {
+		echo "<h4 style='color:red;text-align:center;margin-top:20px;'>Please select a valid month.</h4>";
+		exit;
+	}
+
 	$m=$staff_payroll_res['month'];
 	$y=$staff_payroll_res['year'];
 	
 	$dateObj   = DateTime::createFromFormat('!m', $m);
-	$monthName = $dateObj->format('F'); 
+	$monthName = $dateObj ? $dateObj->format('F') : '';
 	
     switch ($m) {
       case "1":

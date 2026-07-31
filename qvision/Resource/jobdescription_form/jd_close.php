@@ -143,9 +143,10 @@ function back()
 	$.ajax({
 		type:'GET',
 		data: data + "&" + "field="+field,
-		url:'qvision/resource/jobdescription_form/jd_close_submit.php',
+		url:'qvision/Resource/jobdescription_form/jd_close_submit.php',
 		success:function(data)
 		{
+			data = $.trim(data);
 			if(data==0)
 			{
 				alert("JD has not been Closed");
@@ -153,10 +154,13 @@ function back()
 			}
 			else
 			{
-			alert("JD has been Closed");
+			    alert("JD has been Closed");
 				job_description_approve_list();
 			}	
-		}       	
+		},
+		error:function(xhr, status, error) {
+			alert("Server Error: " + error);
+		}
 	});
 } 
 </script>

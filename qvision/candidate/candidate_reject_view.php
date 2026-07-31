@@ -465,7 +465,7 @@ function back_ctc()
 {
 		$.ajax({
 		type:"POST",
-		url:"/ssinfo1/qvision/candidate/candidate_reject_list.php",
+		url:"qvision/candidate/candidate_reject_list.php",
 		success:function(data){
 		$("#main_content").html(data);
 		}

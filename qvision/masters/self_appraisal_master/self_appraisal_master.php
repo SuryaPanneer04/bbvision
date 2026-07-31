@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html>
 <?php
 require '../../../connect.php';
 include("../../../user.php");
 $userrole = $_SESSION['userrole'];
 $user_candid = $_SESSION['candidateid'];
+// echo '<div><h1>usercandidate : ' . $user_candid . '</h1></div>';
 ?>
+<!DOCTYPE html>
+<html>
 
 <head>
   <link rel="stylesheet" href="Qvision\commonstyle.css">

@@ -325,17 +325,18 @@ echo '<span style="color:red;text-align:center;"><b>Rejected by HOD</b></span>';
  
 ?>
 </td>
+	<td>
 	<?php 
 		  if($emp_res['status'] == 5 || $emp_res['status'] == 8 || $emp_res['status'] == 13 || $emp_res['status'] == 2 || $emp_res['status'] == 35)
 		  {
 			  ?>
-			  <td><button class="btn btn-primary btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_edit(<?php echo $emp_res['cid']; ?>)"> Allocate</button></td>
+			  <button class="btn btn-primary btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_edit(<?php echo $emp_res['cid']; ?>)"> Allocate</button>
 		  <?php
 		  }
 		  else if($emp_res['status'] == 4 || $emp_res['status'] == 6 || $emp_res['status'] == 3 || $emp_res['status'] == 14 || $emp_res['status'] == 15 ||  $emp_res['status'] == 17|| $emp_res['status'] == 18|| $emp_res['status'] == 23 || $emp_res['status'] == 24 || $emp_res['status'] == 30 || $emp_res['status'] == 32 || $emp_res['status'] == 35 || $emp_res['status'] == 37 || $emp_res['status'] == 12)
 		  {
 			 ?> 
-			 <td><button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>
+			 <button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>
 			
 			 <?php
 			 //Check whether the Manager accept or reject the candidate.
@@ -345,34 +346,30 @@ echo '<span style="color:red;text-align:center;"><b>Rejected by HOD</b></span>';
 		  
 			<?php } ?>
 
-			</td>
 		<?php	  
 		  }
 		// else if( $emp_res['status'] == 5 || $emp_res['status'] == 8 || $emp_res['status'] == 13 || $emp_res['status'] == 16 || $emp_res['status'] == 40 || $emp_res['status'] == 41)
 		 else if( $emp_res['status'] == 40 || $emp_res['status'] == 41 || $emp_res['status'] == 16)
 		  {
 			 ?> 
-			 <td><button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>
-			 <button class="btn btn-primary btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="joining_detail(<?php echo $emp_res['cid']; ?>)"> Initiate offer Letter</button></td>
+			 <button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>
+			 <button class="btn btn-primary btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="joining_detail(<?php echo $emp_res['cid']; ?>)"> Initiate offer Letter</button>
 		<?php	  
 		  }
 		  else if($emp_res['status'] == 22)
 		  {
 			 ?> 
-			 <td><button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>
+			 <button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>
 			<button class="btn btn-primary btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="staff_code(<?php echo $emp_res['cid']; ?>)"> Staff code allocation</button>
 		
 			<button class="btn btn-danger btn-sm" onclick="openForm(<?php echo $emp_res['cid']; ?>)"> Reject</button>
- 
-		   </td>
 
-			
 		<?php	  
 		  }
 		  elseif($emp_res['status'] == 19 || $emp_res['status'] == 20 || $emp_res['status'] == 21 )
 		   {
 			 ?> 
-			 <td><button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button> 
+			 <button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button> 
 		<?php
 			 //Check whether the Manager accept or reject the candidate.
 		   if($checking['accept_cnt'] > 0 && $checking['status'] == 1){
@@ -381,13 +378,16 @@ echo '<span style="color:red;text-align:center;"><b>Rejected by HOD</b></span>';
 		  
 			<?php } ?>
 			
-			</td>
-			 
-			<!-- button class="btn btn-danger btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="rejection(<?php echo $emp_res['cid']; ?>)">Reject</button></td -->
+			<!-- button class="btn btn-danger btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="rejection(<?php echo $emp_res['cid']; ?>)">Reject</button> -->
 			
 		<?php	  
+		  } else {
+			?>
+			<button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>
+			<?php
 		  }
 ?>
+	</td>
       </tr>
       <?php
 	  $i++;

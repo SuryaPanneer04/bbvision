@@ -41,7 +41,7 @@ $data=$sql->fetch();
         </tr-->
         <tr>
         <td>Employee Code</td>
-        <td colspan="5"><input type="text" class="form-control" id="candidate_code" name="candidate_code" value="<?php echo $data['prefix_code'].$data['emp_code'];?>" ></td>
+        <td colspan="5"><input type="text" class="form-control" id="candidate_code" name="candidate_code" value="<?php echo $data['emp_code'];?>" ></td>
         </tr>
        <tr>
         <td>Name Of The Employee</td>
@@ -503,7 +503,7 @@ else
 		var letters = lettersMatch ? lettersMatch.join('') : '';
 		var numbersMatch = ccode.match(/\d+/g);
 		var numbers = numbersMatch ? numbersMatch.join('') : '';
-		var empcodesend=letters+"**"+numbers;
+		var empcodesend = letters + "**" + numbers + "**" + ccode;
 //ole.log('Letters:', letters);
 //nsole.log('Numbers:', numbers);
 ////update empcode of candidatecode//////////////

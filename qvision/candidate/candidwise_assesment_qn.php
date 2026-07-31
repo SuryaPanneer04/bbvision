@@ -163,7 +163,7 @@ else
     $.ajax({
     type:'GET',
     data: data + "&" + "count="+count,
-    url:"/ssinfo1/qvision/candidate/Answer_validation.php",
+    url:"qvision/candidate/Answer_validation.php",
 	
     success:function(data)
     {

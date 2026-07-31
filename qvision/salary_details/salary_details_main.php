@@ -19,7 +19,7 @@
 	<h4>Salary Details View</h4>
 	</div>
     <div class="panel-body">
-	<form method="GET" name="payslip_inputs" role="form">
+	<form method="GET" id="payslip_inputs_form" name="payslip_inputs" role="form">
 		<div class="row">
 		
 		<div class="col-lg-3">
@@ -154,10 +154,10 @@
 <script>
 function payslip_view()
 {
-	var data = $('form').serialize();
+	var data = $('#payslip_inputs_form').serialize();
 	$.ajax({
 	type: "GET",
-	url: "/qvision/salary_details/salary_details_view.php",
+	url: "qvision/salary_details/salary_details_view.php",
 	data: data,
 	success: function(data)
 	{

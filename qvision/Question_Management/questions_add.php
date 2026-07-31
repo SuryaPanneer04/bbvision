@@ -103,7 +103,7 @@ $que1=$con->query("SELECT * FROM section_master where status='1'");
     var id = 0;
     var data = $('form').serialize();
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         data: "id=" + id + "&" + data, // Concatenating id and form data
         url: 'qvision/Question_Management/insert_questions.php', // Correct path to PHP script
         success: function(data) {

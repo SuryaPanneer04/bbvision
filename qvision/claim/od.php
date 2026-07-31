@@ -44,7 +44,7 @@ include '../../user.php';
       <?php
 	  if($userrole == 'R016') {
 	  
-	    $holiday = $con->query("SELECT a.candidate_id as candidate_id,b.emp_code as emp_code,b.emp_name as emp_name,a.date as date,a.customer_name as customer_name,a.location as c_loc,a.purpose as purpose,a.id as mid,a.location as c_loc,a.status as status FROM claim_request a JOIN z_user_master b on a.candidate_id=b.candidate_id where a.status='2' or a.status=1");
+	    $holiday = $con->query("SELECT a.candidate_id as candidate_id,b.emp_code as emp_code,b.emp_name as emp_name,a.date as date,a.customer_name as customer_name,a.location as c_loc,a.purpose as purpose,a.id as mid,a.location as c_loc,a.status as status FROM claim_request a LEFT JOIN staff_master b on a.candidate_id=b.candid_id where a.status='2' or a.status=1");
 		
 	
         $cnt = 1;
@@ -105,20 +105,25 @@ include '../../user.php';
   }else{
 
 	    $holiday = $con->query("SELECT * FROM `claim_request`  where candidate_id='$candid_id' ORDER BY `id` DESC");
-		
-	
+		if (!$holiday) {
+		    echo "<tr><td colspan='10'><b>Error in claim_request query:</b> " . print_r($con->errorInfo(), true) . "</td></tr>";
+		} else {
         $cnt = 1;
 		
      while ($holiday_masterr = $holiday->fetch(PDO::FETCH_ASSOC)) {
 			$status = $holiday_masterr['status'];
 			
 			$getempdcoe=$con->query("SELECT * FROM `z_user_master` where candidate_id='$candid_id'");
-			//echo "SELECT * FROM `z_user_master` where candidate_id='$candid_id'";
+			if (!$getempdcoe) {
+			    die("<tr><td colspan='10'><b>Error in z_user_master query:</b> " . print_r($con->errorInfo(), true) . "</td></tr>");
+			}
 			$employiecode = $getempdcoe->fetch(PDO::FETCH_ASSOC);
 			
 			$iddd=$employiecode['user_id'];
-			$showempcode=$con->query("SELECT * FROM `staff_master` where candid_id='$iddd'");
-			//echo "SELECT * FROM `staff_master` where candid_id='$iddd'";
+			$showempcode=$con->query("SELECT * FROM `staff_master` where candid_id='$candid_id'");
+			if (!$showempcode) {
+			    die("<tr><td colspan='10'><b>Error in staff_master query:</b> " . print_r($con->errorInfo(), true) . "</td></tr>");
+			}
 			$showemmmpcode = $showempcode->fetch(PDO::FETCH_ASSOC);
       ?>
 	  
@@ -173,7 +178,9 @@ include '../../user.php';
             $cnt = $cnt + 1;
 			
 	  
+	  
 }
+  }
   }  
 	  
 

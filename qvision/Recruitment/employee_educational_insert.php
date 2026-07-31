@@ -71,14 +71,16 @@ $today = date("Y-m-d H:i:s");
    // Insert form data in the database 	
    
   if($empid!=''){
-    if($fileNames[$i]!=''){
-      $sql=$con->query("UPDATE `emp_qualification` SET emp_id='$candidateid',education='$examination' ,institution_name='$college' ,degree='$course' ,field_of_specialization='$fields' ,year_of_passing='$passings' ,percentage='$percentages',attachment='$fileNames[$i]' ,status='$status',modified_on=now(),modified_by='$candidateid' WHERE id ='$empid' ");
+    $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';
+    if($current_file!=''){
+      $sql=$con->query("UPDATE `emp_qualification` SET emp_id='$candidateid',education='$examination' ,institution_name='$college' ,degree='$course' ,field_of_specialization='$fields' ,year_of_passing='$passings' ,percentage='$percentages',attachment='$current_file' ,status='$status',modified_on=now(),modified_by='$candidateid' WHERE id ='$empid' ");
     }else{
 	  $sql=$con->query("UPDATE `emp_qualification` SET emp_id='$candidateid',education='$examination' ,institution_name='$college' ,degree='$course' ,field_of_specialization='$fields' ,year_of_passing='$passings' ,percentage='$percentages',attachment='$education_attach' , status='$status', modified_on=now(),modified_by='$candidateid' WHERE id = '$empid' "); 
     }  
   }
-   else{						
-      $sql=$con->query("insert into `emp_qualification`(emp_id, education, institution_name, degree, field_of_specialization, year_of_passing, percentage,attachment,created_on,created_by)  values('$candidateid','$examination','$college','$course','$fields','$passings','$percentages','$fileNames[$i]',now(),'$candidateid')");
+   else{
+      $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';					
+      $sql=$con->query("insert into `emp_qualification`(emp_id, education, institution_name, degree, field_of_specialization, year_of_passing, percentage,attachment,created_on,created_by)  values('$candidateid','$examination','$college','$course','$fields','$passings','$percentages','$current_file',now(),'$candidateid')");
    }
 
  }

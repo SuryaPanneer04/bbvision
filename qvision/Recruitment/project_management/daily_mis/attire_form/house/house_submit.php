@@ -38,7 +38,14 @@ $to_date=$_REQUEST['to_date'];
 
 
 $sql11=$con->query("insert into house_sheet(yes,remark,yes1,remark1,yes2,remark2,yes3,remark3,yes4,remark4,yes5,remark5,yes6,remark6,date,status,created_on) values('$yes','$remark','$yes1','$remark1','$yes2','$remark2','$yes3','$remark3','$yes4','$remark4','$yes5','$remark5','$yes6','$remark6','$to_date',1,now())"); 
-echo "insert into house_sheet(yes,remark,yes1,remark1,yes2,remark2,yes3,remark3,yes4,remark4,yes5,remark5,yes6,remark6,date,status,created_on) values('$yes','$remark','$yes1','$remark1','$yes2','$remark2','$yes3','$remark3','$yes4','$remark4','$yes5','$remark5','$yes6','$remark6','$to_date',1,now())";
+if($sql11)
+{
+    echo 1;
+}
+else
+{
+    echo 0;
+}
 
 //}
 ?>

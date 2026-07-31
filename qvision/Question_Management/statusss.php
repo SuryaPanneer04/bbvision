@@ -1,5 +1,5 @@
 <?php
-require '../config.php';
+require '../../connect.php';
 
  $id=$_REQUEST['id'];
 

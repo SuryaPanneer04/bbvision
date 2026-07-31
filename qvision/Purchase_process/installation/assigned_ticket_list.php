@@ -20,12 +20,7 @@ $candidateid=$_SESSION['candidateid'];
     </div>
     <div class="card-body">
         <table class="table table-striped table-bordered table-hover display nowrap" id="example1" style="width:100%">
-        <?php      
-                    $roll_query =$con->prepare("Select a.*,e.full_name from initiate_installation a LEFT JOIN z_user_master e ON (a.employee=e.candidate_id) WHERE a.employee='$candidateid' order by a.id desc");                
-                    $roll_query->execute(); 
-                    $i = 1;
-                    while($row = $roll_query->fetch()){
-                ?>
+        
             <thead>
                 <th> S.No</th>
                 <th> SO Number </th>
@@ -35,6 +30,12 @@ $candidateid=$_SESSION['candidateid'];
                 <th>Action</th>
             </thead>
             <tbody>
+                <?php      
+                    $roll_query =$con->prepare("Select a.*,e.full_name from initiate_installation a LEFT JOIN z_user_master e ON (a.employee=e.candidate_id) WHERE a.employee='$candidateid' order by a.id desc");                
+                    $roll_query->execute(); 
+                    $i = 1;
+                    while($row = $roll_query->fetch()){
+                ?>
                 
                 <tr>
                     <td> <?php echo $i++ ;?> </td>

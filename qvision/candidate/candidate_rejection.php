@@ -433,7 +433,7 @@ function back_ctc()
 {
 		$.ajax({
 		type:"POST",
-		url:"/ssinfo1/qvision/candidate/candidate_list.php",
+		url:"qvision/candidate/candidate_list.php",
 		success:function(data){
 		$("#main_content").html(data);
 		}
@@ -447,7 +447,7 @@ function back_ctc()
 	let reject_remark=$('#reject_remark').val(); 
 	$.ajax({
 	type:"POST",
-	url:"/ssinfo1/qvision/candidate/candidate_reject_update.php?id="+v+"&reject_remark="+reject_remark,
+	url:"qvision/candidate/candidate_reject_update.php?id="+v+"&reject_remark="+reject_remark,
 	success:function(data)
 	{
 			if(data==0)

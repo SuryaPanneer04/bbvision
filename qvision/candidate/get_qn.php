@@ -4,7 +4,6 @@ require '../../user.php';
 
 $roundid=$_REQUEST['id'];
 $sql=$con->query("select * from interview_rounds where id='$roundid'");
-echo "select * from interview_rounds where id='$roundid'";
 $fet=$sql->fetch();
 $roundname=$fet['name'];
 

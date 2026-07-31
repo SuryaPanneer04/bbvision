@@ -1,8 +1,8 @@
 <?php
 require '../../../connect.php';
 include("../../../user.php");
-$userrole=$_SESSION['userrole'];
-$candidateid=$_SESSION['candidateid'];
+$userrole = isset($_SESSION['userrole']) ? $_SESSION['userrole'] : 0;
+$candidateid = isset($_SESSION['candidateid']) ? $_SESSION['candidateid'] : 0;
 ?>
 <head>
     <link rel="stylesheet" href="Qvision\commonstyle.css">

@@ -25,7 +25,7 @@ echo "insert into resource_feedback (`resource_id`, `feedback`, `feedback_date`)
 }
 
 
-$sql=$con->query("UPDATE resource_form_detail SET `next_followup_date` = '$next_followup_date',feedback_sts=1 WHERE id = '$resource_id' ");
+$sql=$con->query("UPDATE resource_form_detail SET `next_followup_date` = '$next_followup_date' WHERE id = '$resource_id' ");
 	
 	echo "UPDATE resource_form_detail SET `next_followup_date` = '$next_followup_date' WHERE id = '$resource_id' ";
 
