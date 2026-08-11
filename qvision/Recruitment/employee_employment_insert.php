@@ -83,6 +83,8 @@ $exp_att= isset($exp_attach[$i]) ? $exp_attach[$i] : '';
 
   $sql2=$con->query("update candidate_form_details set status='20' where id='$candidateid'");
 
+  unset($_SESSION['candidateid']);
+
 if($sql){
 	 echo 1;
  }

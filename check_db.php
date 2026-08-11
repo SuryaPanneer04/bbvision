@@ -1,6 +1,0 @@
-<?php
-require 'connect.php';
-$res = $con->query("SHOW CREATE TABLE emp_personal_details");
-$row = $res->fetch();
-echo $row[1];
-?>

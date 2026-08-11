@@ -16,6 +16,15 @@ $qn=$sql->fetch();
  else
  {
 	 $qnid="";
+	 $sql_status=$con->query("select status from candidate_form_details where id='$candidateid'");
+	 $cand = $sql_status->fetch();
+	 if($cand && $cand['status'] == 20) {
+		 echo "<script>alert('You have already completed the test.'); window.location='login/logout.php';</script>";
+		 exit();
+	 } else {
+		 echo "<script>alert('No test assigned to you currently.'); window.location='login/logout.php';</script>";
+		 exit();
+	 }
  }
  
 ?>
@@ -43,8 +52,8 @@ $qn=$sql->fetch();
     <table id="example1" class="table table-bordered">
    <thead>
 <tr>
-
-
+  <th style="width: 5%">S.No.</th>
+  <th>Question</th>
 </tr>
 </thead>
 <tbody>
@@ -58,7 +67,7 @@ $sec=$dat['section'];
 	$sql1=$con->query("SELECT * FROM section_master where id='$sec'");
 $section=$sql1->fetch();
 ?>
-<tr><td><h4><?php echo $section['name']; ?></h4></td>
+<tr><td colspan="2"><h4><?php echo $section['name']; ?></h4></td></tr>
 <?php
 $sql1=$con->query("SELECT * FROM question_master where qn_name='$qnid' and section='$sec' and status=1");
 
@@ -111,14 +120,12 @@ while($row = $sql1->fetch(PDO::FETCH_ASSOC))
 $cnt=$cnt+1;
  }
  ?>
-
- </tr>
   <?php
 }?>
  </tbody>
+      </table>
 <input type="hidden" name="candidateid" value="<?php echo $candidateid;?>">
 <input type="hidden" name="qnid" value="<?php echo $qnid;?>">
-      </table>
 	  <input type="button" class="btn btn-o btn-primary" name="submit"  onclick="Answer_keys()" value="Submit">
 	  </form>
 <!-- /.card -->

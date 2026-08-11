@@ -63,8 +63,8 @@ if ($action == 'add') {
                                          <select class="form-control" name="assets_needed" required>
                                             <option value="">-- Select Assets --</option>
                                             <?php
-                                            $ast_sql = $con->query("SELECT * FROM assets_master WHERE name IS NOT NULL AND TRIM(name) != '' ORDER BY name ASC");
-                                            while($ast = $ast_sql->fetch()){
+                                           $ast_sql = $con->query("SELECT DISTINCT m.id, m.name FROM assets_master m JOIN assets_form_detail a ON m.prefix_code = a.prefix WHERE m.name IS NOT NULL AND TRIM(m.name) != '' AND a.status = 1 ORDER BY m.name ASC");
+                                           while($ast = $ast_sql->fetch()){
                                                 echo "<option value='".$ast['id']."'>".$ast['name']."</option>";
                                             }
                                             ?>

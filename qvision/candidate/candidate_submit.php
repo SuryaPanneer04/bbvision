@@ -88,8 +88,13 @@ if($EmployeeStatus=="Fresher")
 	if($inserts)
 	{
 	$password=md5("Welcome@123");
-		$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)values('$candidate_id','','','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
+		// $insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)values('$candidate_id','QSPLE'.'$candidate_id','$password','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
 		
+		 $insert = $con->query("INSERT INTO z_user_master
+		(candidate_id, user_name, password, full_name, status, email_id, user_group_code, mobile_no, gender, created_by, created_on)
+		VALUES
+		('$candidate_id', '" . 'QSPLE' . $candidate_id . "', '$password', '$full_name', '1', '$mail', 'ROLE-006', '$phone', '$gender', '$userid', '$date')");
+
 		$upd = $con->query("update interview_schedule_detail set status='2' where resource_id='$userid'");
 	}
 }
@@ -109,7 +114,8 @@ $candidate_id=$res['id'];
 if($inserts)
 	{
 	    $password = md5("Welcome@123");
-		$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)values('$candidate_id','','','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
+		$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)
+		values('$candidate_id','" . 'QSPLE' . $candidate_id . "','$password','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
 		
 		$upd = $con->query("update interview_schedule_detail set status='2' where resource_id='$userid'");
 	}

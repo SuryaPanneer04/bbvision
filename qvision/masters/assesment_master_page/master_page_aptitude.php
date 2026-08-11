@@ -58,8 +58,8 @@ include("../../../user.php");
       <td><?php echo $asses_res['question']; ?></td>
     
       
-        <th colspan="6"><input type="checkbox" class="checkbox"  id="question"   name="question[]"  value="<?php echo $asses_res['question']; ?>"onchange = "checkbox()" style="float:right;"></th>
-        
+        <td colspan="1"><input type="checkbox" class="checkbox"  id="question"   name="question[]"  value="<?php echo $asses_res['question']; ?>" onchange="checkbox()" style="float:right;"></td>
+      </tr>
         <?php
       $i++;
     }
@@ -67,11 +67,11 @@ include("../../../user.php");
      ?> 
     
     <tr>
-    <td>
-     <colspan="6"><input type="button"  class="btn btn-dark" value="Submit"  style="float:right;color:white !important;" name="submit" onclick="submit_master()" value="submit">
-</tr>
+    <td colspan="3">
+     <input type="button"  class="btn btn-dark" value="Submit"  style="float:right;color:white !important;" name="submit" onclick="submit_master()" value="submit">
+    </td>
+    </tr>
   </tbody>
-</tbody>
   </table>
 </form>
 

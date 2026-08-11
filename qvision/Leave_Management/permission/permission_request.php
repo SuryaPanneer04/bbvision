@@ -23,17 +23,29 @@ $user_id=$_SESSION['userid'];
 									<td colspan="2">Employee Name</td>
 									<td colspan="6">
 									<?php
+									// 1. Fetch current logged-in user to set as default selected
 									$stmts = $con->prepare("SELECT user_id,full_name,candidate_id FROM z_user_master where user_id='$user_id'");
-									//echo "SELECT user_id,full_name,candidate_id FROM z_user_master where user_id='$user_id'";
 											   $stmts->execute(); 
                                                $rows = $stmts->fetch();
 											   $emp_name=$rows['full_name'];
 											   $candid_id=$rows['candidate_id'];
-
-
-												   ?>
-												   <input type="hidden" class="form-control" id="candids_id" value="<?php echo $candid_id; ?>" name="candids_id" >
-												   <input type="text" class="form-control" id="full_name" value="<?php echo$emp_name; ?>" name="full_name" readonly>
+                                    ?>
+                                        <!-- 2. Dropdown fetching from z_user_master -->
+									    <select class="form-control" id="candids_id" name="candids_id" onchange="document.getElementById('full_name').value = this.options[this.selectedIndex].text;">
+                                            <option value="">Select Employee</option>
+                                            <?php
+                                            $stmt_emp = $con->prepare("SELECT candidate_id, full_name FROM z_user_master WHERE status='1'");
+                                            $stmt_emp->execute();
+                                            while($emp_row = $stmt_emp->fetch(PDO::FETCH_ASSOC)) {
+                                                // Pre-select the logged in user
+                                                $selected = ($emp_row['candidate_id'] == $candid_id) ? 'selected' : '';
+                                                echo "<option value='".$emp_row['candidate_id']."' $selected>".$emp_row['full_name']."</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                        
+                                        <!-- 3. Hidden input to preserve code flow (so $_POST['full_name'] still works) -->
+                                        <input type="hidden" id="full_name" name="full_name" value="<?php echo $emp_name; ?>">
 									</td>														
 								</tr>
 								<!--<tr>
@@ -165,12 +177,11 @@ var formData = new FormData(this);
 				cache: false,
 				contentType: false,
     processData: false,
-                success:function(data)  
+                  success:function(data)  
                 {  
 					alert('Permission Requested Successfully'); 
-                    permission_apply()
-				
-				}				
+                    leave_mapping_view(); // This correctly routes back to the main list
+				}			
            });  
       });  
  });  

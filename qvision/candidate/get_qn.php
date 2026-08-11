@@ -41,8 +41,8 @@ else
 	  <select class="form-control" id="allocate_person" name="allocate_person">
 		<option value=""> --Select Employee Name-- </option>
 		<?php 
-		$stmt2 = $con->query("SELECT * FROM interview_rounds_mapping a 
-		                      LEFT JOIN staff_master b 
+		$stmt2 = $con->query("SELECT a.person_name, b.emp_name FROM interview_rounds_mapping a 
+		                      INNER JOIN staff_master b 
 							  ON a.person_name = b.id 
 		                      WHERE a.status='1' AND a.round_id='$roundid'");
 							  
@@ -55,7 +55,7 @@ else
 		while ($row2 = $stmt2->fetch()) 
 		{
 		?>
-		<option value="<?php echo $row2['id'];?>"> <?php echo $row2['emp_name'];?> </option>
+		<option value="<?php echo $row2['person_name'];?>"> <?php echo $row2['emp_name'];?> </option>
 		<?php 
 		}
 		?>
