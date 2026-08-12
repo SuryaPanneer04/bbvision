@@ -92,7 +92,7 @@ table th {
                         <td>
                             <input type="checkbox" name="attendance_id[]" class="classacheck" checked value="<?php echo $attendance_data['att_id'] ; ?>" >
                         </td>
-                        <td><?php echo $attendance_data['prefix_code'] ; ?><?php echo $attendance_data['ecode'] ; ?></td>
+                        <td><?php echo $attendance_data['ecode'] ; ?></td>
                         <td><?php echo $attendance_data['emp_name'] ; ?></td>
                         <td><?php echo $attendance_data['in_log_date'] ; ?></td>
                         <td><?php echo $attendance_data['log_day'] ; ?></td>
