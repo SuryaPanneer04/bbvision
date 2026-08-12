@@ -224,17 +224,13 @@ $app_salary = $staff_sal['salary'];
 						<div class="form-group">
                         <select class="custom-select" name="staff_scale" onChange="scale_changes(this.value)">
 						<?php
-
-						$payroll_scale_sql=$con->query("SELECT id, name, status, created_by, created_on, modified_by, modified_on FROM payroll_scale_master WHERE  id='$scale_master_id'
-						union 
-						SELECT id, name, status, created_by, created_on, modified_by, modified_on FROM payroll_scale_master WHERE  id not in ('$scale_master_id')");
-						
-						$i=1;
-						while($payroll_scale_res = $payroll_scale_sql->fetch(PDO::FETCH_ASSOC))
-						{
-							?>
-							<option value="<?php echo $payroll_scale_res['id']; ?>"><?php echo $payroll_scale_res['name']; ?></option>
-							<?php
+						if(!empty($scale_master_id) && $scale_master_id != 0) {
+							$current_scale_sql = $con->query("SELECT id, name FROM payroll_scale_master WHERE id='$scale_master_id'");
+							if($current_scale = $current_scale_sql->fetch(PDO::FETCH_ASSOC)) {
+								?>
+								<option value="<?php echo $current_scale['id']; ?>" selected><?php echo $current_scale['name']; ?></option>
+								<?php
+							}
 						}
 						?>
 						<option value="0">--Select Scale--</option>

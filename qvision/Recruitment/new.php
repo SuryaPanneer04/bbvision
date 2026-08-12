@@ -312,7 +312,7 @@ $edu_sts=0;
 		$i=1;
         $educationRowcount = $sel->rowCount();
 		if($educationRowcount){
-			$getcount=0;
+			$getcount=1;
 		}
 		else
 		{
@@ -359,8 +359,8 @@ if($getcount == 0){ ?>
 	  <input type="file" class="form-control" id="attachment_1" name="attachment[]" />
 	  </td>
 	  <td style="border-left:none;">
-	  <!--<a href="qvision/Recruitment/education_certificate/" download="<?php echo $row['attachment']; ?>" ><?php echo $row['attachment']; ?></a> 
-	   <input type="hidden" value="" name="attach[]" id="attachhh">
+	  <!--<a href="qvision/Recruitment/education_certificate/" download="<?php echo $row['attachment']; ?>" ><?php echo $row['attachment']; ?></a>--> 
+	   <input type="hidden" value="<?php echo $row['attachment']; ?>" name="attach[]" id="attachhh">
 	  </td>
     </tr>
 	<?php
@@ -371,16 +371,12 @@ if($getcount == 0){ ?>
     </table>
 	
     <table>
-<?php 
-if($edu_sts!=1){
-?>
     <tr> 
 	<td colspan="6">
 		<input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
 		<input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
     </td>
 	</tr>
-<?php } ?>
 
     </table>
     </form>
@@ -532,16 +528,12 @@ else
    ?> 	
      </table>
     <table>
-<?php 
-if($certificate_sts!=1){
-?>
     <tr>
-	<td>
+	<td colspan="7">
 	 <input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
 	 <input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
 	</td>
 	</tr>
-<?php } ?>
     </table>
     </form>
     <!-- /.tab-pane -->
@@ -759,18 +751,15 @@ else
     }
    
 }
+?>
 
-// Ensure that $emp_exp_sts is set before checking its value
-if ( $emp_exp_sts !=1) {
-?>  
     <tr>
-        <td>
+        <td colspan="7">
             <input type="hidden" name="cid" id="cid" value="<?php echo htmlspecialchars($candidateid); ?>">
             <input type="submit" name="submit" id="yes" class="btn btn-success submitBtn" value="SUBMIT"/>
             <button type="button" class="btn btn-danger" name="no" id="no" onclick="noexp()">SUBMIT</button>
         </td>
     </tr>
-<?php } ?>
 </form>
 
     

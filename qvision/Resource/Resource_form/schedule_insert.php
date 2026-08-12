@@ -35,13 +35,13 @@ $con->query("UPDATE candidate_form_details SET status=2 WHERE resource_id='$rid'
 $mail = new PHPMailer;
 $mail->IsSMTP(); 
 $mail->Mailer = "smtp";
-$mail->Host = "smtp.zoho.com";
+$mail->Host = "smtp.gmail.com";
 $mail->SMTPAuth = true;
-$mail->Username = 'surya@bluebase.in';                 
-$mail->Password = 'Bb@2026$';                           
+$mail->Username = 'suryabluebase@gmail.com';                 
+$mail->Password = 'kdhp xnpd kxnr tagx';                           
 $mail->SMTPSecure = 'ssl';                            
 $mail->Port = 465;
-$mail->From = 'surya@bluebase.in';
+$mail->From = 'suryabluebase@gmail.com';
 $mail->FromName = 'Recruitment Team';
 $mail->AddAddress($mail_to, $user_name);		
 

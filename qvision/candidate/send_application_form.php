@@ -99,6 +99,10 @@ $ins=$con->query("UPDATE `candidate_form_details` SET `first_name`='$first_name'
 
 $sal_structure =$con->query("INSERT INTO `joining_detail_sal_structure`(`id`, `candid_id`, `fixedgross_month`, `fixedgross_annum`, `basic_month`, `basic_annum`, `HRA_month`, `HRA_annum`, `otherallowances_permonth`, `otherallowances_perannum`, `siteallowance_permonth`, `siteallowance_perannum`, `advancebonus_permonth`, `advancebonus_perannum`, `employee_PF_month`, `employee_PF_annum`, `employee_ESIC_month`, `employee_ESIC_annum`, `professionaltax_permonth`, `professionaltax_perannum`, `tds_permonth`, `tds_perannum`, `clubee_permonth`, `clubee_perannum`, `totaldeduction_employee_permonth`, `totaldeduction_employee_perannum`, `netsalary_month`, `netsalary_annum`, `employer_PF_month`, `employer_PF_annum`, `employer_ESIC_month`, `employer_ESIC_annum`, `cluber_month`, `cluber_annum`, `total_Deductions_Employer_month`, `total_Deductions_Employer_annum`, `fixed_month`, `fixed_annum`, `status`, `created_by`, `created_on`) VALUES (NULL,'$candidateid','$m_grossfixed','$p_grossfixed','$mbasic','$pbasic','$mHRA','$pHRA','$mOtherallowances','$pOtherallowances','$mSiteallowances','$pSiteallowances','$mAdvance','$pAdvance','$mEmployee_PF','$pEmployee_PF','$mEmployee_ESIC','$pEmployee_ESIC','$mProfessional_Tax','$pProfessional_Tax','$mTDS','$pTDS','$mClubEE','$pClubEE','$mTotal_Deductions_Employee','$pTotal_Deductions_Employee','$mnetsalary','$pnetsalary','$mEmployer_PF','$pEmployer_PF','$mEmployer_ESIC','$pEmployer_ESIC','$mClubER','$pClubER','$mTotal_deduction_Employer','$pTotal_deduction_Employer','$m_fixed','$p_fixed',1,'$userid',now())");
 
+if(!$sal_structure) {
+    file_put_contents('sal_insert_err.txt', "Error: " . print_r($con->errorInfo(), true));
+}
+
 
 
 $salary_earnings = $con->query("INSERT INTO salary_monthly_earning(candid_id,emp_name,dep_id,design_id,Special_Allowance, LTA,status) VALUES ('$candidateid','$candid_name','$dep_id','$approved_desig','$mOtherallowances','$mSiteallowances','1')");
@@ -180,24 +184,24 @@ $number =$approved_ctc;
   //$joindate=$dt->format('M j Y');
 
 $mail = new PHPMailer;
-$mail->SMTPDebug = 2; 
+$mail->SMTPDebug = 0; 
 $mail->Mailer = "smtp";
 $mail->IsSMTP(true); 
-$mail->Port = 465;
-$mail->Host = 'mail.quadsel.in';        
+$mail->Port = 587;
+$mail->Host = 'smtp.gmail.com';        
 $mail->SMTPAuth = true;                              // Enable SMTP authentication
-$mail->Username = 'hr@quadsel.in';
-$mail->Password = 'Qspl@2024#';                         // SMTP password
-$mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
+$mail->Username = 'suryabluebase@gmail.com';
+$mail->Password = 'kdhp xnpd kxnr tagx';             // SMTP password
+$mail->SMTPSecure = 'tls';                           // Enable encryption
 $mail->SMTPOptions = [
     'ssl' => [
         'verify_peer' => false,
         'verify_peer_name' => false,
-		'allow_self_singed' => true,
+		'allow_self_signed' => true,
     ]
 ];
-$mail->From = 'hr@quadsel.in';		//Sets the From email address for the message
-$mail->FromName = 'Quadsel  Systems Pvt Ltd';
+$mail->From = 'suryabluebase@gmail.com';		//Sets the From email address for the message
+$mail->FromName = 'Quadsel Systems Pvt Ltd';
 $mail->AddAddress($SENDMAIL, $FULLNAME);		//Adds a "To" address
 // $mail->AddCC('ENTER MAIL ID');         //Adds a "CC" address.
 $mail->WordWrap = 50;                                 // Set word wrap to 50 characters

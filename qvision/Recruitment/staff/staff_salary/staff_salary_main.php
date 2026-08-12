@@ -322,6 +322,16 @@ if (is_numeric($varaible_pay)) {
 						<div class="form-group">
                         <select class="custom-select" name="staff_scale" onChange="scale_changes(this.value)">
 						
+						<?php
+						if(!empty($scale_master_id) && $scale_master_id != 0) {
+							$current_scale_sql = $con->query("SELECT id, name FROM payroll_scale_master WHERE id='$scale_master_id'");
+							if($current_scale = $current_scale_sql->fetch(PDO::FETCH_ASSOC)) {
+								?>
+								<option value="<?php echo $current_scale['id']; ?>" selected><?php echo $current_scale['name']; ?></option>
+								<?php
+							}
+						}
+						?>
 						<option value="0">--Select Scale--</option>
 						<?php
 
