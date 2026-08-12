@@ -910,7 +910,7 @@ $("#gst").change(function(e){
 	$.ajax({
 		
 		type:"POST",
-		url:"qvision/BusinessProcess/quotation/getemp_details.php?id=" +value, 
+		url:"/qvision/BusinessProcess/quotation/getemp_details.php?id=" +value, 
 		dataType: 'json',
 		success:function(data)
 		{

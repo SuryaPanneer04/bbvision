@@ -296,7 +296,7 @@ function back()
 	$.ajax({
 	type:'POST',
 	data:data,
-	url:'/qvision/Resource/jobdescription_form/job_description_approval_update.php?jid='+V,
+	url:'/qvision/Qvision/Resource/jobdescription_form/job_description_approval_update.php?jid='+V,
 	success:function(data)
 	{  
         //  console.warn("jijijij:"+data);    
@@ -313,7 +313,7 @@ function back()
 	//let reporting = $('#report_person').val()  // +"&reportingPerson="+reporting
 	$.ajax({
 	type:'POST',
-	url:'qvision/resource/jobdescription_form/job_description_reject.php?jid='+V+"&remark="+remark+"&approve="+approve,
+	url:'Qvision/resource/jobdescription_form/job_description_reject.php?jid='+V+"&remark="+remark+"&approve="+approve,
 	success:function(data)
 	{      
 		alert("Rejected");

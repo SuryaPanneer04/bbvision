@@ -441,7 +441,7 @@ CREATE TABLE IF NOT EXISTS `company_master` (
 
 INSERT INTO `company_master` (`id`, `companyname`, `address`, `phone_number`, `email_id`, `Gst_number`, `status`, `created_on`) VALUES
 (1, 'Bluebase Software Services Pvt Ltd', NULL, NULL, NULL, NULL, 1, '2021-04-13 08:51:54'),
-(2, 'Bluebase Software Services Private Limited', NULL, NULL, NULL, NULL, 1, '2021-04-13 08:51:54');
+(2, 'Quadsel Systems Private Limited', NULL, NULL, NULL, NULL, 1, '2021-04-13 08:51:54');
 
 -- --------------------------------------------------------
 
@@ -2399,14 +2399,14 @@ CREATE TABLE IF NOT EXISTS `enquiry` (
 --
 
 INSERT INTO `enquiry` (`id`, `Call_type`, `date`, `Client_type`, `Company_name`, `Location`, `Address`, `Client`, `Designation`, `Mobile`, `mail`, `Product`, `list`, `Feedback`, `Follup`, `companys`, `Department`, `employee`, `status`, `flag`, `created_by`, `created_on`, `Modified_by`, `modified_on`) VALUES
-(1, '1', '2021-03-18', '2', 'accenture', 'chennai', 'tambaram', 'meena', 'devloper', '879564132', 'gnath9375@gmail.com', '1', '1', 'itsk good', '2021-03-31', 'Bluebase Software Services Private Limited', '2', '12', '3', 0, '1', '2021-03-29 11:12:04', NULL, NULL),
-(2, '2', '2021-03-06', '2', 'Forum', 'chennai', 'vadapalani', 'radhaa', 'development', '13256489', 'radha@gmail,com', '2', '5', 'nice', '2021-03-26', 'Bluebase Software Services Private Limited', '3', '6', '2', 0, '1', '2021-03-29 11:47:42', NULL, NULL),
-(3, '3', '2021-03-31', '2', 'Aircraft', 'chennai', 'meenabakkam', 'jeya kumar', 'junior maintanance', '5648792', 'jeya@gmail.com', '1', '3', 'thank you nice', '2021-03-24', 'Bluebase Software Services Private Limited', '6', '1', '2', 0, '1', '2021-03-30 09:35:26', NULL, NULL),
-(4, '1', '2021-03-24', '1', 'airtel', 'pune', 'mumbai', 'christy', 'marketing', '87956421', 'christy@gmail.com', '2', '4', 'not yet', '2021-03-28', 'Bluebase Software Services Private Limited', '3', '6', '4', 0, '1', '2021-03-30 10:28:04', NULL, NULL),
-(15, '1', '2021-04-16', '2', 'hexaware', 'chennai', 'Plot No 57 sri kamachi nagar,sirucheri ', 'rajeshwaran', 'seo', '321654987', 'gnath@gmail.com', '1', '1', 'nice', '2021-04-16', 'Bluebase Software Services Private Limited', '2', '12', '1', 0, '1', '2021-04-03 06:53:41', NULL, NULL),
-(7, '2', '2021-04-10', '1', 'amaintance aircraft', 'chennai', 'chennai', 'laxmi raja', 'development', '9484848', 'gnath@gmail.com', '2', '8', 'ter', '2021-04-28', 'Bluebase Software Services Private Limited', '3', '7', '1', 0, '1', '2021-04-01 10:39:12', NULL, NULL),
-(16, '1', '2021-04-12', '2', 'qvision', 'chennai', 'door no 57', 'sindhubath', 'accounts', '564132879', 'asd@gmail.com', '2', '10', 'edf', '2021-05-02', 'Bluebase Software Services Private Limited', '3', '15', '1', 0, '1', '2021-04-03 06:57:09', NULL, NULL),
-(17, '1', '2021-04-17', '1', 'hp', 'vandalur1', 'no:1234', 'praba1', 'sales1123', '78945612311', 'uma1@gmail.com', '2', '8', 'ok ', '2021-04-14', 'Bluebase Software Services Private Limited', '3', '6', '3', 0, '1', '2021-04-03 07:01:38', NULL, NULL);
+(1, '1', '2021-03-18', '2', 'accenture', 'chennai', 'tambaram', 'meena', 'devloper', '879564132', 'gnath9375@gmail.com', '1', '1', 'itsk good', '2021-03-31', 'Quadsel Systems Private Limited', '2', '12', '3', 0, '1', '2021-03-29 11:12:04', NULL, NULL),
+(2, '2', '2021-03-06', '2', 'Forum', 'chennai', 'vadapalani', 'radhaa', 'development', '13256489', 'radha@gmail,com', '2', '5', 'nice', '2021-03-26', 'Quadsel Systems Private Limited', '3', '6', '2', 0, '1', '2021-03-29 11:47:42', NULL, NULL),
+(3, '3', '2021-03-31', '2', 'Aircraft', 'chennai', 'meenabakkam', 'jeya kumar', 'junior maintanance', '5648792', 'jeya@gmail.com', '1', '3', 'thank you nice', '2021-03-24', 'Quadsel Systems Private Limited', '6', '1', '2', 0, '1', '2021-03-30 09:35:26', NULL, NULL),
+(4, '1', '2021-03-24', '1', 'airtel', 'pune', 'mumbai', 'christy', 'marketing', '87956421', 'christy@gmail.com', '2', '4', 'not yet', '2021-03-28', 'Quadsel Systems Private Limited', '3', '6', '4', 0, '1', '2021-03-30 10:28:04', NULL, NULL),
+(15, '1', '2021-04-16', '2', 'hexaware', 'chennai', 'Plot No 57 sri kamachi nagar,sirucheri ', 'rajeshwaran', 'seo', '321654987', 'gnath@gmail.com', '1', '1', 'nice', '2021-04-16', 'Quadsel Systems Private Limited', '2', '12', '1', 0, '1', '2021-04-03 06:53:41', NULL, NULL),
+(7, '2', '2021-04-10', '1', 'amaintance aircraft', 'chennai', 'chennai', 'laxmi raja', 'development', '9484848', 'gnath@gmail.com', '2', '8', 'ter', '2021-04-28', 'Quadsel Systems Private Limited', '3', '7', '1', 0, '1', '2021-04-01 10:39:12', NULL, NULL),
+(16, '1', '2021-04-12', '2', 'qvision', 'chennai', 'door no 57', 'sindhubath', 'accounts', '564132879', 'asd@gmail.com', '2', '10', 'edf', '2021-05-02', 'Quadsel Systems Private Limited', '3', '15', '1', 0, '1', '2021-04-03 06:57:09', NULL, NULL),
+(17, '1', '2021-04-17', '1', 'hp', 'vandalur1', 'no:1234', 'praba1', 'sales1123', '78945612311', 'uma1@gmail.com', '2', '8', 'ok ', '2021-04-14', 'Quadsel Systems Private Limited', '3', '6', '3', 0, '1', '2021-04-03 07:01:38', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4280,8 +4280,8 @@ CREATE TABLE IF NOT EXISTS `vms` (
 --
 
 INSERT INTO `vms` (`id`, `Date`, `first_name`, `email`, `mob_num`, `Coming_from`, `companys`, `Purpose`, `Department`, `employee`, `vehicle`, `veh_no`, `Remarks`, `status`, `created_by`, `created_on`, `modified_by`, `modified_on`) VALUES
-(1, '2021-04-11', 'gopinath', 'gnath@gmailcom', '5641325', 'chennai', 'Bluebase Software Services Private Limited', 'project', '3', '6', 'two wheeler', 'TN12 3456', 'no', 2, 1, '2021-04-07 05:11:03', NULL, NULL),
-(2, '2021-04-08', 'arun', 'aruna@gmail.com', '9876543215', 'salem', 'Bluebase Software Services Private Limited', 'project', '3', '5', 'cycle', 'TN12345', 'ok', 2, 1, '2021-04-07 05:29:53', NULL, NULL);
+(1, '2021-04-11', 'gopinath', 'gnath@gmailcom', '5641325', 'chennai', 'Quadsel Systems Private Limited', 'project', '3', '6', 'two wheeler', 'TN12 3456', 'no', 2, 1, '2021-04-07 05:11:03', NULL, NULL),
+(2, '2021-04-08', 'arun', 'aruna@gmail.com', '9876543215', 'salem', 'Quadsel Systems Private Limited', 'project', '3', '5', 'cycle', 'TN12345', 'ok', 2, 1, '2021-04-07 05:29:53', NULL, NULL);
 
 -- --------------------------------------------------------
 

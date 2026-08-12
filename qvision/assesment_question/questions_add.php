@@ -20,7 +20,7 @@ require '../../connect.php';
     <table class="table table-bordered">
         <tr>
         <td><center><img src="../../qvision/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
-        <td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+        <td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
         </tr>
       
         <tr>

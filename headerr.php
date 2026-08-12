@@ -1879,7 +1879,7 @@ function stock_form()
     {
         $.ajax({
             type: "POST",
-            url: "qvision/masters/site_master/site.php",
+            url: "qvision/masters/site_master/site.php", 
             success: function (data) {
                 $("#main_content").html(data);
             }

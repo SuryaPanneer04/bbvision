@@ -29,7 +29,7 @@ $user_id=$_SESSION['userid'];
                                                $rows = $stmts->fetch();
 											   $emp_name=$rows['full_name'];
 											   $candid_id=$rows['candidate_id'];
-                                    ?>
+                                        ?>
                                         <!-- 2. Dropdown fetching from z_user_master -->
 									    <select class="form-control" id="candids_id" name="candids_id" onchange="document.getElementById('full_name').value = this.options[this.selectedIndex].text;">
                                             <option value="">Select Employee</option>

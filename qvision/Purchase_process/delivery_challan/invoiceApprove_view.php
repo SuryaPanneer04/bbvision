@@ -6,7 +6,7 @@ $userrole=$_SESSION['userrole'];
 
 
 $purchase_id    = $_REQUEST['id'];
-$stmt = $con->prepare("SELECT a.id,a.warrenty,a.price,a.cost_sheet_id,a.purchase_type,a.specification,a.upload,a.so_number,a.vendor_id, a.status,b.id as cost_id,b.cost_sheet_no as cost_no,b.qty,c.quote_no,d.org_name FROM purchase_vendor_master a left join cost_sheet_entry b on(a.cost_sheet_id=b.id) left join quote_generate c on b.cost_sheet_no = c.cost_sheet_no left join new_client_master d on b.client_id = d.id where a.id='$purchase_id'" );  //a.status=2
+$stmt = $con->prepare("SELECT a.id,a.warrenty,a.price,a.cost_sheet_id,a.purchase_type,a.specification,a.upload,a.so_number,a.vendor_id, a.status,b.id as cost_id,b.cost_sheet_no as cost_no,b.qty,c.quote_no,d.org_name FROM purchase_vendor_master a left join cost_sheet_entry b on(a.cost_sheet_id=b.id OR a.cost_sheet_no=b.cost_sheet_no) left join quote_generate c on b.cost_sheet_no = c.cost_sheet_no left join new_client_master d on b.client_id = d.id where a.id='$purchase_id'" );  //a.status=2
  
 
 $stmt->execute(); 
@@ -156,7 +156,19 @@ $rowz = $stmtz->fetch();
 
 				<?php
 				$cost1 = $con->query("select * from cost_sheet_entry where id='$cost_id'");
-				$cfet = $cost1->fetch() ?>
+$cfet = $cost1->fetch(PDO::FETCH_ASSOC);
+if (!$cfet) {
+    $cfet = [
+        'net_amt' => '0.00',
+        'gst_per' => '0',
+        'gst_amt' => '0.00',
+        'igst_per' => '0',
+        'igst_amount' => '0.00',
+        'grand_amt' => '0.00'
+    ];
+}
+				
+				?>
 				<tr>
 					<td colspan="6" align="center"><b>Net Amount</b></td>
 

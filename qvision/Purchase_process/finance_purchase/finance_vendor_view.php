@@ -12,10 +12,24 @@ $stmt = $con->prepare("SELECT a.id,a.warrenty,a.price,a.cost_sheet_id,a.purchase
  
 
 $stmt->execute(); 
-$row = $stmt->fetch();
-$vendor_id  = $row['vendor_id'];
-$specification  = $row['specification'];
-$cost_id= $row['cost_id'];
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$row) {
+    $row = [
+        'vendor_id' => '',
+        'specification' => '',
+        'cost_id' => '',
+        'status' => '0',
+        'cost_no' => '',
+        'quote_no' => '',
+        'qty' => '0',
+        'price' => '0.00',
+        'warrenty' => '',
+        'upload' => ''
+    ];
+}
+$vendor_id = $row['vendor_id'];
+$specification = $row['specification'];
+$cost_id = $row['cost_id'];
 
 $statu  = $row['status'];
 if($statu==1)
@@ -25,9 +39,12 @@ if($statu==1)
 	$status="InActive";
 }
 
-$stmts = $con->prepare("SELECT id as po_id,vendor_name from doller_vendor_mastor where id='$vendor_id'" ); 		
+$stmts = $con->prepare("SELECT id as po_id, vendor_name FROM doller_vendor_mastor WHERE id='$vendor_id'"); 		
 $stmts->execute(); 
-$rows = $stmts->fetch();
+$rows = $stmts->fetch(PDO::FETCH_ASSOC);
+if (!$rows) {
+    $rows = ['vendor_name' => 'Vendor Not Found'];
+}
 ?>
 
 <style>
@@ -74,19 +91,20 @@ $rows = $stmts->fetch();
 <td><b>Price</b></td>
 <td colspan="2"><input type="text" class="form-control" id="txt_org_name" value="<?php echo $row['price'];?>" name="txt_org_name" readonly></td>
 </tr>
-
-<!-- <tr>
+<tr>
 <td><b>Warrenty</b></td>
 <td colspan="2"><input type="text" class="form-control" id="txt_org_name" value="<?php echo $row['warrenty'];?>" name="txt_org_name" readonly></td>
 
 <?php
-$stmtz = $con->prepare("SELECT a.id,a.cost_sheet_no,b.cost_sheet_id,b.specification,c.product_name,c.request_remarks,c.quantity as extra_qty from cost_sheet_entry a left join purchase_vendor_master b on(a.id=b.cost_sheet_id) left join purchase_requistion_entry c on(a.description=c.description) where b.specification='$specification' and a.id='$cost_id'" ); 
-
-
-	
+$stmtz = $con->prepare("SELECT a.id,a.cost_sheet_no,b.cost_sheet_id,b.specification,c.product_name,c.request_remarks,c.quantity as extra_qty FROM cost_sheet_entry a LEFT JOIN purchase_vendor_master b ON(a.id=b.cost_sheet_id) LEFT JOIN purchase_requistion_entry c ON(a.description=c.description) WHERE b.specification='$specification' AND a.id='$cost_id'"); 
 $stmtz->execute(); 
-$rowz = $stmtz->fetch();
-
+$rowz = $stmtz->fetch(PDO::FETCH_ASSOC);
+if (!$rowz) {
+    $rowz = [
+        'extra_qty' => '0',
+        'request_remarks' => 'No Remarks Found'
+    ];
+}
 ?>
 <td><b>Purchase Request(Qty)</b></td>
 <td colspan="2"><input type="text" class="form-control" id="txt_org_name" value="<?php echo $rowz['extra_qty'];?>" name="txt_org_name" readonly></td>
@@ -94,7 +112,7 @@ $rowz = $stmtz->fetch();
 <tr>
 <td><b>Purchase Request Remark</b></td>
 <td colspan="4"><input type="text" class="form-control" id="txt_org_name" value="<?php echo $rowz['request_remarks'];?>" name="txt_org_name" readonly></td>
-</tr> -->
+</tr>
 <tr>
 <td><b>Document</b></td>
 <td colspan="2"><a href="/ssinfo_updated/qvision/Purchase_Process/files/<?php echo $row['upload'];?>" target="_blank"><?php echo  $row['upload'];?></a> </td>
@@ -166,7 +184,18 @@ $rowz = $stmtz->fetch();
 		// echo "SELECT * from purchase_vendor_master where  cost_sheet_no='$cost_sheet_no' order by id desc";
 				 
 				 $query1->execute(); 
-                 $row1 = $query1->fetch();				 
+$row1 = $query1->fetch(PDO::FETCH_ASSOC);
+if (!$row1) {
+    $row1 = [
+        'gst_per' => '0',
+        'gst_val' => '0.00',
+        'igst_per' => '0',
+        'igst_val' => '0.00',
+        'disc_per' => '0',
+        'discount' => '0.00',
+        'grand_total' => '0.00'
+    ];
+}			 
 
 
 				  

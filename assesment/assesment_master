@@ -79,7 +79,7 @@ $(document).ready(function() {
     {
     $.ajax({
     type:"POST",
-    url:"qvision/masters/assesment_master/new_department.php",
+    url:"Qvision/masters/assesment_master/new_department.php",
     success:function(data){
     $("#main_content").html(data);
     }
@@ -89,7 +89,7 @@ $(document).ready(function() {
     {
     $.ajax({
     type:"POST",
-    url:"qvision/masters/assesment_master/edit_department.php?id="+v,
+    url:"Qvision/masters/assesment_master/edit_department.php?id="+v,
     success:function(data){
     $("#main_content").html(data);
     }

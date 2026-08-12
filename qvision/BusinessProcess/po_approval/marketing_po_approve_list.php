@@ -4,7 +4,12 @@ require '../../../user.php';
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
 
-$sql=$con->query("select * from staff_master where candid_id='$candidateid' and head_status='1'");
+$sql = $con->query("
+    SELECT *
+    FROM staff_master
+    WHERE candid_id='$candidateid'
+    AND head_status IN (1,2)
+");
 $count=$sql->rowcount();
 if($count==1)
 {

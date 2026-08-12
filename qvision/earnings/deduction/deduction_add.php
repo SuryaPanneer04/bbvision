@@ -114,7 +114,7 @@ $(document).ready(function(){
 		
           $.ajax({
             type: 'POST',
-            url:'earnings/deduction/deduction_insert.php',
+            url:'qvision/earnings/deduction/deduction_insert.php',
             data: new FormData(this),
             contentType: false,
             processData: false,

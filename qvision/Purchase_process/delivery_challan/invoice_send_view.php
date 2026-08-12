@@ -157,7 +157,7 @@ function AmountInWords($amount)
 			</tr> -->
 
 			<tr>
-				<td colspan='1' rowspan='5' style="border-right: none;"><img src="\SSInfo1\images\ss.png" class="img1"> </td>
+				<td colspan='1' rowspan='5' style="border-right: none;"><img src="images\logo123.jpg" width=100px class="img1"> </td>
 				<td colspan='5' rowspan='5' style="border-left: none;"><b>SS Information Systems Pvt Ltd </b></br>
 					No:1/102,Periyar Pathai West,100 Feet Road ,Arumbakkam, </br>
 					Chennai -600106 </br>

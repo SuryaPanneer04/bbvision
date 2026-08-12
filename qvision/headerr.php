@@ -1779,11 +1779,12 @@ function stock_form()
             }
         })
     }
+    
     function site_master()
     {
         $.ajax({
             type: "POST",
-            url: "qvision/masters/site_master/site.php",
+            url: "qvision/masters/site_master/site.php", 
             success: function (data) {
                 $("#main_content").html(data);
             }

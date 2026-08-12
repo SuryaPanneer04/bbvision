@@ -17,7 +17,7 @@ table th {
 	<a onclick="deduction_add()" style="float: right;" data-toggle="modal" class="btn btn-warning"><i class="fa fa-plus"></i> ADD</a>
 	</div>
 	
-	<form role="form" name="area"  method="post" action="/qvisionnew/qvision/earnings/deduction/deduction_delete.php">
+	<form role="form" name="area"  id="deleteForm" method="post">
 	<table class="table table-striped table-bordered" style="font-family:'Times New Roman', Times, serif">
 		<tr>
 		<th><input type="checkbox" checked id="classaall"></th>
@@ -77,4 +77,21 @@ table th {
     }
      })
    }
+   $("#deleteForm").submit(function(e){
+    e.preventDefault();
+
+    $.ajax({
+        url: "qvision/earnings/deduction/deduction_delete.php",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(){
+            $.ajax({
+                url: "qvision/earnings/deduction/deduction_upload.php",
+                success: function(data){
+                    $("#earning_view").html(data);
+                }
+            });
+        }
+    });
+});
 	</script>

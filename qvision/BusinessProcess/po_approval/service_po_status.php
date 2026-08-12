@@ -56,26 +56,42 @@ else
       <td><?php echo $quote_list['quote_no']; ?></td>
       <td><?php echo $quote_list['cost_sheet_no']; ?></td>	
       <td><?php echo $quote_list['so_number']; ?></td>	
-<td><?php  $fstatus=$quote_list['finance_status'];
-if($fstatus=='1')
-{
-	echo '<span style="color:green;text-align:center;"><b> Approved  <b/></span>';
-}
-elseif($fstatus=='2')
-{
-	echo '<span style="color:red;text-align:center;"><b> Rejected  <b/></span>';
-}
-?></td>	  
-<td><?php $mstatus=$quote_list['service_status'];
-if($mstatus=='1')
-{
-	echo '<span style="color:green;text-align:center;"><b> Approved  <b/></span>';
-}
-elseif($mstatus=='2')
-{
-	echo '<span style="color:red;text-align:center;"><b> Rejected  <b/></span>';
-}
-?></td>	  
+		<td>
+		<?php
+		$mstatus = $quote_list['marketing_status'];
+
+		if($mstatus == '1')
+		{
+			echo '<span style="color:green;"><b>Approved</b></span>';
+		}
+		elseif($mstatus == '2')
+		{
+			echo '<span style="color:red;"><b>Rejected</b></span>';
+		}
+		else
+		{
+			echo '<span style="color:orange;"><b>Pending</b></span>';
+		}
+		?>
+		</td>
+		<td>
+		<?php
+		$fstatus = $quote_list['finance_status'];
+
+		if($fstatus == '1')
+		{
+			echo '<span style="color:green;"><b>Approved</b></span>';
+		}
+		elseif($fstatus == '2')
+		{
+			echo '<span style="color:red;"><b>Rejected</b></span>';
+		}
+		else
+		{
+			echo '<span style="color:orange;"><b>Pending</b></span>';
+		}
+		?>
+		</td>
 	<!--td>< ?php $sstatus=$quote_list['marketing_status'];
 if($sstatus=='1')
 {

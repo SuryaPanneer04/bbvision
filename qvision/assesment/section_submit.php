@@ -10,7 +10,10 @@ if(isset($_REQUEST['submit']))
 	
 if($sql)
 {	
-	echo "1";
+    echo "<script>
+            alert('Inserted Successfully');
+            window.location.href = '../../../index.php'; 
+          </script>";
 }
 }
 ?>

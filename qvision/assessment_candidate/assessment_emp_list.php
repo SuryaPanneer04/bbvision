@@ -96,7 +96,7 @@ require '../../connect.php';
 </div>
 
 <script>
-		function add_employee()
+	 function add_employee()
     {
     $.ajax({
     type:"POST",

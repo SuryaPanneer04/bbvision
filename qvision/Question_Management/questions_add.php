@@ -100,20 +100,31 @@ $que1=$con->query("SELECT * FROM section_master where status='1'");
 
     <script>
    function subbtnnnn() {
-    var id = 0;
-    var data = $('form').serialize();
+
     $.ajax({
-        type: 'POST',
-        data: "id=" + id + "&" + data, // Concatenating id and form data
-        url: 'qvision/Question_Management/insert_questions.php', // Correct path to PHP script
-        success: function(data) {
-            alert("Entry Successfully");
-            question_managements(); // Assuming this function handles what to do after insertion
+        type: "POST",
+        url: "qvision/Question_Management/insert_questions.php",
+        data: $("form").serialize() + "&id=0",
+        success: function(res){
+
+            console.log(res);
+
+            if(res.trim()=="success"){
+                alert("Entry Successfully");
+                question_managements();
+            }else{
+                alert(res);
+            }
+
         },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText); // Log any errors to console
+        error:function(xhr){
+
+            console.log(xhr.responseText);
+            alert("Server Error");
+
         }
     });
+
 }
 
 	function back_ctc()

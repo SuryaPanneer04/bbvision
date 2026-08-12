@@ -4,15 +4,41 @@ require '../../../user.php';
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
 
-$sql=$con->query("select * from staff_master where candid_id='$candidateid' and head_status='1'");
-$count=$sql->rowcount();
-if($count==1)
+$sql = $con->query("
+    SELECT *
+    FROM staff_master
+    WHERE candid_id='$candidateid'
+    AND head_status IN (1,2)
+");
+
+$count = $sql->rowCount();
+
+if($count > 0)
 {
-	$quote=$con->query("select * from po_generate where po_upload_status='1' ");
+    $quote = $con->query("
+        SELECT DISTINCT
+            a.cost_sheet_no,
+            a.approved_by,
+            a.status AS cs_status,
+            a.enquiry_id,
+            a.business_id,
+            c.*,
+            p.*,
+            e.*
+        FROM cost_sheet_entry a
+        LEFT JOIN new_client_master c
+            ON a.client_id = c.id
+        LEFT JOIN new_plant_master p
+            ON c.id = p.client_id
+        LEFT JOIN po_generate e
+            ON a.cost_sheet_no = e.cost_sheet_no
+        WHERE e.po_upload_status IN ('1','2')
+        ORDER BY e.id DESC
+    ");
 }
 else
-{	
-	$quote="";
+{
+    $quote = false;
 }
 ?>
 <head>
@@ -72,27 +98,44 @@ else
       <td><?php echo $quote_list['cost_sheet_no']; ?></td>	
       <td><?php echo $quote_list['so_number']; ?></td>	
 <td><?php  
-$mstatus=$quote_list['marketing_status'];
-if($mstatus==0){}
-else{
-	$m_approved_id = $quote_list['marketing_approved_by'];  
-	 $mtmtf = $con->prepare("SELECT emp_name from staff_master where candid_id ='$m_approved_id' "); 	
-		 //echo "SELECT emp_name from staff_master where candid_id ='$approved_id'";
-		 $mtmtf->execute(); 
-		 $rowm = $mtmtf->fetch();
-		 $market_emp_name = $rowm['emp_name'];
+$mstatus = $quote_list['marketing_status'];
+
+$market_emp_name = "";
+
+if ($mstatus != 0) {
+
+    $m_approved_id = $quote_list['marketing_approved_by'];
+
+    $mtmtf = $con->prepare("SELECT emp_name FROM staff_master WHERE candid_id = ?");
+    $mtmtf->execute([$m_approved_id]);
+
+    $rowm = $mtmtf->fetch(PDO::FETCH_ASSOC);
+
+    if ($rowm) {
+        $market_emp_name = $rowm['emp_name'];
+    } else {
+        $market_emp_name = "Unknown";
+    }
 }
 
-$mdstatus=$quote_list['md_status'];
+$mdstatus = $quote_list['md_status'];
 
-if($mdstatus==0){}
-else{
-	$md_approved_id = $quote_list['md_approved_by']; 
-$mdtmtf = $con->prepare("SELECT emp_name from staff_master where candid_id ='$md_approved_id' "); 	
-		
-		 $mdtmtf->execute(); 
-		 $rowmd = $mdtmtf->fetch();
-		 $md_emp_name = $rowmd['emp_name'];	
+$md_emp_name = "";
+
+if ($mdstatus != 0) {
+
+    $md_approved_id = $quote_list['md_approved_by'];
+
+    $mdtmtf = $con->prepare("SELECT emp_name FROM staff_master WHERE candid_id = ?");
+    $mdtmtf->execute([$md_approved_id]);
+
+    $rowmd = $mdtmtf->fetch(PDO::FETCH_ASSOC);
+
+    if ($rowmd) {
+        $md_emp_name = $rowmd['emp_name'];
+    } else {
+        $md_emp_name = "Unknown";
+    }
 }
 $fstatus=$quote_list['finance_status'];
 

@@ -335,7 +335,7 @@ function schedule_insert()
 	$.ajax({
 		type:"GET",
 		data: data,
-		url:"qvision/resource/resource_form/schedule_insert.php?i_time="+intr_time,
+		url:"qvision/Resource/Resource_form/schedule_insert.php?i_time="+intr_time,
 		success:function(data)
 		{
 			alert("Mail Sent Successfully")

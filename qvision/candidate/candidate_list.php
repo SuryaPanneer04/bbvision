@@ -348,8 +348,7 @@ echo '<span style="color:red;text-align:center;"><b>Rejected by HOD</b></span>';
 
 		<?php	  
 		  }
-		// else if( $emp_res['status'] == 5 || $emp_res['status'] == 8 || $emp_res['status'] == 13 || $emp_res['status'] == 16 || $emp_res['status'] == 40 || $emp_res['status'] == 41)
-		 else if( $emp_res['status'] == 40 || $emp_res['status'] == 41 || $emp_res['status'] == 16)
+		 else if( $emp_res['status'] == 5 || $emp_res['status'] == 8 || $emp_res['status'] == 13 || $emp_res['status'] == 16 || $emp_res['status'] == 40 || $emp_res['status'] == 41)
 		  {
 			 ?> 
 			 <button class="btn btn-success btn-sm" data-id="<?php echo $emp_res['id']; ?>" onclick="candidate_view(<?php echo $emp_res['cid']; ?>)"> View</button>

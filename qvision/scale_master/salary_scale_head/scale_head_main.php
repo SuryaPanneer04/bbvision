@@ -59,7 +59,7 @@ function scale_head_add()
 	
 	$.ajax({
     type:"POST",
-    url:"Qvision/scale_master/salary_scale_head/scale_head_add.php",
+    url:"qvision/scale_master/salary_scale_head/scale_head_add.php",
     success:function(data){
       $("#salary_structure_view").html(data);
     }
@@ -70,7 +70,7 @@ function scale_head_edit(ids)
 	$.ajax({
     type:"GET",
     data:"ids="+ids,
-    url:'Qvision/scale_master/salary_scale_head/scale_head_edit.php',
+    url:'qvision/scale_master/salary_scale_head/scale_head_edit.php',
     success:function(data){
       $("#salary_structure_view").html(data);
     }

@@ -109,7 +109,8 @@ if ($con) {
 				$password = md5("Welcome@123");
 				$ingenter = ($gender == 'female') ? 2 : 1;
 				
-				$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)values('$candidate_id','','','$full_name','1','$mail','ROLE-006','$phone','$ingenter','$userid',now())");
+				$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)
+				values('$candidate_id','','','$full_name','1','$mail','ROLE-006','$phone','$ingenter','$userid',now())");
 			}
 		}
 	}
@@ -136,7 +137,8 @@ if ($con) {
 				$password = md5("Welcome@123");
 				$ingenter = ($gender == 'female') ? 2 : 1;
 				
-				$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)values('$candidate_id','','','$full_name','1','$mail','ROLE-006','$phone','$ingenter','$userid',now())");
+				$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)
+				values('$candidate_id','','','$full_name','1','$mail','ROLE-006','$phone','$ingenter','$userid',now())");
 			}
 		}
 	}

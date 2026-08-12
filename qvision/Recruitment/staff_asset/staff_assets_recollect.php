@@ -35,7 +35,6 @@ $staff_id = $sfet['id'];
               <th>Submited</th>
               <th>Status</th>
               <th>Action</th>
-              <!--th>Tools</th-->
             </thead>
             <tbody>
               <?php
@@ -50,9 +49,13 @@ $staff_id = $sfet['id'];
                 $staffid = $emp_res['staff_id'];
               ?>
                 <tr>
+                  <!-- 1. ID -->
                   <td><?php echo $i; ?></td>
+                  
+                  <!-- 2. Employee Name -->
                   <td><?php echo $emp_res['emp_name']; ?></td>
                   
+                  <!-- 3. Assets -->
                   <td>
                     <?php
                       $aids = trim($emp_res['asset_master_id']);
@@ -72,40 +75,51 @@ $staff_id = $sfet['id'];
                     ?>
                   </td>
                   
+                  <!-- 4. Submited -->
                   <td>
                     <?php 
                     $disasset = $con->query("SELECT DISTINCT m.name 
                                              FROM staff_asset_list s 
-                                             JOIN assets_form_detail a ON s.asset_id=a.id 
-                                             JOIN assets_master m ON a.asset_name=m.name 
-                                             WHERE s.status=2 AND s.asset_request_id='".$emp_res['sid']."' AND s.staff_id='$staffid'");
+                                             LEFT JOIN assets_master m ON (s.asset_id = m.id OR s.asset_id = m.name) 
+                                             WHERE (s.status=2 OR s.status=3) AND s.asset_request_id='".$emp_res['sid']."' AND s.staff_id='$staffid'");
                     $sub_names = [];
                     if($disasset){
                         while ($asdes = $disasset->fetch()) {
-                            $sub_names[] = $asdes['name'];
+                            if(!empty($asdes['name'])) {
+                                $sub_names[] = $asdes['name'];
+                            }
                         }
                         echo !empty($sub_names) ? implode(", ", $sub_names) : "-";
                     }
                     ?>
                   </td>
                   
+                  <!-- 5. Status -->
                   <td>
                     <?php
-                    if ($emp_res['status'] == 2) {
-                      echo "Pending";
-                    } else if (!empty($sub_names) || $emp_res['status'] == 4) {
-            
+                    $check_col = $con->query("SELECT id FROM staff_asset_list WHERE asset_request_id='".$emp_res['sid']."' AND status=3");
+                    $is_collected = ($check_col && $check_col->rowCount() > 0);
+                    
+                    if ($is_collected || $emp_res['status'] == 6) {
+                      echo "Collected"; 
+                    } else if (!empty($sub_names)) { 
                       echo "Returned"; 
+                    } else {
+                      echo "Pending";
                     }
                     ?>
                   </td>
                   
+                  <!-- 6. Action -->
                   <td>
                     <?php
-                    if (!empty($sub_names) || $emp_res['status'] == 4) {
-                    ?>
-                      <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_recollect(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> Collect</button>
-                    <?php
+                    // Collect aagala AND Submitted items iruntha mattum thaan Collect button varum!
+                    if (!$is_collected && $emp_res['status'] != 6) {
+                        if (!empty($sub_names)) { 
+                        ?>
+                          <button class="btn btn-warning btn-sm edit btn-flat" style="background-color: #f0ad4e; border-color: #eea236; color: white;" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_recollect(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> Collect</button>
+                        <?php
+                        }
                     }
                     ?>
                   </td>

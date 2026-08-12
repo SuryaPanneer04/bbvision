@@ -1,26 +1,28 @@
 <?php
 
-//header("Access-Control-Allow-Origin: *");
-//qwerty*B@Q2468#
+if (!headers_sent()) {
+    header("Access-Control-Allow-Origin: *");
+}
+
 //define("Title", 'Recruitment');
 try {
-	$con = new pdo ('mysql:host=localhost;dbname=qvision','root',''); //qwerty*B@Q2468#
+	$con = new pdo ('mysql:host=localhost;dbname=softwarebluebase_bluebase','root',''); //admin@123
 } 
-catch (Exception $e)
+catch (Exception $e) 
 {
 	echo $e->getMessage();
 }
 
 
-$IP = "http://192.168.200.:8084";
+$IP = "http://192.168.200.92:8084";
 
 class Database{
   
     // specify your own database credentials
     private $host = "localhost";
-    private $db_name = "qvision";
+    private $db_name = "softwarebluebase_bluebase";
     private $username = "root";
-    private $password = "";
+    private $password = ""; 
     public $conn;
   
     // get the database connection
@@ -38,4 +40,5 @@ class Database{
         return $this->conn;
     }
 }
+    
 ?>

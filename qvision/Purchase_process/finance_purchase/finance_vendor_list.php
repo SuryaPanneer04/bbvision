@@ -89,13 +89,7 @@ if($fstatus=='1'){
 ?></td>	   
    <td><?php echo $remark	; ?></td>
 	<td>  
-<?php
-	if($fstatus==0){
-	?>
-	<button class="btn btn-info" data-id="<?php echo $quote_list['po_id']; ?>" onclick="vendors_view(<?php echo $quote_list['po_id']; ?>)"><i class="fa fa-edit"></i></button>
-	<?php
-	}
-	?>
+<<button class="btn btn-info" data-id="<?php echo $quote_list['po_id']; ?>" onclick="vendors_view(<?php echo $quote_list['po_id']; ?>)"><i class="fa fa-edit"></i></button>
 <button class="btn btn-success right" data-id="<?php echo $quote_list['po_id']; ?>" onclick="vendors_view_edit(<?php echo $quote_list['po_id']; ?>)">
 	     <i class="fa fa-eye"></i></button>	
 		 

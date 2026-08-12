@@ -82,26 +82,23 @@ $userrole=$_SESSION['userrole'];
 </div>
 
 <script>
-		function add_section()
-    {
+  function add_section() {
     $.ajax({
-    type:"POST",
-    url:"qvision/assesment/new_section.php",
-    success:function(data){
-    $("#main_content").html(data);
-    }
-    })
+      type:"POST",
+      url:"qvision/assesment/new_section.php",
+      success:function(data){
+        $("#main_content").html(data);
+      }
+    });
   }
-  function section_edit(v)
-    {
+
+  function section_edit(v) {
     $.ajax({
-    type:"POST",
-    url:"qvision/assesment/edit_section.php?id="+v,
-    success:function(data){
-    $("#main_content").html(data);
-    }
-    })
+      type:"POST",
+      url:"qvision/assesment/edit_section.php?id="+v,
+      success:function(data){
+        $("#main_content").html(data);
+      }
+    });
   }
-  
-   
 </script>

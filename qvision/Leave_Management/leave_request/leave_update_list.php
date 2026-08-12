@@ -15,7 +15,7 @@ while($emp = $leave->fetch(PDO::FETCH_ASSOC))
 
  $dat =date('Y-m-d',strtotime($date)); //CURRENT DATE CONVERT
  
- $leave_sts=$con->query("select count(*) as rowcnt,remark,date,halfday from daily_attendence where candid_id='$candid_id' && date='$leavedate' && status = 2 "); //Status = 2 is leave // Status = 3 is remove absent by update status.
+ $leave_sts=$con->query("select count(*) as rowcnt,remark,date,halfday from daily_attendance where candid_id='$candid_id' && date='$leavedate' && status = 2 ");
  //echo "select count(*) as rowcnt,remark,date,halfday from daily_attendence where candid_id='$candid_id' && date='$leavedate' && status = 2";
  $sts = $leave_sts->fetch();
  $att_cnt = $sts['rowcnt'];

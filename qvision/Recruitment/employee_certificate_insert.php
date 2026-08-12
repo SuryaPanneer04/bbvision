@@ -22,20 +22,20 @@ $certifcatename_count= count($certifcatename);
 $certifcatenumber=$_POST['certifcatenumber'];
 $validityfrom=$_POST['validityfrom'];
 $validityto=$_POST['validityto'];
-$filesArr3 = isset($_FILES["certifcatefile"]) ? $_FILES["certifcatefile"] : array();
-$certfce_attach = isset($_POST["certificate_attach"]) ? $_POST["certificate_attach"] : array();
-$id = isset($_POST['candidid']) ? $_POST['candidid'] : array();
+$filesArr3 = $_FILES["certifcatefile"];
+$certfce_attach = $_POST["certificate_attach"];
 
  //$countfiles = count($_FILES['certifcatefile']['name']);
 
  for($i=0;$i<$certifcatename_count;$i++)
 {
-$e_id= isset($id[$i]) ? $id[$i] : '';
+$e_id= $id[$i];
 $certifcate= $certifcatename[$i];
 $number= $certifcatenumber[$i];
 $vfrom= $validityfrom[$i];
 $vto= $validityto[$i];
-$c_attach = isset($certfce_attach[$i]) ? $certfce_attach[$i] : '';
+$filesArr3 = $_FILES["certifcatefile"];
+$c_attach=$certfce_attach[$i];
 $status=1;
 
 $today = date("Y-m-d H:i:s"); 
@@ -67,16 +67,14 @@ if($valid == 1){
  // Insert form data in the database 		
 			
   if($e_id!=''){
-    $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';
-    if($current_file!=''){	
-	  $sql=$con->query("UPDATE `emp_certification` SET emp_id='$candidateid' ,certification_name='$certifcate' ,certification_number='$number' ,validity_from='$vfrom' ,validity_to='$vto' ,attachment='$current_file' ,status='$status',modified_by='$candidateid',modified_on=now() WHERE id='$e_id'");
+    if($fileNames[$i]!=''){	
+	  $sql=$con->query("UPDATE `emp_certification` SET emp_id='$candidateid' ,certification_name='$certifcate' ,certification_number='$number' ,validity_from='$vfrom' ,validity_to='$vto' ,attachment='$fileNames[$i]' ,status='$status',modified_by='$candidateid',modified_on=now() WHERE id='$e_id'");
     }else{
 	  $sql=$con->query("UPDATE `emp_certification` SET emp_id='$candidateid' ,certification_name='$certifcate' ,certification_number='$number' ,validity_from='$vfrom' ,validity_to='$vto' ,attachment='$c_attach' ,status='$status',modified_by='$candidateid',modified_on=now() WHERE id='$e_id'");	 
     }
   } 
   else{	
-      $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';
-      $sql=$con->query("insert into `emp_certification`(emp_id, certification_name, certification_number, validity_from, validity_to, attachment, status,created_on,created_by)values('$candidateid','$certifcate','$number','$vfrom','$vto','$current_file','$status',now(),'$candidateid')");
+      $sql=$con->query("insert into `emp_certification`(emp_id, certification_name, certification_number, validity_from, validity_to, attachment, status,created_on,created_by)values('$candidateid','$certifcate','$number','$vfrom','$vto','$fileNames[$i]','$status',now(),'$candidateid')");
 	//echo $sql;
 	}
    

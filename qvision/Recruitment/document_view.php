@@ -220,7 +220,7 @@ $i++;
  $detail=$con->query("select * from emp_exp_detail where emp_id='$candidateid' && status=1");
  $employeestatus = $detail->fetch();
 
- if($employeestatus['total_experience']=='Fresher'){
+ if($employeestatus && $employeestatus['total_experience']=='Fresher'){
  
  ?>
 

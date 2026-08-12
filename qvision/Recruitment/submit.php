@@ -15,29 +15,29 @@ if( isset($_POST['emp_id']) || isset($_POST['position']) || isset($_POST['name']
 	|| isset($_POST['DOB']) || isset($_POST['communication_address']) || isset($_POST['permanent_address'])
 	|| isset($_POST['mobile_num']) || isset($_POST['email_id']) || isset($_POST['adharnumber']) || isset($_POST['pannumber']) || isset($_POST['voternumber']) || isset($_POST['files']) || isset($_POST['files1']) || isset($_POST['files2']) || isset($_POST['cpn']) || isset($_POST['cpr']) || isset($_POST['cpm']) || isset($_POST['cid']) || isset($_POST['emp_status']) || isset($_POST['id']) || isset($_POST['aadharattach']) || isset($_POST['panattach']) || isset($_POST['voterattach']) ){ 
     // Get the submitted form data 
-	$id                    = isset($_POST['id']) ? $_POST['id'] : '';
-	$candidateid           = isset($_POST['cid']) ? $_POST['cid'] : '';
-    $position              = isset($_POST['position']) ? $_POST['position'] : ''; 
-    $name                  = isset($_POST['name']) ? $_POST['name'] : ''; 
-    $fathers_name          = isset($_POST['fathers_name']) ? $_POST['fathers_name'] : ''; 
-    $DOB                   = isset($_POST['DOB']) ? $_POST['DOB'] : ''; 
-    $communication_address = isset($_POST['communication_address']) ? $_POST['communication_address'] : ''; 
-    $permanent_address     = isset($_POST['permanent_address']) ? $_POST['permanent_address'] : ''; 
-    $mobile_num            = isset($_POST['mobile_num']) ? $_POST['mobile_num'] : ''; 
-    $email_id              = isset($_POST['email_id']) ? $_POST['email_id'] : ''; 
-	$adharnumber           = isset($_POST['adharnumber']) ? $_POST['adharnumber'] : '';
-	$pannumber             = isset($_POST['pannumber']) ? $_POST['pannumber'] : '';
-	$voternumber           = isset($_POST['voternumber']) ? $_POST['voternumber'] : '';
-    $filesArr              = isset($_FILES["files"]) ? $_FILES["files"] : array('name' => array(), 'tmp_name' => array());
-    $filesArr1             = isset($_FILES["files1"]) ? $_FILES["files1"] : array('name' => array(), 'tmp_name' => array());
-    $filesArr2             = isset($_FILES["files2"]) ? $_FILES["files2"] : array('name' => array(), 'tmp_name' => array());
-    $contact_name          = isset($_POST['cpn']) ? $_POST['cpn'] : '';
-    $contact_relation      = isset($_POST['cpr']) ? $_POST['cpr'] : '';
-    $contact_no            = isset($_POST['cpm']) ? $_POST['cpm'] : '';
-    $emp_status            = isset($_POST['emp_status']) ? $_POST['emp_status'] : '';
-	$aadarcard_attach = isset($_POST['aadharattach']) ? $_POST['aadharattach'] : ''; 
-    $pancard_attach   = isset($_POST['panattach']) ? $_POST['panattach'] : ''; 
-    $votercard_attach = isset($_POST['voterattach']) ? $_POST['voterattach'] : '';
+	$id                    = $_POST['id'];
+	$candidateid           = $_POST['cid'];
+    $position              = $_POST['position']; 
+    $name                  = $_POST['name']; 
+    $fathers_name          = $_POST['fathers_name']; 
+    $DOB                   = $_POST['DOB']; 
+    $communication_address = $_POST['communication_address']; 
+    $permanent_address     = $_POST['permanent_address']; 
+    $mobile_num            = $_POST['mobile_num']; 
+    $email_id              = $_POST['email_id']; 
+	$adharnumber           = $_POST['adharnumber'];
+	$pannumber             = $_POST['pannumber'];
+	$voternumber           = $_POST['voternumber'];
+    $filesArr              = $_FILES["files"];
+    $filesArr1             = $_FILES["files1"];
+    $filesArr2             = $_FILES["files2"];
+    $contact_name          = $_POST['cpn'];
+    $contact_relation      = $_POST['cpr'];
+    $contact_no            = $_POST['cpm'];
+    $emp_status            = $_POST['emp_status'];
+	$aadarcard_attach      = $_POST['aadharattach']; 
+	$pancard_attach        = $_POST['panattach']; 
+ 	$votercard_attach      = $_POST['voterattach']; 
 	
    $status=1;
    $today = date("Y-m-d H:i:s"); 

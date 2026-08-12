@@ -406,10 +406,11 @@ $row['emp_name'];
 		<?php $query1=  $con->prepare("select designation_name from designation_master where id ='$design_id'");
          	$query1->execute(); 
             $row1 = $query1->fetch();
+            $designation_name = $row1 ? $row1['designation_name'] : ''; // Added safe check here
 		?>
 	    <tr> 
 		   <td><b>Designation </b></td>
-		   <td colspan="4"> <b><?php echo $row1['designation_name'];?></td>
+		   <td colspan="4"> <b><?php echo $designation_name; ?></td>
 		</tr>
 		<tr> 
 		   <td><b> Mobile No </b></td>
@@ -555,8 +556,12 @@ function costsheet_insert()
 	formData.set('mapping_id', document.getElementById("mapping_id").value);
 	formData.set('candid_id', document.getElementById("candid_id").value);
 	formData.set('client_id', document.getElementById("client_id").value);
-	formData.set('cost_sheet_no', document.getElementById("cost_sheet_no").value);
+	
+    var safe_cost_sheet_no = document.getElementById("cost_sheet_no").value;
+	formData.set('cost_sheet_no', safe_cost_sheet_no);
+    
 	$('.wage_content').html('<br><div style="text-align: center;"><img src="qvision/images/images/load3.gif"></div>');
+    
 	$.ajax({
 		type:'POST',
 		data: formData,
@@ -565,10 +570,16 @@ function costsheet_insert()
 		url:'qvision/BusinessProcess/quotation/costsheet_revise_insert.php',
 		success:function(data)
 		{ 
-			// alert("Data: " + data);
-			revisecost_sheet_mail();
-			alert("Cost Sheet Updated Successfully");
-		   Cost_sheet_revise();
+            // Only show success if PHP actually inserted the data
+            if(data.trim() === "Success") {
+			    revisecost_sheet_mail(safe_cost_sheet_no);
+			    alert("Cost Sheet Updated Successfully");
+		        Cost_sheet_revise();
+            } else {
+                // If SQL fails, show the exact error message from PHP
+                alert("Database Error: " + data);
+                $('.wage_content').html('<b style="color:red;">Error inserting data. Please check logic!</b>');
+            }
 		},
 		error: function(xhr, status, error) {
 			alert("AJAX Error: " + error + " / " + xhr.responseText);
@@ -576,21 +587,17 @@ function costsheet_insert()
 		}
 	});
 }
-</script>
-<script>
-	function revisecost_sheet_mail()
-	{
-		var cost_sheet_no   = document.getElementById("cost_sheet_no").value;
-		//alert(cost_sheet_no);
-	 // $('.wage_content').html('<br><div style="text-align: center;"><img src="qvision/images/images/load3.gif"></div>');
-		$.ajax({
-		type:"POST",
-		url:"qvision/BusinessProcess/quotation/revisecost_sheet_mail.php?cost_sheet_no="+cost_sheet_no,
-		success:function(data){
-		$("#main_content").html(data);
-		}
-		})
-	}
+
+function revisecost_sheet_mail(cost_sheet_no)
+{
+	$.ajax({
+	    type:"POST",
+	    url:"qvision/BusinessProcess/quotation/revisecost_sheet_mail.php?cost_sheet_no="+cost_sheet_no,
+	    success:function(data){
+	        $("#main_content").html(data);
+	    }
+	})
+}
 	</script>
 <script>
 $("#emp_id").change(function(e){

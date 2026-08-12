@@ -120,7 +120,7 @@ function jd_view(v)
 {	
  	$.ajax({
 	type:"POST",
-	url:"/qvision/Resource/jobdescription_form/job_description_approval_view.php?jid="+v,
+	url:"/qvision/Qvision/Resource/jobdescription_form/job_description_approval_view.php?jid="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);
@@ -132,7 +132,7 @@ function jd_view(v)
 	  {		 
 		  $.ajax({
 	type:"POST",
-	url:"qvision/resource/jobdescription_form/jd_edit.php?jid="+v,
+	url:"Qvision/resource/jobdescription_form/jd_edit.php?jid="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);
@@ -145,7 +145,7 @@ function jd_view(v)
 	  {		 
 		  $.ajax({
 	type:"POST",
-	url:"qvision/resource/jobdescription_form/jd_close.php?jid="+v,
+	url:"Qvision/resource/jobdescription_form/jd_close.php?jid="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);
@@ -158,7 +158,7 @@ function jd_view(v)
 	  {
 		  $.ajax({
 	type:"POST",
-	url:"qvision/Recruitment/insert_employee.php?id="+v,
+	url:"Qvision/Recruitment/insert_employee.php?id="+v,
 	success:function(data)
 	{
 		if(data==0)

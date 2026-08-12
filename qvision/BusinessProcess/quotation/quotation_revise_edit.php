@@ -46,22 +46,27 @@ $mar_amt=$rowf['mar_amt'];
  $grand_amt=$rowf['grand_amt'];
  $costsheet_date=$rowf['costsheet_date'];
  $newDate = date("d-m-Y", strtotime( $costsheet_date));
-$stmt = $con->prepare("SELECT employee as acc_manager,Product,Client,id as enquiry_id 
-					   ,Company_name as comapny_name,Call_type FROM Enquiry WHERE id='$enquiry_id'");
-					   
-					   
-	
-$stmt->execute(); 
-$row = $stmt->fetch();
+$stmt = $con->prepare("
+    SELECT 
+        employee AS acc_manager,
+        Product,
+        Client_id,
+        id AS enquiry_id,
+        Company_name AS comapny_name,
+        Call_type
+    FROM Enquiry 
+    WHERE id='$enquiry_id'
+");
 
-$enq= $row['enquiry_id'];
+$stmt->execute();
 
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$enq = $row['enquiry_id'];
 
-
- $Acc_managerid=$row ['acc_manager'];
- $client_name = $row['comapny_name'];
- $call_type = $row['Call_type'];
+$Acc_managerid = $row['acc_manager'];
+$client_name = $row['comapny_name'];
+$call_type = $row['Call_type'];
 
 if($call_type==1){
 	$call_types="Incoming";

@@ -1,19 +1,21 @@
 <?php
 require '../../../connect.php';
-	
-$lineid=$_REQUEST['id'];
-$count=$_REQUEST['count'];
-$count_name_count= count($count);
 
- $sql=$con->query("update appraisal_master set status= 1 where id='$lineid'");
-  echo "update appraisal_master set status= 1 where id='$lineid'";
+$lineid = isset($_REQUEST['id']) ? $_REQUEST['id'] : '';
 
-for($i=0;$i<$count_name_count;$i++)
-{ 
- $get_id=$_REQUEST['get_id'.$i];
+$count = isset($_REQUEST['count']) ? $_REQUEST['count'] : array();
+$count_name_count = count($count);
 
- $sql=$con->query("update appraisal_question set status=1 where id='$get_id'");
-  echo "update appraisal_question set status=1 where id='$get_id'";
+if(!empty($lineid)) {
+    $sql = $con->query("UPDATE appraisal_master SET status = 1 WHERE id = '$lineid'");
 }
 
+for($i = 0; $i < $count_name_count; $i++) { 
+    if(isset($_REQUEST['get_id'.$i])) {
+        $get_id = $_REQUEST['get_id'.$i];
+        $sql = $con->query("UPDATE appraisal_question SET status = 1 WHERE id = '$get_id'");
+    }
+}
+
+echo 1;
 ?>

@@ -31,9 +31,9 @@ $data=$sel->fetch();
 $pref = $data['code'];
 
 //Get salary data from Joining_sal_structure table.
-$salary=$con->query("select fixedgross_month from  joining_detail_sal_structure where candid_id='$candidateid'");
-$monthlySalary=$salary->fetch();
-$monthlySal = $monthlySalary['fixedgross_month'];
+$salary = $con->query("select fixedgross_month from  joining_detail_sal_structure where candid_id='$candidateid'");
+$monthlySalary = $salary->fetch();
+$monthlySal = $monthlySalary ? $monthlySalary['fixedgross_month'] : '0';
 
 
 $sql2=$con->query("SELECT * FROM `staff_master`");
@@ -65,13 +65,16 @@ else
 					//$empp_code = $find_s;				
 }
 $depemty=0;
-if($dept!=0)
+$doj = $dep_data['joining_date'];
+if ($dept != 0) {
+    $ins = $con->query("insert into staff_master (candid_id,prefix_code,emp_code,emp_name,dep_id,design_id,salary_amount,status,created_by,created_on,DOJ) values('$candidateid','$pref','$emp_code','$empname','$dept','$desgn','$monthlySal',1,'$userid',now(),'$doj')");
+} else {
+    $ins = $con->query("insert into staff_master (candid_id,prefix_code,emp_code,emp_name,dep_id,design_id,salary_amount,status,created_by,created_on,DOJ) values('$candidateid','$pref','$emp_code','$empname','$depemty','$desgn','$monthlySal',1,'$userid',now(),'$doj')");
+}
 
-$ins=$con->query("insert into staff_master (candid_id,prefix_code,emp_code,emp_name,dep_id,design_id,salary_amount,status,created_by,created_on) values('$candidateid','$pref','$emp_code','$empname','$dept','$desgn','$monthlySal',1,'$userid',now())");
-//echo $ins;exit();
-else
-$ins=$con->query("insert into staff_master (candid_id,prefix_code,emp_code,emp_name,dep_id,design_id,salary_amount,status,created_by,created_on) values('$candidateid','$pref','$emp_code','$empname','$depemty','$desgn','$monthlySal',1,'$userid',now())");
-//echo $ins;exit();
+if (!$ins) {
+    echo "DB Error: " . implode(" - ", $con->errorInfo());
+}
 
 
  

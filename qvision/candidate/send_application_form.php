@@ -103,7 +103,8 @@ $sal_structure =$con->query("INSERT INTO `joining_detail_sal_structure`(`id`, `c
 
 $salary_earnings = $con->query("INSERT INTO salary_monthly_earning(candid_id,emp_name,dep_id,design_id,Special_Allowance, LTA,status) VALUES ('$candidateid','$candid_name','$dep_id','$approved_desig','$mOtherallowances','$mSiteallowances','1')");
 
-$upd=$con->query("update z_user_master set user_name='$phone', password='$password', user_group_code='ROLE-013' where candidate_id='$candidateid' and user_group_code='ROLE-006'");
+$user_id = "QSPLE" . $candidateid;
+$upd=$con->query("update z_user_master set user_name='$user_id', password='$password', user_group_code='ROLE-013', department='$dep_id' where candidate_id='$candidateid'");
 
 
 // $ins=$con->query("update candidate_form_details set final_designation='$approved_desig',approved_ctc='$approved_ctc',joining_date='$join_date',status='19' where id='$candidateid'");

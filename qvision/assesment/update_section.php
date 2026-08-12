@@ -11,6 +11,9 @@ if(isset($_REQUEST['submit']))
 	//echo "update z_department_master set companyname='$company',status='$status' where id='$id'";
 	if($sql)
 {
-	echo "1";
+	echo "<script>
+            alert('Updated Successfully');
+            window.location.href = '../../index.php'; 
+          </script>";
 }
 }?>

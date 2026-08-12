@@ -106,8 +106,8 @@ function jd_form()
 	var data = $('form').serialize();
 	$.ajax({
 		type:'GET',
-		data: data + "&" + "field="+field,
-		url:'qvision/resource/jobdescription_form/jd_form_submit.php',
+		data:"field="+field, data,
+		url:'Qvision/resource/jobdescription_form/jd_form_submit.php',
 		success:function(data)
 		{
 			if(data==0)

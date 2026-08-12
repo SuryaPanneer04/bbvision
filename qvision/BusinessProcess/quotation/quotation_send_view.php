@@ -228,7 +228,7 @@ function AmountInWords($amount)
                         <tr>
                             <td colspan='12' style="padding:10px;">
                                 <h4>
-                                    <b>Bluebase Software Services Private Limited</b><br /><br />
+                                    <b>QUADSEL SYSTEMS PRIVATE LIMITED</b><br /><br />
                                     No.118, MANIKKAM LANE, ANNASALAI,<br>
                                     GUINDY, CHENNAI - 600032
                             </td>

@@ -1,11 +1,14 @@
 <?php
 require '../../../connect.php';
 
-$id=$_REQUEST['deduct_id'];
-$deduct_id = implode(',',$id); 
+if (isset($_POST['deduct_id']) && !empty($_POST['deduct_id'])) {
 
-$deduction_delete_sql = "DELETE FROM salary_monthly_deduction WHERE id in ($deduct_id)";
-$deduction_delete = $con->query($deduction_delete_sql);
+    $id = $_POST['deduct_id'];
+    $deduct_id = implode(',', array_map('intval', $id));
 
+    $sql = "DELETE FROM salary_monthly_deduction WHERE id IN ($deduct_id)";
+    $con->query($sql);
+}
 
+echo "success";
 ?>

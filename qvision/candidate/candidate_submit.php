@@ -85,15 +85,22 @@ if($EmployeeStatus=="Fresher")
  $res = $edit_id->fetch();
  $candidate_id=$res['id']; 
  
-	if($inserts)
+// 	if($inserts)
+// 	{
+// 	$password=md5("Welcome@123");
+// 		$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)values('$candidate_id','','','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
+		
+// 		$upd = $con->query("update interview_schedule_detail set status='2' where resource_id='$userid'");
+// 	}
+if($inserts)
 	{
 	$password=md5("Welcome@123");
-		// $insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)values('$candidate_id','QSPLE'.'$candidate_id','$password','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
+	$user_id = "QSPLE". $candidate_id;
 		
 		 $insert = $con->query("INSERT INTO z_user_master
 		(candidate_id, user_name, password, full_name, status, email_id, user_group_code, mobile_no, gender, created_by, created_on)
 		VALUES
-		('$candidate_id', '" . 'QSPLE' . $candidate_id . "', '$password', '$full_name', '1', '$mail', 'ROLE-006', '$phone', '$gender', '$userid', '$date')");
+		('$candidate_id', '$user_id', '$password', '$full_name', '1', '$mail', 'ROLE-006', '$phone', '$gender', '$userid', '$date')");
 
 		$upd = $con->query("update interview_schedule_detail set status='2' where resource_id='$userid'");
 	}
@@ -114,8 +121,9 @@ $candidate_id=$res['id'];
 if($inserts)
 	{
 	    $password = md5("Welcome@123");
+		$user_id = "QSPLE". $candidate_id;
 		$insert = $con->query("insert into z_user_master(candidate_id,user_name,password,full_name,status,email_id,user_group_code,mobile_no,gender,created_by,created_on)
-		values('$candidate_id','" . 'QSPLE' . $candidate_id . "','$password','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
+		values('$candidate_id','$user_id','$password','$full_name','1','$mail','ROLE-006','$phone','$gender','$userid','$date')");
 		
 		$upd = $con->query("update interview_schedule_detail set status='2' where resource_id='$userid'");
 	}

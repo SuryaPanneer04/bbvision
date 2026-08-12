@@ -4,7 +4,12 @@ require '../../../connect.php';
 require '../../../user.php';
 
 
- $username=$_SESSION['username'];
+$username = $_SESSION['username'];
+$userid = $_SESSION['userid'];
+
+ $emp_query = $con->query("SELECT id FROM staff_master WHERE id='$userid' OR candid_id='$userid' OR emp_code='$username' OR CONCAT(prefix_code, emp_code)='$username' OR emp_name='$username' LIMIT 1");
+ $emp_data = $emp_query->fetch(PDO::FETCH_ASSOC);
+ $logged_emp_id = $emp_data ? $emp_data['id'] : $userid;
 ?>
 <!DOCTYPE html>
 <html>
@@ -131,14 +136,25 @@ require '../../../user.php';
             });
         }
 
-        function payslip_view() {
+       function payslip_view() {
             var data = $('form').serialize();
+            var empId = "<?php echo $logged_emp_id; ?>";
+            
+            if(empId == 0) {
+                alert("Employee ID not found for this user account!");
+                return;
+            }
+
             $.ajax({
                 type: "GET",
                 url: "qvision/payroll/payslip/payslip_view_self.php",
-                data: data + "&" + "id=" + 1,
-                success: function(data) {
-                    $("#salary_view").html(data);
+             
+                data: data + "&emp_id=" + empId + "&id=" + empId, 
+                success: function(response) {
+                    $("#salary_view").html(response);
+                },
+                error: function() {
+                    alert("Failed to load payslip. Please check network or file path.");
                 }
             });
         }

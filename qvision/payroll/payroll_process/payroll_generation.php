@@ -98,10 +98,9 @@ $flag  = $staff_payroll_res['flag'];
 		<input type="hidden" name="year" id="year" value="<?php echo $year ?>" >
 		<th>
 		<input type="hidden" name="payroll" id="payroll" value="<?php echo $year ?>" >
-		<?php 
-		$m1=$month;
-		$mon=date('Y-'.$m1.'-d');
-		echo date('F',strtotime($mon))." - ".$year; ?>
+		<?php
+			echo date('F', mktime(0, 0, 0, $month, 1, $year)) . " - " . $year;
+		?>
 		</th>
 		<th>
 		<input type="button" name="payrollsubmit" class="p_g_btn" id="Gen_staff_salary" onclick="Gen_staff_salary()" value="Generate Payroll" />
@@ -133,11 +132,9 @@ $flag  = $staff_payroll_res['flag'];
 			<input type="hidden" name="payroll" id="payroll" value="">
 			<input type="hidden" name="payroll_id1" id="payroll_id1" value="<?PHP echo $result['id'];?>">
 			<?php
-$m2=$month;
-$mon1 = date('Y-'.$m2.'-d');
-echo date('F',strtotime($mon1))." - ".$year;
-?>
-<th>
+				echo date('F', mktime(0, 0, 0, $month, 1, $year)) . " - " . $year;
+			?>
+			</th>
 			<th><input type="button" class="t-head" name="delete_payroll" id="delete_payroll" onclick="payroll_delete()" value="Delete"/></th> 
 			<?php 
 		}

@@ -32,7 +32,7 @@ $row = $stmt->fetch();
 <table class="table table-bordered">
 	<!--<tr>
 		<td><center><img src="../../Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
-		<td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+		<td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
 	</tr>	-->
 	<tr> <input type="hidden" class="form-control" id="emp_id" name="emp_id" value="<?php echo $id; ?>">
 		<td>Name:</td>

@@ -155,7 +155,7 @@ function back()
 	  {
  	$.ajax({
 	type:"POST",
-	url:"qvision/resource/jobdescription_form/jd_allocation_view.php?jid="+v,
+	url:"Qvision/resource/jobdescription_form/jd_allocation_view.php?jid="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);
@@ -168,7 +168,7 @@ function back()
 	  {		 
 		  $.ajax({
 	type:"POST",
-	url:"qvision/resource/jobdescription_form/jd_allocate_close.php?jid="+v,
+	url:"Qvision/resource/jobdescription_form/jd_allocate_close.php?jid="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);

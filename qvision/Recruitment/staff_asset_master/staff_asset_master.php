@@ -99,7 +99,7 @@ $userrole = $_SESSION['userrole'];
     function add_staff_asset() {
         $.ajax({
             type: "POST",
-            url: "/bbvision/qvision/Recruitment/staff_asset_master/new_staff_asset_master.php",
+            url: "qvision/Recruitment/staff_asset_master/new_staff_asset_master.php",
             success: function(data) {
                 $(".content").html(data);
             },
@@ -114,7 +114,7 @@ $userrole = $_SESSION['userrole'];
     function staff_asset_edit(id) {
         $.ajax({
             type: "POST",
-            url: "/bbvision/qvision/Recruitment/staff_asset_master/edit_staff_asset_master.php",
+            url: "qvision/Recruitment/staff_asset_master/edit_staff_asset_master.php",
             data: {
                 id: id
             },
@@ -134,7 +134,7 @@ $userrole = $_SESSION['userrole'];
 
         $.ajax({
             type: "POST",
-            url: "/bbvision/qvision/Recruitment/staff_asset_master/staff_asset_master.php",
+            url: "qvision/Recruitment/staff_asset_master/staff_asset_master.php",
             success: function(data) {
                 $(".content").html(data);
                 // setTimeout(function() {
@@ -153,13 +153,33 @@ $userrole = $_SESSION['userrole'];
         });
     });
 
+
+    /* Back button from Add page */
+$(document).off('click', '#btn_back_new_staff_asset').on('click', '#btn_back_new_staff_asset', function(e) {
+
+    e.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "qvision/Recruitment/staff_asset_master/staff_asset_master.php",
+        success: function(data) {
+            $(".content").html(data);
+        },
+        error: function(xhr, status, error) {
+            alert("Back Error : " + error);
+            console.log(xhr.responseText);
+        }
+    });
+
+});
+
     /* Update asset */
     $(document).off('click', '#btn_update_staff_asset').on('click', '#btn_update_staff_asset', function() {
         var data = $('#edit_staff_asset_form').serialize();
 
         $.ajax({
             type: "POST",
-            url: "/bbvision/qvision/Recruitment/staff_asset_master/update_staff_asset_master.php",
+            url: "qvision/Recruitment/staff_asset_master/update_staff_asset_master.php",
             data: data,
             success: function(response) {
                 alert(response);

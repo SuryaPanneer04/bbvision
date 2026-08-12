@@ -1,7 +1,7 @@
 <section class="content" >
       <div class="container-fluid" id="main_content">
 
-<div><center><h4 style="margin-top:250px;color:#ff8b3d;font-size:65px;"><b>Bluebase Software Services Private Limited</b></center></h4>
+<div><center><h4 style="margin-top:250px;color:#ff8b3d;font-size:65px;"><b>Quadsel Systems Private Limited</b></center></h4>
 </div>
 
 </div>

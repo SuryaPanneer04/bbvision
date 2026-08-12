@@ -99,7 +99,7 @@ function client_excel(v)
     {
     $.ajax({
     type:"POST",
-    url:"qvision/AssetsQ/excels.php?",
+    url:"qvision/assetsQ/excels.php?",
     success:function(data){
    $("#main_content").html(data);
     }
@@ -113,7 +113,7 @@ function client_excel(v)
 		//alert("hii");
      $.ajax({
     type:"POST",
-	url:"qvision/AssetsQ/assets_form.php",
+	url:"qvision/assetsQ/assets_form.php",
     success:function(data){
     $("#main_content").html(data);
     }
@@ -125,7 +125,7 @@ function client_excel(v)
 		//alert("hii");
      $.ajax({
     type:"POST",
-	url:"qvision/AssetsQ/assets_form_edit.php?id="+v,
+	url:"qvision/assetsQ/assets_form_edit.php?id="+v,
     success:function(data){
     $("#main_content").html(data);
     }

@@ -11,13 +11,14 @@ if(isset($_REQUEST['submit']))
 	$activation_date=$_REQUEST['activation_date'];
 	$status=$_REQUEST['status'];
 	$sql=$con->query("insert into sim_master(provider_name,phone_no,activation_date,status,created_by,created_on)values('$provider_name','$phone_no','$activation_date','$status','$userid',now())");
+
 	
-	echo "insert into sim_master(provider_name,phone_no,activation_date,status,created_by,created_on)values('$provider_name','$phone_no','$activation_date','$status','$userid',now())";
-	
-if($sql)
-{
-	echo "<script>alert(' Inserted Successfully');</script>";
-	header("location:../../../index.php");
+if ($sql) {
+    echo "<script>
+        alert('Inserted Successfully');
+        window.location.href = '../../../index.php';
+    </script>";
+    exit;
 }
 }
 ?>

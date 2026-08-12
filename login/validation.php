@@ -91,8 +91,8 @@ if ($num_of_rows > 0) {
 	?>
 	<script>
 		alert("User Name Does Not Matched..");
-		window.location = 'login.php'; <
-		/script
+		window.location = 'login.php'; 
+      </script>
 		<?php
 	}
 		?>

@@ -68,7 +68,7 @@ function salary_structure_add()
 {
 	$.ajax({
 	type:"POST",
-	url:'Qvision/scale_master/salary_structure/salary_structure_add.php',
+	url:'qvision/scale_master/salary_structure/salary_structure_add.php',
 	success:function(data){
 	$("#salary_structure_view").html(data);
 	}
@@ -80,7 +80,7 @@ function scale_structure_edit(ids)
 	$.ajax({
 	type:"GET",
 	data:"ids="+ids,
-	url:'Qvision/scale_master/salary_structure/salary_structure_edit.php',
+	url:'qvision/scale_master/salary_structure/salary_structure_edit.php',
 	success:function(data){
 	$("#salary_structure_view").html(data);
 	}

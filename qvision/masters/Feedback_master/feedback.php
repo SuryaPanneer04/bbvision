@@ -86,7 +86,7 @@ $(document).ready(function() {
     {
     $.ajax({
     type:"POST",
-    url:"qvision/masters/feedback_master/new_feedback.php",
+    url:"qvision/masters/Feedback_master/new_feedback.php",
     success:function(data){
     $("#main_content").html(data);
     }
@@ -96,7 +96,7 @@ $(document).ready(function() {
     {
     $.ajax({
     type:"POST",
-    url:"qvision/masters/feedback_master/edit_feedback.php?id="+v,
+    url:"qvision/masters/Feedback_master/edit_feedback.php?id="+v,
     success:function(data){
     $("#main_content").html(data);
     }

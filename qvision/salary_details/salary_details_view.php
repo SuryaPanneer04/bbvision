@@ -120,12 +120,21 @@
 		$work_days = $workdaystake['workdy_count'];
           ///$work_days=20;
 		  
-	$saldetails=$con->query("SELECT * FROM `joining_detail_sal_structure` WHERE candid_id='$candid_id'");
-	$amtshow=$saldetails->fetch(PDO::FETCH_ASSOC);
-	$sal_amt=$amtshow['fixedgross_month'];
-	$pf_amt=$amtshow['employee_PF_month'];
-	$esic_amt=$amtshow['employee_ESIC_month'];
-	$basic_amt=$amtshow['basic_month'];
+	
+$saldetails = $con->query("SELECT * FROM `joining_detail_sal_structure` WHERE candid_id='$candid_id'");
+$amtshow = $saldetails->fetch(PDO::FETCH_ASSOC);
+
+// Convert all salary fields to numbers
+$sal_amt   = (float)($amtshow['fixedgross_month'] ?? 0);
+$pf_amt    = (float)($amtshow['employee_PF_month'] ?? 0);
+$esic_amt  = (float)($amtshow['employee_ESIC_month'] ?? 0);
+$basic_amt = (float)($amtshow['basic_month'] ?? 0);
+
+// Also convert these because they are used later in calculations
+$hra_month   = (float)($amtshow['HRA_month'] ?? 0);
+$other_month = (float)($amtshow['otherallowances_permonth'] ?? 0);
+$site_month  = (float)($amtshow['siteallowance_permonth'] ?? 0);
+
 	
 		if($work_days)
 		{
@@ -135,34 +144,31 @@ else{
 	$work_days=0;
 }		
 	
-    ?>
+    
 
-<?php 
+
 if($month_days>$work_days)
 {
 
-	   $salacalc=$amtshow['basic_month']/$month_days;
-	   $basicdasal=$salacalc*$work_days;
-	   
-	   
-	   $oacalc=$amtshow['otherallowances_permonth']/$month_days;
-	$otherallowance=$oacalc*$work_days;
-	
-	$sacalc=$amtshow['siteallowance_permonth']/$month_days;
-	$siteallowance=$sacalc*$work_days;
-	
-	$hraamountcalc=$amtshow['HRA_month']/$month_days;
-	  $HRA=$hraamountcalc*$work_days;
+	  $salacalc = $basic_amt / $month_days;
+$basicdasal = $salacalc * $work_days;
+
+$oacalc = $other_month / $month_days;
+$otherallowance = $oacalc * $work_days;
+
+$sacalc = $site_month / $month_days;
+$siteallowance = $sacalc * $work_days;
+
+$hraamountcalc = $hra_month / $month_days;
+$HRA = $hraamountcalc * $work_days;
 		 
 }	
 	else
 	{
-	$basicdasal=$amtshow['basic_month'];
-
-$otherallowance=$amtshow['otherallowances_permonth'];
-$siteallowance=$amtshow['siteallowance_permonth'];
-
- $HRA=$amtshow['HRA_month'];	
+	$basicdasal = $basic_amt;
+	$otherallowance = $other_month;
+	$siteallowance = $site_month;
+	$HRA = $hra_month;	
 	}
 	
 	$claimmt=$con->query("SELECT sum(amount) as claimamt FROM `claim_request` WHERE candidate_id='$candid_id' and month(date)='$m' and year(date)='$y'");
@@ -202,7 +208,9 @@ else{
 }
 
 
-
+$basicdasal    = (float)$basicdasal;
+$otherallowance = (float)$otherallowance;
+$HRA            = (float)$HRA;
 $pfcalc = $basicdasal + $otherallowance;
 $defaultpf = 1800;
 if ($pfcalc > 15000) {
@@ -222,7 +230,7 @@ if ($pfcalc > 15000) {
 
 
 
-	 $gross_salary=$basicdasal+$HRA+$otherallowance;
+	 
   $gross_salary = $basicdasal + $HRA + $otherallowance;
 $esicamount = 0; // Initialize esicamount to 0 by default.
 

@@ -38,23 +38,23 @@ $userrole=$_SESSION['userrole'];
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
 
-	 if($userrole=='ROLE-014' ){
-		 $datas=$con->query("SELECT a.id as costsheet_id,a.*,b.*,e.*,d.* from cost_sheet_entry a 
-		 inner join client_master b on(b.id=a.client_id) 
-		 inner join company_master d on(d.id=a.company_id)
-		 inner join candidate_form_details e on(e.id=a.candid_id) where  a.created_by='$user_id' and a.status ='1' limit 1");
-	
-
-	} 
-	else 
-	{
-      $datas=$con->query("SELECT a.id as costsheet_id,a.*,b.*,e.*,d.* from cost_sheet_entry a 
-		 inner join client_master b on(b.id=a.client_id) 
-		 
-		 inner join company_master d on(d.id=a.company_id)
-		 inner join candidate_form_details e on(e.id=a.candid_id) where a.status ='1' limit 1");
-	 }
-	 
+if($userrole=='ROLE-014' ){
+    $datas=$con->query("SELECT a.id as costsheet_id, a.*, b.*, e.*, d.* 
+        FROM cost_sheet_entry a 
+        LEFT JOIN client_master b ON (b.id = a.client_id) 
+        LEFT JOIN company_master d ON (d.id = a.company_id)
+        LEFT JOIN candidate_form_details e ON (e.id = a.candid_id) 
+        WHERE a.created_by='$candidateid' AND a.status ='1'");
+}
+else 
+{
+    $datas=$con->query("SELECT a.id as costsheet_id, a.*, b.*, e.*, d.* 
+        FROM cost_sheet_entry a 
+        LEFT JOIN client_master b ON (b.id = a.client_id) 
+        LEFT JOIN company_master d ON (d.id = a.company_id)
+        LEFT JOIN candidate_form_details e ON (e.id = a.candid_id) 
+        WHERE a.status ='1'");
+}
 	 
      $cnt=1;
       while($data = $datas->fetch(PDO::FETCH_ASSOC))

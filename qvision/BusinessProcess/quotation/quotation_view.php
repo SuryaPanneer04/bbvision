@@ -3,7 +3,7 @@ require '../../../connect.php';
 require '../../../user.php';
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
-$user_id = $_SESSION['userid']
+$user_id = $_SESSION['userid'];
 ?>
 <head>
     <link rel="stylesheet" href="Qvision\commonstyle.css">
@@ -16,8 +16,6 @@ $user_id = $_SESSION['userid']
               </div>
            
               <div class="card-body">
-              <table class="table table-striped table-bordered table-hover display nowrap"  id="example1" style="width:100%">
-
 	
      <table id="example1" class="table table-bordered table-striped">
       <thead>
@@ -45,12 +43,12 @@ $userrole   =$_SESSION['userrole'];
 		 
 		 $staff_id = $data['id'];
 
-		 $datas=$con->query("SELECT a.id as quote_id,a.*,b.*,c.*,e.*,d.* from quotation_entry a 
-		 inner join client_master b on(b.id=a.client_id) 
-		 inner join doller_vendor_mastor c on(c.id=a.vendor_id)
-		 inner join company_master d on(d.id=a.company_id)
-		 inner join emp_personal_details e on(e.emp_id=a.candid_id) where a.created_by='$staff_id' and a.status ='1' limit 1") ;
-		
+		 $datas = $con->query("SELECT a.id as quote_id, a.*, b.*, c.*, e.*, d.* FROM quotation_entry a 
+    LEFT JOIN client_master b ON (b.id = a.client_id) 
+    LEFT JOIN doller_vendor_mastor c ON (c.id = a.vendor_id)
+    LEFT JOIN company_master d ON (d.id = a.company_id)
+    LEFT JOIN emp_personal_details e ON (e.emp_id = a.candid_id) 
+    WHERE a.created_by = '$staff_id' AND a.status = '1' ORDER BY a.id DESC");
 	  
      $cnt=1;
       while($data = $datas->fetch(PDO::FETCH_ASSOC))
@@ -70,8 +68,9 @@ $userrole   =$_SESSION['userrole'];
       <td><?php echo $data['client_name']; ?></td>
 	  <td><?php echo $data['name']; ?></td>
 	  <td>  
-	     <button class="btn btn-info" data-id="<?php echo $data['vendor_id']; ?>" onclick="quote_proposal_view(<?php echo $data['vendor_id']; ?>)">
-	     <i class="fa fa-eye"></i></button>
+	     <button class="btn btn-info" data-id="<?php echo $data['quote_id']; ?>" onclick="quote_proposal_view(<?php echo $data['quote_id']; ?>)">
+   <i class="fa fa-eye"></i>
+</button>
 	  </td>
       </tr>
       <?php
@@ -120,5 +119,4 @@ function back_ctc()
 	{
 		Quotation_approve()
 	}
-    </script>
 </script>

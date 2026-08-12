@@ -10,7 +10,12 @@ $userrole = $_SESSION['userrole'];
         <table class="table table-bordered">
             <tr>
                 <div class="row">
-                    <a id="btn_back_new_staff_asset" style="float: right; color: white; cursor: pointer;" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i>BACK</a>
+                    <a href="javascript:void(0)"
+   id="btn_back_new_staff_asset"
+   class="btn btn-primary btn-sm btn-flat"
+   style="float:right;">
+    Back
+</a>
                 </div>
 </div>
 </tr>
@@ -44,28 +49,22 @@ $userrole = $_SESSION['userrole'];
 <input type="button" id="btn_submit_new_staff_asset" name="submit" class="btn btn-primary btn-md" style="float:right;" value="Submit">
 </form>
 <script>
-    $(document).off('click', '#btn_back_new_staff_asset').on('click', '#btn_back_new_staff_asset', function() {
-        $.ajax({
-            type: "POST",
-            url: "qvision/Recruitment/staff_asset_master/staff_asset_master.php",
-            success: function(data) {
-                $(".content").html(data);
-            },
-            error: function(xhr, status, error) {
-                alert("Back Error: " + error + " - " + xhr.responseText);
-            }
-        });
-    });
-
+    
     $(document).off('click', '#btn_submit_new_staff_asset').on('click', '#btn_submit_new_staff_asset', function() {
         var data = $('#new_staff_asset_form').serialize();
         $.ajax({
             type: "POST",
-            url: "qvision/Recruitment/staff_asset_master/staff_asset_master_submit.php",
+           url: "qvision/Recruitment/staff_asset_master/staff_asset_master_submit.php",
             data: data,
             success: function(response) {
                 alert("Asset Created Successfully!");
-                $('#btn_back_new_staff_asset').click();
+                $.ajax({
+    type: "POST",
+    url: "qvision/Recruitment/staff_asset_master/staff_asset_master.php",
+    success: function(data) {
+        $(".content").html(data);
+    }
+});
             },
             error: function(xhr, status, error) {
                 alert("Submit Error: " + error + " - " + xhr.responseText);

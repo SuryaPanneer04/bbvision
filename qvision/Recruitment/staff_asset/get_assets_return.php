@@ -65,25 +65,24 @@ $access_clean = rtrim($access_clean, ',');
 				</td>
 			</tr>
             <?php
-            // Query for pending assets
-            $isel = $con->query("SELECT DISTINCT m.id AS id, m.name, a.Serial_no 
+            $isel = $con->query("SELECT DISTINCT m.id AS id, m.name, COALESCE(f.Serial_no, '-') as Serial_no 
                                  FROM staff_asset_list s
-                                 JOIN assets_form_detail a ON s.asset_id = a.id 
-                                 JOIN assets_master m ON a.asset_name = m.name 
-                                 WHERE s.staff_id = '$sid' AND s.status = 1");
+                                 LEFT JOIN assets_master m ON (s.asset_id = m.id OR s.asset_id = m.name)
+                                 LEFT JOIN assets_form_detail f ON s.asset_id = f.id
+                                 WHERE (s.asset_request_id = '$id' OR s.staff_id = '$sid') AND s.status = 1");
             
             $has_assets = false;
             $is_first = true;
 
-            if($isel){
+            if($isel && $isel->rowCount() > 0){
                 while ($dfet = $isel->fetch(PDO::FETCH_ASSOC)) {
                     $has_assets = true;
+                    $asset_display_name = !empty($dfet['name']) ? $dfet['name'] : 'Asset ID: '.$dfet['id'];
                 ?>
                 <tr>
-                    <!-- First row-la mattum Given Assets heading varum, next row ku empty aagidum -->
                     <td style="font-weight:bold;"><?php echo $is_first ? 'Given Assets:' : ''; ?></td>
-                    <td><?php echo $dfet['name']; ?></td>
-                    <td colspan="2"><?php echo $dfet['Serial_no']; ?></td>
+                    <td><?php echo htmlspecialchars($asset_display_name); ?></td>
+                    <td colspan="2"><?php echo htmlspecialchars($dfet['Serial_no']); ?></td>
                 </tr>
                 <?php
                     $is_first = false;
@@ -93,8 +92,8 @@ $access_clean = rtrim($access_clean, ',');
             if (!$has_assets) {
                 ?>
                 <tr>
-                    <td>Given Assets:</td>
-                    <td colspan="3"></td>
+                    <td style="font-weight:bold;">Given Assets:</td>
+                    <td colspan="3">No active assets found to return.</td>
                 </tr>
                 <?php
             }
@@ -125,25 +124,26 @@ $access_clean = rtrim($access_clean, ',');
             <tr>
                 <td>
                     <?php
-                    // FIX: Direct fetch from staff_asset_list for return checkboxes
-                    $isel = $con->query("SELECT DISTINCT m.id as id, m.name as name, a.Serial_no as Serial_no, a.id as aid 
-                                         FROM staff_asset_list s
-                                         JOIN assets_form_detail a ON s.asset_id = a.id 
-                                         JOIN assets_master m ON a.asset_name = m.name 
-                                         WHERE s.staff_id = '$sid' AND s.status = 1");
+                    $isel_box = $con->query("SELECT DISTINCT s.id as aid, m.name as name, s.asset_id 
+                                             FROM staff_asset_list s
+                                             LEFT JOIN assets_master m ON (s.asset_id = m.id OR s.asset_id = m.name)
+                                             WHERE (s.asset_request_id = '$id' OR s.staff_id = '$sid') AND s.status = 1");
 
-                    if($isel){
+                    if($isel_box && $isel_box->rowCount() > 0){
                         $i = 1;
-                        while ($dfet = $isel->fetch(PDO::FETCH_ASSOC)) {
+                        while ($dfet_box = $isel_box->fetch(PDO::FETCH_ASSOC)) {
+                            $box_name = !empty($dfet_box['name']) ? $dfet_box['name'] : 'Asset ID: '.$dfet_box['asset_id'];
                         ?>
                             <div style="width:100%;float:left;padding: 5px 0px;">
-                                <div style="width:15%;float:left;margin-left: 113px;">
-                                    <input type="checkbox" name="View[]" id="View<?php echo $i; ?>" value="<?php echo $dfet['aid']; ?>" />&emsp;<?php echo $dfet['name']; ?>
+                                <div style="width:50%;float:left;margin-left: 50px;">
+                                    <input type="checkbox" name="View[]" id="View<?php echo $i; ?>" value="<?php echo $dfet_box['aid']; ?>" />&emsp;<b><?php echo htmlspecialchars($box_name); ?></b>
                                 </div>
                             </div>
                         <?php
                             $i++;
                         }
+                    } else {
+                        echo "<div style='padding: 10px; color: red; text-align: center;'>No assets pending for return.</div>";
                     }
                     ?>
                 </td>
@@ -176,8 +176,15 @@ $access_clean = rtrim($access_clean, ',');
 	}
 
 	$(document).ready(function() {
-		$("form[name='fupname']").on("submit", function(ev) {
+		$("form[name='fupname']").off("submit").on("submit", function(ev) {
 			ev.preventDefault();
+            
+            // Checkbox tick aayirukka nu frontend-laye fast check pandrom
+            if ($("input[name='View[]']:checked").length === 0) {
+                alert("Please select at least one asset checkbox to return!");
+                return false;
+            }
+
 			var formData = new FormData(this);
 			$.ajax({
 				url: 'qvision/Recruitment/staff_asset/asset_return_submit.php',
@@ -187,8 +194,14 @@ $access_clean = rtrim($access_clean, ',');
 				contentType: false,
 				processData: false,
 				success: function(data) {
-					alert("Return Entry Successful!");
-					staff_assets_return();
+                    if(data.trim() === "success") {
+					    alert("Return Entry Successful!");
+					    staff_assets_return();
+                    } else if(data.trim() === "empty") {
+                        alert("Please select at least one asset checkbox to return!");
+                    } else {
+                        alert("Error updating return status. Please try again.");
+                    }
 				}
 			});
 		});

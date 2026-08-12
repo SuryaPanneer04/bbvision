@@ -3,6 +3,8 @@ require '../../connect.php';
 include'../../user.php';
 $userrole=$_SESSION['userrole']; 
 $userid=$_SESSION['candidateid'];
+
+// echo "Role: " . var_export($userrole, true) . " | UserID: " . var_export($userid, true);
 ?>
 <style>
 .card-primary:not(.card-outline)>.card-header{

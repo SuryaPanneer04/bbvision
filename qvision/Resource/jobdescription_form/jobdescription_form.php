@@ -203,7 +203,7 @@ while ($redis = $replace->fetch()) {
 	//alert(v);
 	 $.ajax({
 		 type:"get",
-		 url:"qvision/masters/client_master/get_clientcode.php?client="+v,
+		 url:"Qvision/masters/client_master/get_clientcode.php?client="+v,
 		 success:function(data)
 		 {
 			 $('#client_code').val(data)
@@ -215,7 +215,7 @@ while ($redis = $replace->fetch()) {
   //debugger;
   $.ajax({
     type: "get",
-    url: "qvision/masters/client_master/get_org_location.php?client=" + val,
+    url: "Qvision/masters/client_master/get_org_location.php?client=" + val,
     success: function (data) {
 		var datas=data.split("##");
 		var dataln=datas.length;
@@ -284,8 +284,8 @@ function jd_form()
    {
 	$.ajax({
 		type:'GET',
-		data: data + "&" + "field="+field,
-		url:'/qvision/Resource/jobdescription_form/jd_form_submit.php',
+		data:"field="+field, data,
+		url:'qvision/Resource/jobdescription_form/jd_form_submit.php',
 		success:function(data)
 		{
 			console.warn("data:"+data);
@@ -313,7 +313,7 @@ function jd_form()
 	//$.ajax({
 		//type:'GET',
 		//data:"id="+id,
-		//url:"qvision/resource/jobdescription_form/view_approve.php?id="+id,
+		//url:"Qvision/resource/jobdescription_form/view_approve.php?id="+id,
 		//success:function(data)
 		//{
 			//$('#show_approve').html(data)
@@ -327,7 +327,7 @@ $('#jd_title').change(function(){
 	$.ajax({
 		type:'GET',
 		data:"id="+id,
-		url:"qvision/resource/jobdescription_form/view_round.php?id="+id,
+		url:"Qvision/resource/jobdescription_form/view_round.php?id="+id,
 		success:function(data)
 		{
 			$('#show_round').html(data)

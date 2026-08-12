@@ -46,19 +46,13 @@ hr{
 	 $candid_id = $_REQUEST['employee'];
 	//get payroll_master details
 		
-	$staff_payroll_sql=$con->query("select id,month,year,flag from payroll_master where id = '$payroll_id'");
+	$staff_payroll_sql=$con->query("select id,month,year,flag from payroll_master where id = $payroll_id");
 	$staff_payroll_res=$staff_payroll_sql->fetch(PDO::FETCH_ASSOC);
-	
-	if (!$staff_payroll_res) {
-		echo "<h4 style='color:red;text-align:center;margin-top:20px;'>Please select a valid month.</h4>";
-		exit;
-	}
-
 	$m=$staff_payroll_res['month'];
 	$y=$staff_payroll_res['year'];
 	
 	$dateObj   = DateTime::createFromFormat('!m', $m);
-	$monthName = $dateObj ? $dateObj->format('F') : '';
+	$monthName = $dateObj->format('F'); 
 	
     switch ($m) {
       case "1":
@@ -114,41 +108,36 @@ hr{
     }
 
 	
+	// 🚨 STRICT FIX: Match by id OR candid_id OR emp_code flexibly 🚨
 	if($department != 0  && $candid_id == 0 )
 	{
 		$staff_sql=$con->query("SELECT * FROM staff_master where dep_id='$department'");
-		// echo "<pre>";
-		// echo "1."."SELECT * FROM staff_master where dep_id='$department'";	
-		// echo "</pre>";	
 	}
 	else if($department == 0  && $candid_id != 0 )
 	{
-		//get employee details
-		$staff_sql=$con->query("SELECT * FROM staff_master where candid_id = '$candid_id'");
-		// echo "<pre>";
-		// echo "2."."SELECT * FROM staff_master where candid_id = '$candid_id'";	
-		// echo "</pre>";
-		
+		$staff_sql=$con->query("SELECT * FROM staff_master WHERE id = '$candid_id' OR candid_id = '$candid_id' OR emp_code = '$candid_id'");
 	}
 	else if($department != 0  && $candid_id != 0 )
 	{
-		$staff_sql=$con->query("SELECT * FROM staff_master where dep_id='$department' and candid_id = '$candid_id'");
-		// echo "<pre>";
-		// echo "3."."SELECT * FROM staff_master where dep_id='$department' and candid_id = '$candid_id'";	
-		// echo "</pre>";
+		$staff_sql=$con->query("SELECT * FROM staff_master WHERE dep_id='$department' AND (id = '$candid_id' OR candid_id = '$candid_id' OR emp_code = '$candid_id')");
 	}
-	
 	
 	while($staff_sql_res=$staff_sql->fetch(PDO::FETCH_ASSOC))
 	{
-
 		$employee_id = $staff_sql_res['id'];
 		$employee_prefix = $staff_sql_res['prefix_code'];
 		$employee_code = $staff_sql_res['emp_code'];
 		$emp_name = $staff_sql_res['emp_name'];
 		$department_id = $staff_sql_res['dep_id'];
 		$designation = $staff_sql_res['design_id'];
-		$emp_id = $employee_prefix.$employee_code;
+		
+		// 🚨 PREVENT PREFIX DUPLICATION (e.g., QSPLEQSPLE119 -> QSPLE119) 🚨
+		if (!empty($employee_prefix) && strpos($employee_code, $employee_prefix) === 0) {
+			$emp_id = $employee_code;
+		} else {
+			$emp_id = $employee_prefix . $employee_code;
+		}
+
 		$pan_no = $staff_sql_res['pan_number'];
 		$pf_no = $staff_sql_res['pf_number'];
 		$esi_no = $staff_sql_res['esic_number'];
@@ -157,144 +146,139 @@ hr{
 		$bank = $staff_sql_res['bank'];
 		$loc = $staff_sql_res['payslip_location'];
 		
+		$real_candid_id = $staff_sql_res['candid_id'];
 		
-					//echo "SELECT * FROM `bb_attendance` where emp_code='$employee_code' and dep_id='$department_id'";		
-
-		
-		//Designation		
-		$des_sql=$con->query("SELECT designation_name FROM designation_master WHERE id='$department_id'");
-		// echo "SELECT designation_name FROM designation_master WHERE id='$department_id'";
+		// Designation		
+		$des_sql=$con->query("SELECT designation_name FROM designation_master WHERE id='$designation'");
 		$des_sql_res=$des_sql->fetch(PDO::FETCH_ASSOC);
-		$designation_name = $des_sql_res['designation_name'];
+		$designation_name = $des_sql_res ? $des_sql_res['designation_name'] : 'N/A';
 		
-		//Department		
+		// Department		
 		$dep_sql=$con->query("SELECT dept_name FROM z_department_master WHERE id='$department_id'");
 		$dep_sql_res=$dep_sql->fetch(PDO::FETCH_ASSOC);
-		$dep_name = $dep_sql_res['dept_name'];
+		$dep_name = $dep_sql_res ? $dep_sql_res['dept_name'] : 'N/A';
 		
-		//DOJ 
-		$doj_sql=$con->query("SELECT joining_date from candidate_form_details WHERE id='$candid_id'");
+		// DOJ 
+		$doj_sql=$con->query("SELECT joining_date from candidate_form_details WHERE id='$real_candid_id'");
 		$doj_sql_res=$doj_sql->fetch(PDO::FETCH_ASSOC);		
-		$doj = $doj_sql_res['joining_date'];
+		$doj = $doj_sql_res ? $doj_sql_res['joining_date'] : $staff_sql_res['DOJ'];
 		
-		//Account details
-		$acc_sql=$con->query("SELECT acc_number,ifsc,acc_holder_name FROM emp_personal_details where emp_id='$candid_id'");
+		// Account details
+		$acc_sql=$con->query("SELECT acc_number,ifsc,acc_holder_name FROM emp_personal_details where emp_id='$real_candid_id'");
 		$acc_sql_res=$acc_sql->fetch(PDO::FETCH_ASSOC);		
-		//$ac_number = $acc_sql_res['acc_number'];
-		
-		//Days of working		
-		$days_sql=$con->query("SELECT total_no_of_days,days_worked FROM payroll_salary_deduction where employee_code='$employee_id' and payroll_month='$m' and payroll_year='$y' and total_no_of_days is not null limit 0,1");
-		// echo "<pre>";
-    // echo "SELECT total_no_of_days,days_worked FROM payroll_salary_deduction where employee_code='$employee_id' and payroll_month='$m' and payroll_year='$y' and total_no_of_days is not null limit 0,1";
-    // echo "</pre>";
-		
-	//	echo "SELECT total_no_of_days,days_worked FROM payroll_salary_deduction where employee_code='$employee_id' and payroll_month='$m' and payroll_year='$y' and total_no_of_days is not null limit 0,1";
-		       // Split the string by '–' to separate start and end dates
-$dates = explode("–", $pay_period);
 
-// Trim whitespace and convert date strings to standard format
-$start_date_str = trim($dates[0]);
-$end_date_str = trim($dates[1]);
+		$m_zero = sprintf('%02d', $m);
+		$month_days = cal_days_in_month(CAL_GREGORIAN, (int)$m, (int)$y);
+		$work_days = $month_days;
+		$is_payroll_ready = false;
 
-// Convert date strings to standard format
-$start_date = date("Y-m-d", strtotime($start_date_str));
-$end_date = date("Y-m-d", strtotime($end_date_str));
-
+		// 1. Check bb_attendance flexibly
+		$days_sql = $con->query("SELECT SUM(total_days) as total_no_of_days, SUM(working_days) as days_worked FROM bb_attendance WHERE (emp_code='$employee_id' OR emp_code='$employee_code' OR emp_code='$real_candid_id' OR emp_code='$emp_id') AND (MONTH(in_log_date)='$m' OR MONTH(in_log_date)='$m_zero') AND YEAR(in_log_date)='$y'");
+		$row_check = $days_sql->fetch(PDO::FETCH_ASSOC);
 		
-		//$days_sql = $con->query("SELECT * FROM `bb_attendance` where emp_code='$employee_code' and dep_id='$department_id' ");//AND log_day BETWEEN '$start_date' AND '$end_date'
+		if ($row_check && $row_check['total_no_of_days'] != null) {
+			$work_days = $row_check['days_worked'];
+			$is_payroll_ready = true;
+		} else {
+			// 2. Fallback to deduction table
+			$ded_query = $con->query("SELECT total_no_of_days, days_worked FROM payroll_salary_deduction WHERE (employee_code='$employee_id' OR employee_code='$employee_code' OR employee_code='$real_candid_id' OR employee_code='$emp_id') AND (payroll_month='$m' OR payroll_month='$m_zero') AND payroll_year='$y' AND total_no_of_days IS NOT NULL LIMIT 1");
+			if ($ded_query && $ded_query->rowCount() > 0) {
+				$ded_res = $ded_query->fetch(PDO::FETCH_ASSOC);
+				if ($ded_res !== false && $ded_res['total_no_of_days'] != null) {
+					$work_days = $ded_res['days_worked'];
+					$is_payroll_ready = true;
+				}
+			}
+		}
 
-if($days_sql) 
-{
-	 if($days_sql->rowCount() > 0) 
-	 {
+		// 3. Ultimate Fallback: Check earnings table
+		if (!$is_payroll_ready) {
+			$check_earn = $con->query("SELECT COUNT(*) FROM payroll_salary_earnings WHERE (employee_code='$employee_id' OR employee_code='$employee_code' OR employee_code='$real_candid_id' OR employee_code='$emp_id') AND (payroll_month='$m' OR payroll_month='$m_zero') AND payroll_year='$y'");
+			if ($check_earn && $check_earn->fetchColumn() > 0) {
+				$is_payroll_ready = true;
+			}
+		}
 
-while($days_sql_res = $days_sql->fetch(PDO::FETCH_ASSOC))
-{			//echo "jojojojojojjojojojojojojojojojoj";
+		// Split the string by '–' to separate start and end dates
+		$dates = explode("–", $pay_period);
+		$start_date_str = count($dates) === 2 ? trim($dates[0]) : "";
+		$end_date_str = count($dates) === 2 ? trim($dates[1]) : "";
+		$start_date = date("Y-m-d", strtotime($start_date_str));
+		$end_date = date("Y-m-d", strtotime($end_date_str));
 
-	if ($days_sql_res !='') {
-		
-		$month_days = $days_sql_res['total_no_of_days'];//float value like30.0
-		
-		$work_days=$days_sql_res['days_worked'];//working days
-		
-		
-	
-	} 
-  else {
-		echo "<script>alert('Payslip Generation is Pending')</script>";
-        echo "<script> window.location.href ='/qvision/index.php' </script>";
-	}
-
-}
-		//Earnings		
-		$earning_sql=$con->query("SELECT earnings,amount FROM payroll_salary_earnings WHERE payroll_month='$m' and payroll_year='$y' and employee_code='$employee_id' order by id asc");
+		if ($is_payroll_ready) {
+		// Earnings		
+		$earning_sql=$con->query("SELECT earnings,amount FROM payroll_salary_earnings WHERE (payroll_month='$m' OR payroll_month='$m_zero') and payroll_year='$y' and (employee_code='$employee_id' OR employee_code='$employee_code' OR employee_code='$real_candid_id' OR employee_code='$emp_id') order by id asc");
 		
 		$earnings=array();
 		$amount=array();
-
-		while($earning_sql_res=$earning_sql->fetch(PDO::FETCH_ASSOC))
-		{		
+		$earned_salaries=array();
+		while($earning_sql_res=$earning_sql->fetch(PDO::FETCH_ASSOC)) {		
 			$earnings[] = $earning_sql_res['earnings'];
 			$amount[] = $earning_sql_res['amount'];
+			$earned_salaries[$earning_sql_res['earnings']] = $earning_sql_res['amount'];
 		}
-		//$gross_salary = array_sum($amount);
 	
-	//Earned salary START
-			$earned_sql=$con->query("SELECT earnings,amount FROM payroll_earned_salary WHERE payroll_month='$m' and payroll_year='$y' and  employee_code='$employee_id' order by id asc");
-			
-			$earned_amount=array();
-			
-			while($earned_sql_res=$earned_sql->fetch(PDO::FETCH_ASSOC))
-			{	
-				$earned_name = $earned_sql_res['earnings'];
-				$earned_amount[$earned_sql_res['earnings']] = $earned_sql_res['amount'];
-			}			
-		    $gross_salary = array_sum($earned_amount); 	
-		//Earned salary END
+		// Earned salary START
+		$earned_sql=$con->query("SELECT earnings,amount FROM payroll_earned_salary WHERE (payroll_month='$m' OR payroll_month='$m_zero') and payroll_year='$y' and (employee_code='$employee_id' OR employee_code='$employee_code' OR employee_code='$real_candid_id' OR employee_code='$emp_id') order by id asc");
+		$earned_amount=array();
+		while($earned_sql_res=$earned_sql->fetch(PDO::FETCH_ASSOC)) {	
+			$earned_amount[$earned_sql_res['earnings']] = $earned_sql_res['amount'];
+		}			
+		$gross_salary = array_sum($earned_salaries) > 0 ? array_sum($earned_salaries) : array_sum($earned_amount); 	
+		// Earned salary END
 		
-		
-		
-		//deductions		
-		$earning_sql=$con->query("SELECT * FROM payroll_salary_deduction WHERE payroll_month='$m' and payroll_year='$y' and employee_code='$employee_id' order by id asc");
-	
+		// Deductions		
+		$earning_sql=$con->query("SELECT * FROM payroll_salary_deduction WHERE (payroll_month='$m' OR payroll_month='$m_zero') and payroll_year='$y' and (employee_code='$employee_id' OR employee_code='$employee_code' OR employee_code='$real_candid_id' OR employee_code='$emp_id') order by id asc");
 		$deduction=array();
 		$ded_amount=array();
-		
-		while($earning_sql_res=$earning_sql->fetch(PDO::FETCH_ASSOC))
-		{		
+		while($earning_sql_res=$earning_sql->fetch(PDO::FETCH_ASSOC)) {		
 			$deduction[] = $earning_sql_res['deduction'];
 			$ded_amount[$earning_sql_res['deduction']] = $earning_sql_res['amount'];
 		}
 		$deduction_total = array_sum($ded_amount);
 		$number=$gross_salary-$deduction_total;
-		?>
 
-   <?php 
-   $salstrcutre=$con->query("SELECT * FROM `joining_detail_sal_structure` where candid_id='$candid_id'");
-   // echo "SELECT * FROM `joining_detail_sal_structure` where candid_id='$candid_id'";
+   // 🚨 STRICT FIX: Guarantee correct salary lookup using candid_id OR id OR emp_code 🚨
+   $salstrcutre=$con->query("SELECT * FROM `joining_detail_sal_structure` WHERE candid_id='$real_candid_id' OR candid_id='$employee_id' OR candid_id='$employee_code' OR candid_id='$emp_id' LIMIT 1");
    $getdetails=$salstrcutre->fetch(PDO::FETCH_ASSOC);
-   //echo $getdetails['basic_month']."jji";
 
-   if($m<10)
-   {
-    $mmm='0'.$m;
-    $arrmy=$y.'-'.$mmm;
+   if (!is_array($getdetails) || empty($getdetails['basic_month'])) { 
+       // Fallback: If joining_detail_sal_structure is missing, build basic structure from earned salary
+       // Since the view divides by month_days and multiplies by work_days, we reverse it to get the base amount.
+       $multiplier = ($work_days > 0 && $month_days > 0) ? ($month_days / $work_days) : 1;
+       $getdetails = [
+           'basic_month' => floatval($earned_salaries['Basic+ DA'] ?? $earned_salaries['Basic & DA'] ?? $earned_salaries['BASIC'] ?? 0) * $multiplier,
+           'HRA_month' => floatval($earned_salaries['HRA'] ?? 0) * $multiplier,
+           'otherallowances_permonth' => floatval($earned_salaries['Other Allowances'] ?? $earned_salaries['Other Allowance'] ?? 0) * $multiplier,
+           'employee_PF_month' => floatval($ded_amount['PF'] ?? 0) * $multiplier,
+           'employee_ESIC_month' => floatval($ded_amount['ESIC'] ?? 0) * $multiplier,
+           'professionaltax_permonth' => floatval($ded_amount['PT'] ?? 0) * $multiplier
+       ];
+   } else {
+       $getdetails['basic_month'] = floatval($getdetails['basic_month'] ?? 0);
+       $getdetails['HRA_month'] = floatval($getdetails['HRA_month'] ?? 0);
+       $getdetails['otherallowances_permonth'] = floatval($getdetails['otherallowances_permonth'] ?? 0);
+       $getdetails['employee_PF_month'] = floatval($getdetails['employee_PF_month'] ?? 0);
+       $getdetails['employee_ESIC_month'] = floatval($getdetails['employee_ESIC_month'] ?? 0);
+       $getdetails['professionaltax_permonth'] = floatval($getdetails['professionaltax_permonth'] ?? 0);
    }
-   else
-   {
-    $arrmy=$y.'-'.$m;
+
+   if(empty($month_days) || $month_days <= 0) { $month_days = 1; }
+
+   if($m<10) { $mmm='0'.$m; $arrmy=$y.'-'.$mmm; } else { $arrmy=$y.'-'.$m; }
+
+   // ARREAR PAY FETCH
+   $arrerpay=$con->query("SELECT remark,sum(amount) as arrearamt FROM `arrear_pay` WHERE (emp_id='$real_candid_id' OR emp_id='$employee_id' OR emp_id='$emp_id') and payroll_month='$arrmy'");
+   $arrdetails=$arrerpay->fetch(PDO::FETCH_ASSOC);
+   // FIX: Prevent undefined variable crashes later in the table
+   $reamrkofarrear = '';
+   $arrearamt_get = 0;
+   
+   if($arrdetails) {
+       $reamrkofarrear = $arrdetails['remark'] ?? '';
+       $arrearamt_get = floatval($arrdetails['arrearamt'] ?? 0);
    }
-
-
-$arrerpay=$con->query("SELECT remark,sum(amount) as arrearamt FROM `arrear_pay` WHERE emp_id='$candid_id' and payroll_month='$arrmy'");
-//echo "SELECT remark,sum(amount) as arrearamt FROM `arrear_pay` WHERE emp_id='$candid_id' and payroll_month='$arrmy'";
-$arrdetails=$arrerpay->fetch(PDO::FETCH_ASSOC);
-if($arrdetails)
-{
-$reamrkofarrear=$arrdetails['remark'];
- $arrearamt_get=$arrdetails['arrearamt'];
-}
-
    ?>
 		<div class="col-md-12" style="text-align: end;">
 	    <input class="button btn-danger" type="button" value="PRINT" onclick="printDiv()"> 
@@ -302,7 +286,7 @@ $reamrkofarrear=$arrdetails['remark'];
 		<div class="border container" id="main">
 		<table class="logo_border" style="width: 100%;">
 		<tr class="logo_border">
-		<th class="logo_border" ><img src="/qvision/images/quadsel1.png" alt="Image"  style="width: 450px;height: 125px;"></th>
+		<th class="logo_border" ><img src="qvision/images/logo123.jpg" alt="Image"  style="width: 450px;height: 125px;"></th>
 		<!-- <th class="logo_border" style="text-transform:uppercase;font-weight:800;font-size:18px;text-align: center;">SS Information Systems Pvt Ltd</th> -->
 		</tr>
 		</table>
@@ -398,72 +382,36 @@ th, td {
     <th colspan="2">Arrear_pay</th>
   </tr>
 <?php 
-if($month_days>$work_days)
-{
+if($is_payroll_ready && !empty($earned_salaries)) {
+    $basicdasal = floatval($earned_salaries['Basic+ DA'] ?? $earned_salaries['Basic & DA'] ?? $earned_salaries['BASIC'] ?? 0);
+} else {
+    $basicdasal = ($month_days > 0) ? ($getdetails['basic_month'] / $month_days * $work_days) : 0;
+}
 ?>
   <tr>
     <td class="left">Basic & DA </td>
-    <td class="right">
-	<?php
-	   $salacalc=$getdetails['basic_month']/$month_days;
-	   $basicdasal=$salacalc*$work_days;
-		echo round($basicdasal,2);
-		
-		?></td> 
-<?php
-}
-else
-{
-?>
- <tr>
-    <td class="left">Basic & DA </td>
-    <td class="right">
-	<?php
-	$basicdasal=$getdetails['basic_month'];
-		echo round($basicdasal,2);
-		
-		?></td> 
-<?php
-}
-?>
+    <td class="right"><?php echo round($basicdasal,2); ?></td> 
 
     <td class="left">PF Employee </td>
     <td class="right"><?php 
-	if ($month_days > $work_days) {
-    $salacalc = $getdetails['basic_month'] / $month_days;
-    $basicdasal = $salacalc * $work_days;
-    $finalbasic = round($basicdasal, 2); // basic+DA
-
-    $oacalc = $getdetails['otherallowances_permonth'] / $month_days;
-    $otherallowance = $oacalc * $work_days;
-    $finaloa = round($otherallowance, 2); // Other allowance
-} else {
-    $basicdasal = $getdetails['basic_month'];
-    $finalbasic = round($basicdasal, 2); // basic+DA
-
-    $otherallowance = $getdetails['otherallowances_permonth'];
-    $finaloa = round($otherallowance, 2); // Other allowance
-}
-
-$pfcalc = $finalbasic + $finaloa;
-$defaultpf = 1800;
-if ($pfcalc > 15000) {
-    $pfamount = $defaultpf;
-} else {
-    //$work_days1 = 12;
-    if ($work_days < 15) {
-        $pfcal = $defaultpf / $month_days;
-        $pfemp = $pfcal * $work_days;
-        $pfamount = round($pfemp, 2);
+    if($is_payroll_ready && !empty($ded_amount)) {
+        $pfamount = floatval($ded_amount['PF'] ?? 0);
     } else {
-        $pfamount = $getdetails['employee_PF_month'];
+        // Fallback calculation if not generated
+        $finalbasic = round($basicdasal, 2); 
+        $otherallowance = ($month_days > 0) ? ($getdetails['otherallowances_permonth'] / $month_days * $work_days) : 0;
+        $pfcalc = $finalbasic + $otherallowance;
+        if ($pfcalc > 15000) {
+            $pfamount = 1800;
+        } else {
+            if ($work_days < 15 && $month_days > 0) {
+                $pfamount = round((1800 / $month_days) * $work_days, 2);
+            } else {
+                $pfamount = floatval($getdetails['employee_PF_month'] ?? 0);
+            }
+        }
     }
-}
-
-// Output the calculated $pfamount
-echo $pfamount;
-
-
+    echo round($pfamount, 2);
 	?></td>
   <?php
   if($reamrkofarrear)
@@ -483,108 +431,65 @@ echo $pfamount;
   
 
    <tr>
-   <?php
-   if($month_days>$work_days)
-   {
-	   ?>
     <td class="left">HRA</td>
-    <td class="right">
-	<?php 
-	  $hraamountcalc=$getdetails['HRA_month']/$month_days;
-	  $HRA=$hraamountcalc*$work_days;
-	
-	     echo round($HRA,2);
-
- 		 
-		 ?></td>
-		 <?php
-   }
-   else 
-   {
-  ?>
-  <td class="left">HRA</td>
-    <td class="right">
-	<?php 
-	       $HRA=$getdetails['HRA_month'];
-	     echo round($HRA,2);
-
-		 ?></td>
-  <?php 
-   }
-  ?>
+    <td class="right"><?php 
+    if($is_payroll_ready && !empty($earned_salaries)) {
+        $HRA = floatval($earned_salaries['HRA'] ?? 0);
+    } else {
+        $HRA = ($month_days > 0) ? ($getdetails['HRA_month'] / $month_days * $work_days) : 0;
+    }
+    echo round($HRA,2);
+    ?></td>
     <td class="left">ESIC Employee</td>
     <td class="right"><?php	
-	
-	 $gross_salary=$basicdasal+$HRA+$otherallowance;
-	// echo$basicdasal.'kokookiiiiiiiiiiiii'.$HRA.''.$otherallowance; 
-  $gross_salary = $basicdasal + $HRA + $otherallowance;
-$esicamount = 0; // Initialize esicamount to 0 by default.
-
-if ($gross_salary <= 21000) {
-    $esicamount = $getdetails['employee_ESIC_month'];
-}
-
-// Output the calculated $esicamount
-echo $esicamount;
-	
+    if($is_payroll_ready && !empty($ded_amount)) {
+        $esicamount = floatval($ded_amount['ESIC'] ?? $ded_amount['ESI'] ?? 0);
+    } else {
+        $otherallowance = ($month_days > 0) ? ($getdetails['otherallowances_permonth'] / $month_days * $work_days) : 0;
+        $gross_salary = $basicdasal + $HRA + $otherallowance;
+        $esicamount = 0; 
+        if ($gross_salary <= 21000) {
+            $esicamount = floatval($getdetails['employee_ESIC_month'] ?? 0);
+        }
+    }
+    echo round($esicamount, 2);
 	?></td>
   </tr>
 
    <tr>
-     <?php
-if($month_days>$work_days)
-{
-?>
     <td class="left">Other Allowance</td>
-    <td class="right">
-	<?php 
-	$oacalc=$getdetails['otherallowances_permonth']/$month_days;
-	$otherallowance=$oacalc*$work_days;
-     echo round($otherallowance,2); 	
-	
-		?> 
-		</td>
-<?php 		
-}
-else
-{
-?>
- <td class="left">Other Allowance</td>
-    <td class="right">
-	<?php 
-	$otherallowance=$getdetails['otherallowances_permonth'];
-     echo round($otherallowance,2); 	
-	
-		?> 
-		</td>
-<?php
-}
-?>
-		<td class="left">Professional Tax</td>
-    <td class="right">
-	<?php 
-     echo round($getdetails['professionaltax_permonth'],2); 	
-	
-		?> 
-		</td>
-   
+    <td class="right"><?php 
+    if($is_payroll_ready && !empty($earned_salaries)) {
+        $otherallowance = floatval($earned_salaries['Other Allowances'] ?? $earned_salaries['Other Allowance'] ?? 0);
+    } else {
+        $otherallowance = ($month_days > 0) ? ($getdetails['otherallowances_permonth'] / $month_days * $work_days) : 0;
+    }
+    echo round($otherallowance,2); 	
+    ?></td>
+    <td class="left">Professional Tax</td>
+    <td class="right"><?php 
+    if($is_payroll_ready && !empty($ded_amount)) {
+        $ptamount = floatval($ded_amount['PT'] ?? 0);
+    } else {
+        $ptamount = floatval($getdetails['professionaltax_permonth'] ?? 0);
+    }
+    echo round($ptamount,2); 	
+    ?></td>
   </tr>
 
   
   
   
 
-  <tr>
+   <tr>
     <td class="left" style="font-weight:bold;">Total Earning</td>
 	<?php 
-	
-	$gross_salary=$basicdasal+$HRA+$otherallowance;
+	$gross_salary = $basicdasal + $HRA + $otherallowance;
 	?>
     <td class="right" style="font-weight:bold;"><?php echo number_format($gross_salary,2) ;?></td>
 	
 	<?php 
-		$deduction_total=$pfamount+$esicamount+$getdetails['professionaltax_permonth'];
-
+		$deduction_total = $pfamount + $esicamount + $ptamount;
 	?>
     <td class="left" style="font-weight:bold;">Total Deduction</td>
     <td class="right" style="font-weight:bold;"><?php echo number_format($deduction_total,2);?></td>
@@ -679,7 +584,7 @@ else
 <?php		
 	 }
 }
-	}
+	
 ?>
   <script>
         function printDiv() {

@@ -142,7 +142,7 @@ $(document).ready(function() {
 } );
 </script>
 <script>
-$(function () {
+//$(function () {
 //     $("#example1").DataTable({
 //       "responsive": true,
 //       "autoWidth": false,

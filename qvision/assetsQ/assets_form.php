@@ -11,36 +11,36 @@ $userrole=$_SESSION['userrole'];
       </div>
 
 
-<form method="POST" action="qvision/AssetsQ/assets_form_submit.php" enctype="multipart/form-data">
+<form method="POST" action="qvision/assetsQ/assets_form_submit.php" enctype="multipart/form-data">
 <table class="table table-bordered">
         <tr>
-        <td><center><img src="qvision/images/logo123.jpg"  style="width:150px;height:50px;"></center></td>
-      <td colspan="5"><center><h2><b>New Asset</b></h2></center></td> 
+        	<td><center><img src="qvision/images/logo123.jpg"  style="width:150px;height:50px;"></center></td>
+      		<td colspan="5"><center><h2><b>New Asset</b></h2></center></td> 
         </tr>
      
 		<tr>
-        <td>Asset </td>
-        <td colspan="5">
-		<select class="form-control" id="asset" name="asset" onchange="sub_type(this.value)">
-		<option value="">Choose Asset</option>
-		<option value="Internal Asset">Internal</option>
-		
-        </select> </td>  
+        	<td>Asset </td>
+        	<td colspan="5">
+				<select class="form-control" id="asset" name="asset" onchange="sub_type(this.value)">
+					<option value="">Choose Asset</option>
+					<option value="Internal Asset">Internal</option>
+        		</select> 
+			</td>  
 		</tr>	
 		
 		<tr id="assets_type">
-        <td>Asset Type</td>
-        <td colspan="5">
-		<select class="form-control" id="asset_type" name="asset_type" onchange="get_asset(this.value)">
-		<option value="">Choose Asset Type</option>
-		<option value="It Asset">It Asset</option>
-		<option value="NonIt Asset">NonIt Asset </option>
-        </select> 
-		</td>		
+        	<td>Asset Type</td>
+        	<td colspan="5">
+				<select class="form-control" id="asset_type" name="asset_type" onchange="get_asset(this.value)">
+					<option value="">Choose Asset Type</option>
+					<option value="It Asset">IT Asset</option>
+					<option value="NonIt Asset">Non IT Asset </option>
+        		</select> 
+			</td>		
 		</tr>
 		
-    <tr id="inter_asset">
-    </tr>
+   		 <tr id="inter_asset">
+    	</tr>
 	
 		<tr id="asset_nme">
         <td>Asset Name</td>
@@ -216,7 +216,7 @@ function get_asset(v)
 	$.ajax({
 		
 		type:"post",
-		url:"qvision/AssetsQ/get_assets.php?type="+v,
+		url:"qvision/assetsQ/get_assets.php?type="+v,
 		success:function(data)
 		{
 			$('#inter_asset').html(data);
@@ -236,7 +236,7 @@ function get_asset(v)
 	$.ajax({
 		
 		type:"post",
-		url:"qvision/AssetsQ/asset_number.php?id="+v+"&asset="+asset+"&asset_type="+asset_type,
+		url:"qvision/assetsQ/asset_number.php?id="+v+"&asset="+asset+"&asset_type="+asset_type,
 		success:function(data)
 		{
 			$('#assets_no').val(data);
@@ -245,7 +245,7 @@ function get_asset(v)
 	$.ajax({
 		
 		type:"post",
-		url:"qvision/AssetsQ/get_hsn1.php?id="+v,
+		url:"qvision/assetsQ/get_hsn1.php?id="+v,
 		success:function(data)
 		{
 			$('#hsn_code').val(data);
@@ -254,14 +254,14 @@ function get_asset(v)
 	$.ajax({
 		
 		type:"post",
-		url:"qvision/AssetsQ/get_gst.php?id="+v,
+		url:"qvision/assetsQ/get_gst.php?id="+v,
 		success:function(data)
 		{
 			$('#gst_code').val(data);
 		}
 	})
 	$.ajax({
-url: "qvision/AssetsQ/get_des.php",
+url: "qvision/assetsQ/get_des.php",
 type: "POST",
 data: {
 id: id

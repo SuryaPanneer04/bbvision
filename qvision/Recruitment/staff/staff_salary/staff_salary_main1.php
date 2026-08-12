@@ -152,7 +152,7 @@ $app_salary = $staff_sal['salary'];
 				  <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Payable Percentage</label>
                     <div class="col-sm-10">
-                      <input type="number" class="form-control" id="Payable_staff_salary" name="Payable_staff_salary" min="0" max="100" value="<?php echo $varaible_pay; ?>" onchange="payable(this.value)">
+                      <input type="number" class="form-control" id="Payable_staff_salary" name="Payable_staff_salary" min="1" max="100" value="<?php echo $varaible_pay; ?>" onchange="payable(this.value)" required>
                     </div>					
                   </div>
 				  <div class="form-group row">

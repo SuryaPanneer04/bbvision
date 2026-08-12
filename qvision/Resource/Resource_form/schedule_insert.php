@@ -37,11 +37,11 @@ $mail->IsSMTP();
 $mail->Mailer = "smtp";
 $mail->Host = "smtp.zoho.com";
 $mail->SMTPAuth = true;
-$mail->Username = 'suryabluebase@gmail.com';                 
-$mail->Password = 'xkqp amol foic wwuo';                           
+$mail->Username = 'surya@bluebase.in';                 
+$mail->Password = 'Bb@2026$';                           
 $mail->SMTPSecure = 'ssl';                            
 $mail->Port = 465;
-$mail->From = 'suryabluebase@gmail.com';
+$mail->From = 'surya@bluebase.in';
 $mail->FromName = 'Recruitment Team';
 $mail->AddAddress($mail_to, $user_name);		
 

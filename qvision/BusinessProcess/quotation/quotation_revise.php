@@ -2,17 +2,15 @@
 require '../../../connect.php';
 include("../../../user.php");
 
- $vendor_id         = $_REQUEST['id'];
+ $id = $_REQUEST['id'];
 
-$stmt = $con->prepare("SELECT a.id as quote_id,a.*,b.*,c.*,e.* from quotation_entry a 
-	inner join client_master b on(b.id=a.client_id) 
-	inner join doller_vendor_mastor c on(c.id=a.vendor_id) 
-	inner join candidate_form_details e on(e.id =a.candid_id) where a.status ='1' and a.vendor_id='$vendor_id'"); 
-echo "SELECT a.id as quote_id,a.*,b.*,c.*,e.* from quotation_entry a 
-	inner join client_master b on(b.id=a.client_id) 
-	inner join doller_vendor_mastor c on(c.id=a.vendor_id) 
-	inner join candidate_form_details e on(e.id =a.candid_id) where a.status ='1' and a.vendor_id='$vendor_id'";
-$stmt->execute(); 
+$stmt = $con->prepare("SELECT a.id as quote_id, a.*, b.*, c.*, e.* FROM quotation_entry a 
+    LEFT JOIN client_master b ON (b.id = a.client_id)
+    LEFT JOIN doller_vendor_mastor c ON (c.id = a.vendor_id)
+    LEFT JOIN candidate_form_details e ON (e.id = a.candid_id) 
+    WHERE a.status = '1' AND a.id = '$id'");
+
+$stmt->execute();
 $row = $stmt->fetch();
 
 if($row['business_id'] =='1'){
@@ -92,10 +90,10 @@ $position_id = $row['position'];
 		</TR>
 		<?php  
 				$query= $con->query("SELECT a.id as quote_id,a.*,b.*,c.*,e.* from quotation_entry a 
-				 inner join client_master b on(b.id=a.client_id) 
-				 inner join doller_vendor_mastor c on(c.id=a.vendor_id)
-				 inner join candidate_form_details e on(e.id =a.candid_id)
-				 where a.status ='1' and a.vendor_id='$vendor_id'"); 
+                LEFT JOIN client_master b on(b.id=a.client_id) 
+                LEFT JOIN doller_vendor_mastor c on(c.id=a.vendor_id)
+                LEFT JOIN candidate_form_details e on(e.id =a.candid_id)
+                where a.status ='1' and a.id='$id'"); 
 				 $cnt=1;
 					while($quote = $query->fetch(PDO::FETCH_ASSOC)){
 		?>
@@ -121,23 +119,29 @@ $position_id = $row['position'];
 		</TR>
 		<?php $cnt=$cnt+1; } ?>
 	  </TABLE>
-	<div class="col-sm-6">
-	   <select class="form-control" id="gst" name="gst">
-			<?php if($gst_per =='18'){?>
-			<option value="18">18 %</option>
-			<?php }else{ ?>
-			<option value="28">28 %</option>
-			<?php }?>
-			<option value="18">18 %</option>
-			<option value="28">28 %</option>
-		</select>
-	</div>
-	<div class="col-sm-2">
-	  <input type="date" style="float:left;" class="form-control" name="revise_date" id="revise_date" required>
-	</div>
-   <div class="col-sm-2">
-	 <input type="button" class="btn btn-success" id="save" name="save" onclick="quotation_update()"  value="Save"><br/><br/>
-   </div>
+      
+    <!-- BUG FIX: Wrapper row added here -->
+    <div class="form-group row" style="margin: 15px 0;">
+        <div class="col-sm-6">
+           <select class="form-control" id="gst" name="gst">
+                <?php if($gst_per =='18'){?>
+                <option value="18">18 %</option>
+                <?php }else{ ?>
+                <option value="28">28 %</option>
+                <?php }?>
+                <option value="18">18 %</option>
+                <option value="28">28 %</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+          <input type="date" class="form-control" name="revise_date" id="revise_date" required>
+        </div>
+       <div class="col-sm-2">
+         <input type="button" class="btn btn-success" id="save" name="save" onclick="quotation_update()" value="Save">
+       </div>
+    </div>
+    
+
 	  <div class="card-body">
 	    <table class="table table-bordered">
 		 <tr><th colspan="2"  style="text-align:center;">TERMS & CONDITIONS</th></tr>
@@ -164,6 +168,7 @@ $position_id = $row['position'];
 			<div class="form-group row">
 			     <div class="col-sm-2">IFSC CODE :</div>
 				 <div class="col-sm-1"><input type="text" id="ifsc_code" style ="border:none;" value="<?php echo $row['ifsc_code'];?>" readonly></div>
+			</div>
 			</div>
 			</b>
             </td>
@@ -211,7 +216,7 @@ $position_id = $row['position'];
 			</div></b>
 		
 	</form>	  
-	<!-- Sub Total: <input type="text" readonly="readonly" id="total"><br><input type="submit" value="Create Invoice">-->
+	<input type="text" readonly="readonly" id="total"><br><input type="submit" value="Create Invoice">
   </div>
 	
 <script>
@@ -243,33 +248,47 @@ $("#quote_type").change(function(e){
 
 
 
-function quotation_update()
-{
-	var field=1;
-	var data = $('form').serialize();
-	alert(data);
-	var enquiry_id  = document.getElementById("enquiry_id").value;
-	var company_id  = document.getElementById("company_id").value;
-	var revise_date  = document.getElementById("revise_date").value;
-	alert(revise_date);
-	var quote_type    = document.getElementById("quote_type").value;
-	var mapping_id  = document.getElementById("mapping_id").value;
-	var candid_id   = document.getElementById("candid_id").value;
-	var vendor_id   = document.getElementById("vendor_id").value;
-	var client_id   = document.getElementById("client_id").value;
-	var quote_no   = document.getElementById("quote_no").value;
-	
-	$.ajax({
-		type:'GET',
-		
-	    data:'field='+field+'&data='+data+'&quote_type='+quote_type+'&mapping_id='+mapping_id+'&candid_id='+candid_id+'&vendor_id='+vendor_id+'&client_id='+client_id+'&enquiry_id='+enquiry_id+'&company_id='+company_id+'&revise_date='+revise_date+'&quote_no='+quote_no,
-		url:'qvision/BusinessProcess/quotation/quotation_update.php',
-		success:function(data)
-		{
-			alert("Quotation revised Successfully");
-		    Quotation;
-		}       
-	}); 
+function quotation_update() {
+    var field = 1;
+    var data = $('form').serialize(); 
+    
+    var enquiry_id  = document.getElementById("enquiry_id").value;
+    var company_id  = document.getElementById("company_id").value;
+    var revise_date = document.getElementById("revise_date").value;
+    var quote_type  = document.getElementById("quote_type").value;
+    var mapping_id  = document.getElementById("mapping_id").value;
+    var candid_id   = document.getElementById("candid_id").value;
+    var vendor_id   = document.getElementById("vendor_id").value;
+    var client_id   = document.getElementById("client_id").value;
+    var quote_no    = document.getElementById("quote_no").value;
+    
+    if(revise_date === "") {
+        alert("Please select a Revise Date!");
+        return;
+    }
+	var items = document.getElementsByName("item[]");
+    if(items.length === 0) {
+        alert("Quotation cannot be empty! Please add");
+        return;
+    }
+
+    $.ajax({
+    type: 'POST',
+    // Ithu unga pazhaya data format thaan, apdiye vechuruken
+    data: data + '&field='+field+'&quote_type='+quote_type+'&mapping_id='+mapping_id+'&candid_id='+candid_id+'&vendor_id='+vendor_id+'&client_id='+client_id+'&enquiry_id='+enquiry_id+'&company_id='+company_id+'&revise_date='+revise_date+'&quote_no='+quote_no,
+    url: 'qvision/BusinessProcess/quotation/quotation_update.php',
+    success: function(response) {
+        // Ipo PHP la irunthu varum unmaiyana response ah alert la kaatum
+        alert(response.trim()); 
+        
+        // Success aagiduchu na thevaiyana redirect function ah keela add pannikalam
+        // Quotation_view(); 
+    },
+    error: function(xhr, status, error) {
+        // Oruvela server block aana intha alert theliva kaatum
+        alert("Server Error: " + error);
+    }
+});
 }
 
 $("#emp_id").change(function(e){
@@ -425,72 +444,75 @@ $("#emp_id").change(function(e){
 
   function deleteRow(tableID) {
     try {
-      var table = document.getElementById(tableID);
-      var rowCount = table.rows.length;
+        var table = document.getElementById(tableID);
+        var rowCount = table.rows.length;
+        var deletedCount = 0; // Item count panna pudhu variable
 
-      document.getElementById("select-all").checked = false;
+        for (var i = 1; i < rowCount; i++) {
+            var row = table.rows[i];
+            var chkbox = row.cells[0].querySelector('input[type="checkbox"]');
 
-      for (var i = 1; i < rowCount; i++) {
-        var row = table.rows[i];
-        var chkbox = row.cells[0].childNodes[0];
-        if (null != chkbox && true == chkbox.checked) {
-          table.deleteRow(i);
-          rowCount--;
-          i--;
+            if (chkbox !== null && chkbox.checked === true) {
+                table.deleteRow(i);
+                rowCount--;
+                i--;
+                deletedCount++; // Delete aana count aagum
+            }
         }
 
-
-      }
+        // Response Alert
+        if (deletedCount === 0) {
+            // Tick pannama click panna intha alert varum
+            alert("Bro, please tick at least one checkbox to delete an item!");
+        } else {
+            // Delete aanathuku apram select-all box ah uncheck pandrom
+            var selectAll = document.getElementById("select-all");
+            if(selectAll) selectAll.checked = false;
+        }
     } catch (e) {
-      alert(e);
+        alert("Delete Error: " + e.message);
     }
-  }
+}
 
 </script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
 <script>
-  $("input").blur(function() {
+// Date field-a distrub pannama iruka not('[type="date"]') add panniruken
+$("input").not('[type="date"]').blur(function() {
     if ($(this).attr("data-selected-all")) {
-      //Remove atribute to allow select all again on focus        
-      $(this).removeAttr("data-selected-all");
+        $(this).removeAttr("data-selected-all");
     }
-  });
-  
-   $("input").click(function() {
-    if (!$(this).attr("data-selected-all")) {
-      try {
-        $(this).selectionStart = 0;
-        $(this).selectionEnd = $(this).value.length + 1;
-        //add atribute allowing normal selecting post focus
-        $(this).attr("data-selected-all", true);
-      } catch (err) {
-        $(this).select();
-        //add atribute allowing normal selecting post focus
-        $(this).attr("data-selected-all", true);
-      }
-    }
-  });
+});
 
-  function toggle(source) {
+// Pazhaya line ah thookitu ithai podunga
+$("input[type='text'], input[type='number']").click(function() {
+    if (!$(this).attr("data-selected-all")) {
+        try {
+            this.selectionStart = 0;
+            this.selectionEnd = this.value.length + 1;
+            $(this).attr("data-selected-all", true);
+        } catch (err) {
+            $(this).select();
+            $(this).attr("data-selected-all", true);
+        }
+    }
+});
+
+function toggle(source) {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     for (var i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i] != source)
-        checkboxes[i].checked = source.checked;
+        if (checkboxes[i] != source)
+            checkboxes[i].checked = source.checked;
     }
-  }
+}
 
-</script>
-<script>
-
-<script type="text/javascript">
+// Fixed HTML syntax error here
 function showDiv(id){
-	alert()
-   if(id.value==2){
+   if(id.value == 2){
     document.getElementById('hidden_div2').style.display = "block";
-	document.getElementById('hidden_div1').style.display = "none";
+    document.getElementById('hidden_div1').style.display = "none";
    } else{
-    //document.getElementById('hidden_div1').style.display = "block";
-	document.getElementById('hidden_div2').style.display = "none";
+    document.getElementById('hidden_div2').style.display = "none";
+    document.getElementById('hidden_div1').style.display = "block";
    }
 } 
 </script>

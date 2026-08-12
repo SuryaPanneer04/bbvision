@@ -15,7 +15,7 @@ $userrole=$_SESSION['userrole'];
 <table class="table table-bordered">
         <tr>
         <td><center><img src="/KerliERP/Recruitment/image/userlog/quadsel.png  style="width:300px;height:150px;"></center></td>
-        <td colspan="5"><center><h1><b>Bluebase Software Services Private Limited</b></h1></center></td>
+        <td colspan="5"><center><h1><b>Quadsel Systems Private Limited</b></h1></center></td>
         </tr>
       
      

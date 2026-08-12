@@ -116,7 +116,7 @@ function back()
 		
  	$.ajax({
 	type:"POST",
-	url:"/qvision/Resource/jobdescription_form/job_description_approval_view.php?jid="+v,
+	url:"qvision/Resource/jobdescription_form/job_description_approval_view.php?jid="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);

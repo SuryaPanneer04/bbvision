@@ -19,7 +19,7 @@ $rowo = $queryo->fetch();
 $client_id = $rowo['client_id'];
 $hsn = $rowo['hsn'];
 
-$stmtx = $con->query("select * from new_plant_master where client_id='$client_id' ");
+$stmtx = $con->query("SELECT * FROM new_plant_master WHERE client_id='$client_id' ");
 $stmtx->execute();
 $rowx = $stmtx->fetch();
 $emp_name = $rowx['contact_person'];
@@ -70,11 +70,11 @@ $date = date('d-m-Y');
   size: a5 landscape;
 } */
 			</style>
-			<TABLE style="width: 1005px; height: 170.07874016px;margin-left:20px;margin-top:20px;">
+			<table style="width: 1005px; height: 170.07874016px;margin-left:20px;margin-top:20px;">
 				<tr>
 					<td colspan='1' style="border-right:none;border-bottom: none;">
 						<span> <!-- style="position: relative;top: -5px;z-index: -1;" -->
-							<img src="qvisionnew/images/quadsel.jpg" style="height: 100px;width: 225px;">
+							<img src="images/logo123.jpg" style="height: 100px;width: 225px;">
 						</span>
 					</td>
 					<td colspan='1' style="border-left:none;border-right:none;border-bottom: none;">
@@ -190,7 +190,7 @@ $date = date('d-m-Y');
 					</tr>
 				</table>
 
-			</TABLE>
+			</table>
 
 		</div>
 	</section>

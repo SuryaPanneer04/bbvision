@@ -36,7 +36,7 @@ $candid_id      = $_REQUEST['candid_id'];
 
 $costsheet_date_str  = $_REQUEST['chost_date'];
 file_put_contents('debug.txt', "Line 37\n", FILE_APPEND);
-$costsheet_date = date('d-m-Y', strtotime($costsheet_date_str));
+$costsheet_date = date('Y-m-d', strtotime($costsheet_date_str));
 
  if($business_id ==1){
 	 //$bussiness_type ="QSPLPR";
@@ -201,63 +201,37 @@ $vendor=$vendor_id[$i];
  $com_amts   = $com_amt[$i];
  
  
- $filesArr3 = $_FILES["image"];
- $filesArr4 = $_FILES["file1"];
+ // Safe check for image
+ $filesArr3 = isset($_FILES["image"]) ? $_FILES["image"] : null;
+ $fileNames = $filesArr3 ? array_filter($filesArr3['name']) : [];
 
+/* Resume upload for image */
+$uploadedFile = ''; 
+if(!empty($fileNames)) {                          
+    foreach($filesArr3['name'] as $key=>$val) {  
+        $fileName = basename($filesArr3['name'][$key]);  
+        $targetFilePath = $uploadDir . $fileName;  
+        if(move_uploaded_file($filesArr3["tmp_name"][$key], $targetFilePath)) {  
+            $uploadedFile .= $fileName; 
+        }
+    }  
+}    
 
-/* Resume upload */
-		$fileNames = array_filter($filesArr3['name']); 
-			 
-         
-        // Upload file 
-        $uploadedFile = ''; 
-        if(!empty($fileNames))
-		{                          
-            foreach($filesArr3['name'] as $key=>$val)
-			{  
-                // File upload path  
-                $fileName = basename($filesArr3['name'][$key]);  
-                $targetFilePath = $uploadDir . $fileName;  
-                  
-                // Check whether file type is valid  
-                 $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);  
-                
-                    // Upload file to server  
-                    if(move_uploaded_file($filesArr3["tmp_name"][$key], $targetFilePath))
-					{  
-                        $uploadedFile .= $fileName; 
-                     
-                }
-            }  
-        }    
-    
-	
-	
-	
-	$fileNames1 = array_filter($filesArr4['name']); 
-			 
-         
-        // Upload file 
-        $uploadedFile1 = ''; 
-        if(!empty($fileNames1))
-		{                          
-            foreach($filesArr4['name'] as $key=>$val)
-			{  
-                // File upload path  
-                $fileName1 = basename($filesArr4['name'][$key]);  
-                $targetFilePath1 = $uploadDir . $fileName1;  
-                  
-                // Check whether file type is valid  
-                 $fileType1 = pathinfo($targetFilePath1, PATHINFO_EXTENSION);  
-                
-                    // Upload file to server  
-                    if(move_uploaded_file($filesArr4["tmp_name"][$key], $targetFilePath))
-					{  
-                        $uploadedFile1 .= $fileName1; 
-                     
-                }
-            }  
-        }    
+ // Safe check for file1 (This fixes the Fatal Error!)
+ $filesArr4 = isset($_FILES["file1"]) ? $_FILES["file1"] : null;
+ $fileNames1 = $filesArr4 ? array_filter($filesArr4['name']) : []; 
+
+/* Resume upload for file1 */
+$uploadedFile1 = ''; 
+if(!empty($fileNames1)) {                          
+    foreach($filesArr4['name'] as $key=>$val) {  
+        $fileName1 = basename($filesArr4['name'][$key]);  
+        $targetFilePath1 = $uploadDir . $fileName1;  
+        if(move_uploaded_file($filesArr4["tmp_name"][$key], $targetFilePath1)) {  
+            $uploadedFile1 .= $fileName1; 
+        }
+    }  
+}   
     
  file_put_contents('debug.txt', "Reached line 254 before quote query.\n", FILE_APPEND);
     

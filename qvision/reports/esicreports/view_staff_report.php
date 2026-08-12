@@ -24,18 +24,13 @@
      	$emp_id = $_REQUEST['emp_name'];
 
 		 $esicMonth = $_REQUEST['esicMonth'];
-		 $from_emp_year = '';
-         $from_emp_month = '';
-        
-		 if (!empty($esicMonth) && strpos($esicMonth, '-') !== false) {
+
 		 $fromempDate = preg_split("/\-/", $esicMonth);
 		 $from_emp_year = $fromempDate[0]; //Year
 		 $from_emp_month = $fromempDate[1]; //Month
-		 }else{
-		//get payroll_master details  
-		   echo "<script>alert('Please select the month');</script>";
-           exit;
-		 }
+
+		//get payroll_master details
+		
 		
 		if($emp_id){
 		    $staff_sql=$con->query("SELECT a.* FROM staff_master a  join payroll_salary_deduction p on p.employee_code = a.candid_id where a.id = '$emp_id' and  a.status=1 and  p.payroll_year='$from_emp_year' and p.payroll_month = '$from_emp_month' group by p.employee_code ");	
@@ -48,32 +43,42 @@
 		$p = 1;
 		
 		while($staff_sql_res = $staff_sql->fetch()){
-            $employee_id = $staff_sql_res['id'];
+$employee_id = $staff_sql_res['id'];
 			$employee_code = $staff_sql_res['emp_code'];
 			$emp_name = $staff_sql_res['emp_name'];
 			$salary_amount = $staff_sql_res['salary_amount'];
 			$deduct_id = $staff_sql_res['payroll_deduction_id'];
 			$candid_id=$staff_sql_res['candid_id'];
-					  
+			
+			
+			
+			
+			
+			  
 	   //echo $getworkdaytype.'kokoko';
-        $countgetworkingdays=$con->query("SELECT total_no_of_days,days_worked FROM `payroll_salary_deduction` where employee_code='$candid_id' and payroll_year='$from_emp_year' and payroll_month = '$from_emp_month'");	
+        $countgetworkingdays=$con->query("SELECT total_no_of_days,days_worked FROM `payroll_salary_deduction` where employee_code='$candid_id' and payroll_year='$from_emp_year' and payroll_month = '$from_emp_month'");
+		
 //echo "SELECT sum(working_days) as workdy_count FROM `bb_attendance` where emp_code='$employee_code' and year(in_log_date)='$from_year' and month(in_log_date) = '$from_month'";		
-		$workdaystake=$countgetworkingdays->fetch(PDO::FETCH_ASSOC);	
+		$workdaystake=$countgetworkingdays->fetch(PDO::FETCH_ASSOC);
+		
+		
 		$month_days = round($workdaystake['total_no_of_days']);//roundvalue 30
         
 		$work_days = $workdaystake['days_worked'];
-          ///$work_days=20;	  
-		$saldetails=$con->query("SELECT * FROM `joining_detail_sal_structure` WHERE candid_id='$candid_id'");
-		$amtshow=$saldetails->fetch(PDO::FETCH_ASSOC);
-		$sal_amt=$amtshow['fixedgross_month'];
+          ///$work_days=20;
+		  
+	$saldetails=$con->query("SELECT * FROM `joining_detail_sal_structure` WHERE candid_id='$candid_id'");
+	$amtshow=$saldetails->fetch(PDO::FETCH_ASSOC);
+	$sal_amt=$amtshow['fixedgross_month'];
+	
+	
 		if($work_days)
 		{
 			$work_days=$work_days;
 		}
-		else{
-			$work_days=0;
-		}		
-
+else{
+	$work_days=0;
+}		
 
 $oapm = $amtshow['otherallowances_permonth'];
 $oapms = str_replace(',', '', $oapm);

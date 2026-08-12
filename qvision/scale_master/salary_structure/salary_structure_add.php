@@ -47,7 +47,7 @@ function scale_master_back()
 {
 	$.ajax({
 	type:"POST",
-	url:"Qvision/scale_master/salary_structure/salary_structure.php",
+	url:"qvision/scale_master/salary_structure/salary_structure.php",
 	success:function(data)
 	{
 		$("#salary_structure_view").html(data);
@@ -60,7 +60,7 @@ function salary_create()
 	$.ajax({
 	type:'GET',
 	data: data,
-	url:"Qvision/scale_master/salary_structure/salary_structure_insert.php",
+	url:"qvision/scale_master/salary_structure/salary_structure_insert.php",
 		success:function(data)
 		{
 			if(data==0)

@@ -3,7 +3,7 @@ require '../../../connect.php';
 require '../../../user.php';
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
- $user_id = $_SESSION['userid']
+ $user_id = $_SESSION['userid'];
 ?>
 <head>
     <link rel="stylesheet" href="Qvision\commonstyle.css">
@@ -46,22 +46,20 @@ $userrole=$_SESSION['userrole'];
 	  <th>Action</th>
       </thead>
       <tbody>
+      
       <?php
-	  
-		 $datas=$con->query("SELECT a.id as costsheet_id,a.status as cs_status,a.*,b.*,e.*,f.* from cost_sheet_entry a 
-		    inner join new_client_master b on(b.id = a.client_id) 
-		    inner join product_services f on (f.id = a.business_id)
-		    inner join staff_master e ON e.candid_id=a.candid_id  where a.status ='1' and flag ='0' 
-		    group by a.cost_sheet_no  order by a.id desc");
-		// echo "SELECT a.id as costsheet_id,a.status as cs_status,a.*,b.*,e.*,f.* from cost_sheet_entry a 
-		//     inner join new_client_master b on(b.id = a.client_id) 
-		//     inner join product_services f on (f.id = a.business_id)
-		//     inner join staff_master e ON e.candid_id=a.candid_id  where a.status ='0' and flag =' ' 
-		//     group by a.cost_sheet_no  order by a.id desc";
-     $cnt=1;
-      while($data =$datas->fetch(PDO::FETCH_ASSOC))
-	  {
-		  ?>
+// WHERE condition ah temporary ah thookiyachu & specific columns mattum edukuram
+$datas=$con->query("SELECT a.id as costsheet_id, a.cost_sheet_no, a.business_id, a.quote_type, a.remark, b.org_name, e.emp_name 
+    FROM cost_sheet_entry a 
+    LEFT JOIN new_client_master b ON b.id = a.client_id 
+    LEFT JOIN staff_master e ON e.candid_id = a.created_by 
+    ORDER BY a.id DESC");
+
+$cnt=1;
+if($datas) { 
+    while($data =$datas->fetch(PDO::FETCH_ASSOC)) 
+    {
+?>
       <tr>
 	  <td><?php echo $cnt;?>.</td>
 	  <td><?php echo $data['cost_sheet_no']; ?></td>
@@ -72,7 +70,6 @@ $userrole=$_SESSION['userrole'];
 	  }
 	  ?></td>
       <td><?php if($data['quote_type']=='1'){ echo "INR"; }else{ echo "Doller";}?></td>
-      
       <td><?php echo $data['org_name']; ?></td>
 	  <td><?php echo $data['emp_name']; ?></td>
 	  <td><?php echo $data['remark']; ?></td>
@@ -81,11 +78,11 @@ $userrole=$_SESSION['userrole'];
 	     <i class="fa fa-eye"></i></button>
 	  </td>
       </tr>
-      <?php
-	  $cnt=$cnt+1;
-      //}
-	 }
-      ?>
+<?php
+      $cnt=$cnt+1;
+    }
+}
+?>
       </tbody>
       </table>
     
@@ -124,15 +121,16 @@ $(document).ready(function() {
 
 
 function cost_sheet_view(v){
-	  //alert(v);
-	$.ajax({
-	type:"POST",
-	url:"qvision/BusinessProcess/quotation/cost_sheet_revise.php?id="+v,
-	success:function(data)
-	{
-		$("#main_content").html(data);
-	}
-	})
+    //alert(v);
+    $.ajax({
+        type: "POST",
+        url: "qvision/BusinessProcess/quotation/cost_sheet_revise.php",
+        data: { id: v }, // BUG FIX: URL-la irunthu thookitu, data vazhiya anuprom
+        success: function(data)
+        {
+            $("#main_content").html(data);
+        }
+    });
 }
 function back_ctc()
 	{

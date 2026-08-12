@@ -28,10 +28,11 @@ $candidiateid=$_SESSION['candidateid'];
 		<tr>
 			<td>Finance Person:</td>
 			<?php 
-			$sta=$con->query("select * from staff_master where design_id='3'");
-			$sfet=$sta->fetch();
+			$sta = $con->query("select * from staff_master where design_id='3'");
+			$sfet = $sta ? $sta->fetch() : false;
+			$emp_name = ($sfet && !empty($sfet['emp_name'])) ? $sfet['emp_name'] : '';
 			?>
-			<td colspan="5"><input type="text" class="form-control" name="qdate" id="qdate" value="<?php echo $sfet['emp_name']; ?>" readonly>
+			<td colspan="5"><input type="text" class="form-control" name="qdate" id="qdate" value="<?php echo $emp_name; ?>" readonly>
 			</td>
 		</tr>
 	<?php 

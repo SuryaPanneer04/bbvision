@@ -30,7 +30,6 @@ $candidateid=$_SESSION['candidateid'];
 		$emp_sql=$con->query("SELECT  a.id as aid,a.emp_name as eid,a.dep_name,b.dept_name,c.emp_name,a.status,d.emp_name as person_name FROM appraisal_details a 
         LEFT JOIN z_department_master b ON a.dep_name=b.id  
         LEFT JOIN staff_master c ON a.emp_name=c.id 
-        
         LEFT JOIN staff_master d ON a.person_id=d.id where (a.status=1 || a.status=5 || a.status=6) AND a.from_date='$f_date' AND a.to_date='$t_date' ");  
 	
       $i=1;

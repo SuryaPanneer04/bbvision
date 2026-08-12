@@ -1,11 +1,7 @@
 <?php
 require '../../connect.php';
 require '../../user.php';
-$candidateid = isset($_REQUEST['id']) ? $_REQUEST['id'] : (isset($_SESSION['candidateid']) ? $_SESSION['candidateid'] : '');
-
-if ($candidateid == '') {
-    die("Candidate ID is missing. Please access this page with a valid candidate ID.");
-}
+$candidateid=$_SESSION['candidateid'];
 $sql=$con->query("select * from candidate_form_details  
 INNER JOIN designation_master ON candidate_form_details.position = designation_master.id where candidate_form_details.id='$candidateid'");
 $data=$sql->fetch();
@@ -39,13 +35,12 @@ else
 </ul>
 </div> <!-- /.card-header -->
 <div class="card-body">
-<form id="masterForm" enctype="multipart/form-data" novalidate>
 <div class="tab-content">
     <div class="active tab-pane" id="for_employment">
 
                                     <!--Employee personal details -->
 	
-	
+	<form id="fupForm" enctype="multipart/form-data">
     <!-- Post -->
     <table class="table table-bordered">
         <tr>
@@ -137,24 +132,53 @@ else
     </td>
       </tr>
 
+       <?php 
+if($emp_pd_sts!=1){
+	?>
         <tr>  
         <td colspan="6"> 
 		<input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
 		<input type="hidden" name="id" id="id" value="<?php echo $emp_pd_id;?>">
 		<input type="hidden" name="emp_status" id="emp_status" value="<?php echo $emp_pd_sts;?>">
-		
+		<input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
 		</td>
 		</tr>
+<?php } ?>
 
         </table>
         <!-- /.post -->
-    
+    </form>
     </div>
 	
 <script>                               //Application for Employment
 $(document).ready(function(){
     // Submit form data via Ajax
-    // File type validation
+    $("#fupForm").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: 'qvision/Recruitment/submit.php',
+            data: new FormData(this),
+            contentType: false,
+            processData:false,
+            success: function(data){
+      if(data=="")
+      { 
+        alert("Entry Unsuccessfull");
+		//console.warn("data");
+		application();
+      }
+      else
+      {
+		alert("Application form Entry Successfully Completed.Then fill out the EDUCATIONAL QUALIFICATIONS");
+	   // console.warn("data");
+		application();
+      }
+    }   
+        });
+    });
+	
+// File type validation
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $(".file").change(function() {
         for(i=0;i<this.files.length;i++){
@@ -241,15 +265,15 @@ $("#pannumber").change(function () {
 });   
   
 //voter id
-// $("#voternumber").change(function () {      
-// var inputvalues = $(this).val();      
-//   var regex = /^([a-zA-Z]){3}([0-9]){7}?$/g;   
-//   if(!regex.test(inputvalues)){      
-//   $("#voternumber").val("");    
-//   alert("invalid voter no");    
-//   return regex.test(inputvalues);    
-//   }    
-// });   
+$("#voternumber").change(function () {      
+var inputvalues = $(this).val();      
+  var regex = /^([a-zA-Z]){3}([0-9]){7}?$/g;   
+  if(!regex.test(inputvalues)){      
+  $("#voternumber").val("");    
+  alert("invalid voter no");    
+  return regex.test(inputvalues);    
+  }    
+});   
 
 </script>
                                    <!--Employee Education -->
@@ -263,7 +287,7 @@ $edu_sts=0;
 ?>
  
     <div class="tab-pane" id="education_qualification">
-	
+	<form id="fupForm1" class="form-horizontal" method="POST" enctype="multipart/form-data">
     <table class="table table-bordered" id="new_tab">
     <tr>
     <td colspan="10"><center><b>Educational Qualifications (In descending order of qualifications attained)</b></center></td>
@@ -287,8 +311,8 @@ $edu_sts=0;
         $sel=$con->query("select * from emp_qualification where emp_id='$candidateid' order by id asc");	
 		$i=1;
         $educationRowcount = $sel->rowCount();
-		if($educationRowcount > 0){
-			$getcount=1;
+		if($educationRowcount){
+			$getcount=0;
 		}
 		else
 		{
@@ -335,7 +359,7 @@ if($getcount == 0){ ?>
 	  <input type="file" class="form-control" id="attachment_1" name="attachment[]" />
 	  </td>
 	  <td style="border-left:none;">
-	  <!-- <a href="qvision/Recruitment/education_certificate/" download="<?php echo $row['attachment']; ?>" ><?php echo $row['attachment']; ?></a> -->
+	  <!--<a href="qvision/Recruitment/education_certificate/" download="<?php echo $row['attachment']; ?>" ><?php echo $row['attachment']; ?></a> 
 	   <input type="hidden" value="" name="attach[]" id="attachhh">
 	  </td>
     </tr>
@@ -347,21 +371,49 @@ if($getcount == 0){ ?>
     </table>
 	
     <table>
+<?php 
+if($edu_sts!=1){
+?>
     <tr> 
 	<td colspan="6">
 		<input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
-		
+		<input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
     </td>
 	</tr>
+<?php } ?>
 
     </table>
-    
+    </form>
     <!-- /.tab-pane -->
     </div>
 	
 <script>                            //Educational Qualifications
 $(document).ready(function(){
     // Submit form data via Ajax
+    $("#fupForm1").on('submit', function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: 'qvision/Recruitment/employee_educational_insert.php',  
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+           success: function(data){
+    if(data == 1 || data == "1") 
+    {
+        alert("Application form Entry Successfully Completed. Then fill out the EDUCATIONAL QUALIFICATIONS");
+        application();
+    }
+    else
+    { 
+        alert("Entry Unsuccessfull! Database error.");
+        application();
+    }
+}
+        });
+    });
+	
     // File type validation  //Educational Qualifications
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $("#attachment_1").change(function() {
@@ -417,7 +469,7 @@ else
 
 ?>	
    <div class="tab-pane" id="certification_details" >
-    
+    <form   method="POST" id="emp_education"  enctype="multipart/form-data">
     <table class="table table-bordered" id="new_tab1">
     <tr>
     <td colspan="10"><center><b>Certification Details</b></center></td>
@@ -480,14 +532,18 @@ else
    ?> 	
      </table>
     <table>
+<?php 
+if($certificate_sts!=1){
+?>
     <tr>
 	<td>
 	 <input type="hidden" name="cid" id="cid" value="<?php echo $candidateid;?>">
-	 
+	 <input type="submit" name="submit" class="btn btn-success submitBtn" value="SUBMIT"/>
 	</td>
 	</tr>
+<?php } ?>
     </table>
-    
+    </form>
     <!-- /.tab-pane -->
     </div>
     <!-- /.tab-pane -->
@@ -495,6 +551,34 @@ else
 <script>                        //Certification Details
 $(document).ready(function(){           
     // Submit form data via Ajax
+    $("#emp_education").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: 'qvision/Recruitment/employee_certificate_insert.php',
+            data: new FormData(this),
+            contentType: false,
+            processData:false,
+           
+            success: function(data){
+      if(data==0)
+      { 
+        alert("Entry Unsuccessfull");
+		console.warn("datass");
+		application();
+      }
+      else
+      {
+		alert('Certification Details form entry Successfully Completed.Then fill out the EMPLOYEMENT DETAILS');
+        console.warn("data");
+
+		application();
+      }
+      
+    }   
+        });
+    });
+	
     // File type validation
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $("#certifcatefile_1").change(function() {
@@ -575,7 +659,7 @@ else
     </tr>
       </table>
       
-	  
+	  <form method="POST" id="emp_educations"  enctype="multipart/form-data">
     <table class="table table-bordered" id="new_tab2">
     <tr>
     <td colspan="10"><center><b>Employment Details</b></center></td>
@@ -675,16 +759,19 @@ else
     }
    
 }
-?>
 
+// Ensure that $emp_exp_sts is set before checking its value
+if ( $emp_exp_sts !=1) {
+?>  
     <tr>
         <td>
             <input type="hidden" name="cid" id="cid" value="<?php echo htmlspecialchars($candidateid); ?>">
-            
-            
+            <input type="submit" name="submit" id="yes" class="btn btn-success submitBtn" value="SUBMIT"/>
+            <button type="button" class="btn btn-danger" name="no" id="no" onclick="noexp()">SUBMIT</button>
         </td>
     </tr>
-
+<?php } ?>
+</form>
 
     
 	
@@ -726,6 +813,31 @@ else
 <script>                     // Employment Details
 $(document).ready(function(){
     // Submit form data via Ajax
+    $("#emp_educations").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: 'qvision/Recruitment/employee_employment_insert.php',
+            data: new FormData(this),
+            contentType: false,
+            processData:false,
+            success: function(data){
+      if(data==0)
+      { 
+        alert("Entry Unsuccessfull");
+		application();
+      }
+      else
+      {
+		alert('Application form Entry Successfully Completed.');
+       // application();
+       window.location.href= 'login/login.php';
+      }
+      
+    }   
+        });
+    });
+	
     // File type validation
     var match = ['application/pdf', 'application/msword', 'application/vnd.ms-office', 'image/jpeg', 'image/png', 'image/jpg'];
     $("#file").change(function() {
@@ -832,11 +944,6 @@ function noexp(){
     <!-- /.tab-pane -->
     </div>
     <!-- /.tab-content -->
-    <div class="text-center mt-3 mb-3">
-       <input type="hidden" name="cid" id="master_cid" value="<?php echo htmlspecialchars($candidateid); ?>">
-       <button type="submit" class="btn btn-success btn-lg">Submit All Details</button>
-    </div>
-    </form>
     </div><!-- /.card-body -->
     </div>
     <!-- /.nav-tabs-custom -->
@@ -869,57 +976,3 @@ function printDiv(divName) {
 
 
 
-
-
-
-<script>
-$(document).ready(function() {
-    $("#masterForm").on('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        
-        // 1. Submit Personal Details
-        $.ajax({
-            type: 'POST',
-            url: 'qvision/Recruitment/submit.php',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(res1) {
-                // 2. Submit Educational Qualifications
-                $.ajax({
-                    type: 'POST',
-                    url: 'qvision/Recruitment/employee_educational_insert.php',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(res2) {
-                        // 3. Submit Certification Details
-                        $.ajax({
-                            type: 'POST',
-                            url: 'qvision/Recruitment/employee_certificate_insert.php',
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function(res3) {
-                                // 4. Submit Employment Details
-                                $.ajax({
-                                    type: 'POST',
-                                    url: 'qvision/Recruitment/employee_employment_insert.php',
-                                    data: formData,
-                                    contentType: false,
-                                    processData: false,
-                                    success: function(res4) {
-                                        alert("Application form Entry Successfully Completed.");
-                                        window.location.href = 'login/login.php';
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    });
-});
-</script>

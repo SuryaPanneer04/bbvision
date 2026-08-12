@@ -78,7 +78,7 @@ else
 	$mail->Subject = 'Login Details';			//Sets the Subject of the message
 					//An HTML or plain text message body
 		
-	$mail->Body .= "An account has been created for you in the Kerli Software at Bluebase Software Services Private Limited. This account will enable you to submit candidates on job requisitions. Kindly use the following Credentials:"."\r\n\r\n<br/><br/>";
+	$mail->Body .= "An account has been created for you in the Kerli Software at Quadsel Systems Private Limited. This account will enable you to submit candidates on job requisitions. Kindly use the following Credentials:"."\r\n\r\n<br/><br/>";
 	$mail->Body .= "Url : http://115.243.95.118:8081/ss-information/"."\r\n\r\n<br/><br/>";	
 	$mail->Body    .= "USERNAME : ".$USERNAME."\r\n\r\n<br/>"; 
 	$mail->Body   .= "PASSWORD : ".$PASSWORD."\r\n\r\n<br/><br/><br/>";

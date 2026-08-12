@@ -77,7 +77,7 @@ function update_feedback(v)
 	$.ajax({
 		type:"GET",
 		data: data + "&" + "id="+id,
-		url:"qvision/masters/feedback_master/update_feedback.php",
+		url:"qvision/masters/Feedback_master/update_feedback.php",
 		success:function(data)
 		{
 			if(data==1)

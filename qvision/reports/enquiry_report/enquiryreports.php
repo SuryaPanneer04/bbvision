@@ -1,4 +1,4 @@
-	<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 <div class="col-md-12" style="text-align: end;margin: 5px;">
   <a href="#" id="1" style="font-size:20px;" class="excel btn btn-success" onclick="ExportToExcel('xlsx')">
   <span class="fa fa-download">&nbsp;Excel</a>&nbsp;&nbsp;

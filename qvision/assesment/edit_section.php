@@ -13,12 +13,12 @@ $sta=$row['status'];
 <a onclick="return back_ctc()" style="float: right;" data-toggle="modal" class="btn btn-primary">Back</a>
 </div>
 <div class="card-body" id="printableArea">
-<form role="form" id="edit_section_form" method="post" enctype="multipart/type">
+<form role="form" name="" action="qvision/assesment/update_section.php" method="post" enctype="multipart/type">
 
 <table class="table table-bordered">
 <tr>
 <td><center><img src="qvision/images/logo123.jpg" alt="quadsel" style="width:100px;height:50px;"></center></td>
-<td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+<td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
 </tr>
 <tr>
 <td>Section Name:</td>
@@ -54,7 +54,7 @@ else{
 </tr>
 </table>
 
-<input type="button" name="submit" value="Update" class="btn btn-primary btn-md" style="float:right;" onclick="update_section()">
+<input type="submit" name="submit" class="btn btn-primary btn-md" style="float:right;">
 </form>
 </div>
 </div>
@@ -62,17 +62,5 @@ else{
 <script>
 function back_ctc() {
     section_master();
-}
-function update_section() {
-    var data = $('#edit_section_form').serialize();
-    $.ajax({
-        type: "POST",
-        url: "qvision/assesment/update_section.php",
-        data: data + "&submit=1",
-        success: function(response){
-            alert("Updated Successfully");
-            section_master();
-        }
-    });
 }
 </script>

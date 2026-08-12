@@ -20,22 +20,21 @@ $designation=$_POST['designation'];
 $from=$_POST['from'];
 $to=$_POST['to'];
 $yearofexperience=$_POST['yearofexperience'];
-$filesArr3 = isset($_FILES["exp"]) ? $_FILES["exp"] : array();
-$exp_attach = isset($_POST["exp_attach"]) ? $_POST["exp_attach"] : array();
-$id = isset($_POST['expid']) ? $_POST['expid'] : array(); 
+$filesArr3 = $_FILES["exp"];
+$exp_attach = $_POST["exp_attach"]; 
 $status=1;
 
 
  for($i=0;$i<$organization_count;$i++)
 {
 
-$exp_id= isset($id[$i]) ? $id[$i] : '';
+$exp_id= $id[$i];
 $organizations= $organization[$i];
 $desig= $designation[$i];
 $vfrom= $from[$i];
 $vto= $to[$i];
 $yoe= $yearofexperience[$i];
-$exp_att= isset($exp_attach[$i]) ? $exp_attach[$i] : '';
+$exp_att= $exp_attach[$i];
 
      // $uploadStatus = 1; 
         $fileNames = array_filter($filesArr3['name']); 
@@ -65,9 +64,8 @@ $exp_att= isset($exp_attach[$i]) ? $exp_attach[$i] : '';
  // Insert form data in the database 		
 			
   if($exp_id!=''){
-	 $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';
-     if($current_file!=''){  
-	$sql=$con->query("UPDATE `emp_exp_detail` SET emp_id='$candidateid' ,organization_name='$organizations' ,designation='$desig' ,from_date='$vfrom' ,to_date='$vto' ,total_experience='$yoe' ,modified_by='$candidateid' ,modified_on=now(),status='$status',exp_attachment='$current_file' WHERE id='$exp_id'");
+	 if($fileNames[$i]!=''){  
+	$sql=$con->query("UPDATE `emp_exp_detail` SET emp_id='$candidateid' ,organization_name='$organizations' ,designation='$desig' ,from_date='$vfrom' ,to_date='$vto' ,total_experience='$yoe' ,modified_by='$candidateid' ,modified_on=now(),status='$status',exp_attachment='$fileNames[$i]' WHERE id='$exp_id'");
      }
 	 else{
 		 $sql=$con->query("UPDATE `emp_exp_detail` SET emp_id='$candidateid' ,organization_name='$organizations' ,designation='$desig' ,from_date='$vfrom' ,to_date='$vto' ,total_experience='$yoe' ,modified_by='$candidateid' ,modified_on=now(),status='$status',exp_attachment='$exp_att' WHERE id='$exp_id'");
@@ -75,15 +73,12 @@ $exp_att= isset($exp_attach[$i]) ? $exp_attach[$i] : '';
 	
   } 
   else{	
-     $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';
-     $sql=$con->query("insert into `emp_exp_detail`(emp_id, organization_name, designation, from_date, to_date, total_experience,created_by,status,exp_attachment)  values('$candidateid','$organizations','$desig','$vfrom','$vto','$yoe','$candidateid','$status','$current_file')"); 
+     $sql=$con->query("insert into `emp_exp_detail`(emp_id, organization_name, designation, from_date, to_date, total_experience,created_by,status,exp_attachment)  values('$candidateid','$organizations','$desig','$vfrom','$vto','$yoe','$candidateid','$status','$fileNames[$i]')"); 
   }
    
 }
 
   $sql2=$con->query("update candidate_form_details set status='20' where id='$candidateid'");
-
-  unset($_SESSION['candidateid']);
 
 if($sql){
 	 echo 1;

@@ -4,7 +4,12 @@ require '../../../user.php';
 $candidateid=$_SESSION['candidateid'];
 $userrole=$_SESSION['userrole'];
 
-$sql=$con->query("select * from staff_master where candid_id='$candidateid' and head_status='1'");
+$sql = $con->query("
+    SELECT *
+    FROM staff_master
+    WHERE candid_id='$candidateid'
+    AND head_status IN (1,2)
+");
 $count=$sql->rowcount();
 if($count==1)
 {
@@ -59,14 +64,30 @@ else
 		 $stmtf = $con->prepare("SELECT emp_name from staff_master where candid_id ='$f_approved_id' "); 	
 		 //echo "SELECT emp_name from staff_master where candid_id ='$f_approved_id'";
 		 $stmtf->execute(); 
-		 $rowf = $stmtf->fetch();
-		  $finance_emp_name = $rowf['emp_name'];
+		 $rowf = $stmtf->fetch(PDO::FETCH_ASSOC);
+
+			if($rowf)
+			{
+				$finance_emp_name = $rowf['emp_name'];
+			}
+			else
+			{
+				$finance_emp_name = '';
+			}
 		 
 		 $stmts = $con->prepare("SELECT emp_name from staff_master where candid_id ='$s_approved_id' "); 	
 		 //echo "SELECT emp_name from staff_master where candid_id ='$approved_id'";
 		 $stmts->execute(); 
-		 $rows = $stmts->fetch();
-		 $service_emp_name = $rows['emp_name'];
+		 $rows = $stmts->fetch(PDO::FETCH_ASSOC);
+
+			if($rows)
+			{
+				$service_emp_name = $rows['emp_name'];
+			}
+			else
+			{
+				$service_emp_name = '';
+			}
 		  
 		  ?>
       <tr>

@@ -11,7 +11,11 @@ if(isset($_REQUEST['submit']))
 	
 	if($sql)
     {
-        echo "<script>alert('Updated Successfully'); window.location.href='../../index.php';</script>";
+       
+    echo "<script>
+            alert('Updated Successfully');
+            window.location.href = '../../index.php'; 
+          </script>";
     }
 }
 ?>

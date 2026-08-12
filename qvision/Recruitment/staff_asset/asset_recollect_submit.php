@@ -1,26 +1,29 @@
 <?php
 require '../../../connect.php';
 include("../../../user.php");
-$userrole=$_SESSION['userrole'];
+$userrole = isset($_SESSION['userrole']) ? $_SESSION['userrole'] : '';
 
-$reqid=$_REQUEST['reqid'];
-$cugsta=$_REQUEST['cugsta'];
+$reqid = isset($_REQUEST['reqid']) ? $_REQUEST['reqid'] : '';
+$views = isset($_REQUEST['View']) ? $_REQUEST['View'] : array();
 
-$simid=$_REQUEST['simid'];
-$assets=$_REQUEST['View'];
-//print_r($assets);
-$count=count($assets);
-for($i=0;$i<$count;$i++)
-{
-	$assetid=$assets[$i];
-$upd=$con->query("update staff_asset_list set status=3 where asset_request_id='$reqid' and asset_id='$assetid'");
-	$asset_form=$con->query("update assets_form_detail set status=1 where id='$assetid'");
-//echo "update staff_asset_list set status=2 where asset_request_id='$reqid' and asset_id='$assetid'";
-}
-
-if($asset_form)
-{
-	echo "<script>alert(' Updated Successfully');</script>";
-	header("location:../../../index.php");
+if(!empty($views) && is_array($views)) {
+    foreach($views as $val) {
+        $val = trim($val);
+        if(!empty($val)) {
+            $con->query("UPDATE assets_form_detail SET status = 1 WHERE id IN (SELECT asset_id FROM staff_asset_list WHERE id = '$val' OR asset_id = '$val')");
+            
+            $con->query("UPDATE staff_asset_list SET status = 3 WHERE (id = '$val' OR asset_id = '$val') AND (asset_request_id = '$reqid' OR staff_id = (SELECT staff_id FROM staff_access_request WHERE id='$reqid')) AND status = 2");
+        }
+    }
+    
+    // ✅ Oruvelai antha request la irukka ellam asset-um collect aayiruntha, main request status-aiyum 6 (Closed) nu update pandrom
+    $check_rem = $con->query("SELECT id FROM staff_asset_list WHERE asset_request_id = '$reqid' AND (status = 1 OR status = 2)");
+    if($check_rem && $check_rem->rowCount() == 0) {
+        $con->query("UPDATE staff_access_request SET status = 6 WHERE id = '$reqid'");
+    }
+    
+    echo "success";
+} else {
+    echo "error";
 }
 ?>

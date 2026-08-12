@@ -48,10 +48,22 @@ $user_id=$_SESSION['userid'];
 												while ($row = $stmt->fetch()) {
 													?>
 													<option value="<?php echo $row['id']; ?>"> <?php echo $row['leave_name']; ?> </option>
-												<?php } ?>
+												<?php
+												 } 
+												?>
 											</select>
 										</td>
 										</tr>
+										<tr>
+										<td colspan="2">From Date</td>
+										<td colspan="2"><input type="date" class="form-control" id="from_date" name="from_date" required></td>
+										<td colspan="2">To Date</td>
+										<td colspan="2"><input type="date" class="form-control" id="to_date" name="to_date" required></td>
+									</tr>
+									<tr>		 
+										<td colspan="2">Reason For Leave :</td>
+										<td colspan="6"><input type="text" class="form-control" id="reason" name="reason" placeholder="Type reason here.." required></td>
+									</tr>
 																
 									<tr>		 
 										<td colspan="8"><input type="submit" class="btn btn-success" name="submit" id="submit" value="save">

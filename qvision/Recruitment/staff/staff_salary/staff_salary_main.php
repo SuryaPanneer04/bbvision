@@ -244,7 +244,7 @@ background-color: darkgreen;
 				  <div class="form-group row">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Variable Pay Percentage</label>
                     <div class="col-sm-10">
-                      <input type="number" class="form-control" id="Payable_staff_salary" name="Payable_staff_salary" min="0" max="100" value="<?php echo $varaible_pay; ?>" onchange="payable(this.value)">
+                      <input type="number" class="form-control" id="Payable_staff_salary" name="Payable_staff_salary" min="1" max="100" value="<?php echo $varaible_pay; ?>" onchange="payable(this.value)" required>
                     </div>					
                   </div>
 				  <div class="form-group row">
@@ -409,6 +409,21 @@ if (is_numeric($varaible_pay)) {
 <?php 
    $salStructure=$con->query("SELECT * FROM `joining_detail_sal_structure` WHERE `candid_id`='$staid'");
    $structure=$salStructure->fetch();
+   if (!$structure) {
+       $structure = array(
+           'fixedgross_month' => '', 'fixedgross_annum' => '', 'basic_month' => '', 'basic_annum' => '',
+           'HRA_month' => '', 'HRA_annum' => '', 'otherallowances_permonth' => '', 'otherallowances_perannum' => '',
+           'siteallowance_permonth' => '', 'siteallowance_perannum' => '', 'advancebonus_permonth' => '', 
+           'advancebonus_perannum' => '', 'employee_PF_month' => '', 'employee_PF_annum' => '', 
+           'employee_ESIC_month' => '', 'employee_ESIC_annum' => '', 'professionaltax_permonth' => '', 
+           'professionaltax_perannum' => '', 'tds_permonth' => '', 'tds_perannum' => '', 'clubee_permonth' => '', 
+           'clubee_perannum' => '', 'totaldeduction_employee_permonth' => '', 'totaldeduction_employee_perannum' => '', 
+           'netsalary_month' => '', 'netsalary_annum' => '', 'employer_PF_month' => '', 'employer_PF_annum' => '', 
+           'employer_ESIC_month' => '', 'employer_ESIC_annum' => '', 'cluber_month' => '', 'cluber_annum' => '', 
+           'total_Deductions_Employer_month' => '', 'total_Deductions_Employer_annum' => '', 'fixed_month' => '', 
+           'fixed_annum' => ''
+       );
+   }
  ?>
  <img src="/qvision/images/edit.png" id="editIcon" style="height:25px;width:25px;float:right;" onclick="editt();" /><br>
  <br>

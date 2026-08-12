@@ -17,8 +17,8 @@ $row = $stmt->fetch();
 
 <table class="table table-bordered">
         <tr>
-        <td><center><img src="qvision/images/logo123.jpg" alt="quadsel" style="width:150px;height:50px;"></center></td>
-        <td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+        <td><center><img src="qvision/images/logo123.jpg" alt="bluebase" style="width:150px;height:50px;"></center></td>
+        <td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
         </tr>
      
         <tr>
@@ -82,8 +82,8 @@ function update_resource(v)
 	}) 
 }
  
-function back_ctc()
+function back_to_arrears()
 {
-	resource_master();
-} 
+    arrear_pay();
+}
 </script>

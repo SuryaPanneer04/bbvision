@@ -370,8 +370,9 @@ $fet = $sql->fetch();
 		} else {
 			$.ajax({
 				type: 'GET',
-				data: data + "&" + "id=" + id,
-				url: "qvision/resource/resource_form/followup_date_insert.php",
+				data: "id=" + id,
+				data,
+				url: "qvision/Resource/Resource_form/followup_date_insert.php",
 				success: function(data) {
 					if (data == 0) {
 						alert('Update Failed');

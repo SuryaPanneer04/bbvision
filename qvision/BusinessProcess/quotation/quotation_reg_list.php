@@ -37,12 +37,14 @@ $userrole=$_SESSION['userrole'];
       <tbody>
 	
       <?php
-		 $datas=$con->query("SELECT a.id as costsheet_id,a.*,b.*,e.*,f.*,h.* from cost_sheet_entry a 
-		        inner join client_master b on(b.id = a.client_id) 
-		        inner join product_services f on (f.id = a.business_id)
-		        inner join staff_master e ON e.candid_id=a.candid_id  
-				inner join quote_generate h on(h.cost_sheet_id=a.id)
-				where a.status ='4' and a.created_by='$candidateid' and h.status ='2' group by a.cost_sheet_no  order by a.id desc");
+		 $datas=$con->query("SELECT a.id as costsheet_id, a.*, b.*, e.*, h.* 
+FROM cost_sheet_entry a 
+INNER JOIN client_master b ON (b.id = a.client_id) 
+INNER JOIN staff_master e ON e.candid_id = a.candid_id  
+INNER JOIN quote_generate h ON (h.cost_sheet_id = a.id)
+WHERE a.status = '4' AND a.created_by = '$candidateid' AND h.status = '2' 
+GROUP BY a.cost_sheet_no 
+ORDER BY a.id DESC");
 				
 /*          echo "SELECT a.id as costsheet_id,a.*,b.*,e.*,f.*,h.* from cost_sheet_entry a 
 		        inner join client_master b on(b.id = a.client_id) 
@@ -71,11 +73,7 @@ $userrole=$_SESSION['userrole'];
 		  <td><?php echo $data['emp_name']; ?></td>
 		  <td><?php echo $data['remark']; ?></td>
 		  <td>  
-		      <input type ="hidden" name="cost_sheet_no" id ="cost_sheet_no" value="<?php echo $data['cost_sheet_no']; ?>">
-			  <input type ="hidden" name="quote_no" id ="quote_no" value="<?php echo $data['quote_no']; ?>">
-			<!-- <button class="btn btn-info" data-id="<?php echo $data['cost_sheet_no']; ?>" onclick="quote_proposal_view(<?php echo $data['cost_sheet_no']; ?>)">
-			 <i class="fa fa-eye"></i> Re-Generated </button>-->
-			 <input type="button" class="btn btn-success" id="save" name="save" onclick="quote_reg()"  value="Re-Generated">
+			 <input type="button" class="btn btn-success" id="save" name="save" onclick="quote_reg('<?php echo $data['cost_sheet_no']; ?>', '<?php echo $data['quote_no']; ?>')"  value="Re-Generated">
 		  </td>
       </tr>
       <?php
@@ -89,12 +87,9 @@ $userrole=$_SESSION['userrole'];
 </div>
 <script>
 function back()
-
-	{
-		url:"qvision/BusinessProcess/quotation/quotation_reg_list.php?id=",
-		
-
-	}
+{
+    window.location.href = "qvision/BusinessProcess/quotation/quotation_reg_list.php";
+}
 $(function () {
     $("#example1").DataTable({
       "responsive": true,
@@ -128,13 +123,8 @@ function quote_proposal_view(v){
 	})
 }
 
-function quote_reg()
+function quote_reg(cost_sheet_no, quote_no)
 {
-	
- 	var cost_sheet_no    = document.getElementById("cost_sheet_no").value;
-	var quote_no         = document.getElementById("quote_no").value;
-    alert(cost_sheet_no);
-	alert(quote_no);
 	$.ajax({
 	type:'GET',
 	data:"quote_no="+quote_no+'&cost_sheet_no='+cost_sheet_no, 
@@ -142,8 +132,11 @@ function quote_reg()
 	success:function(data)
 	{      
 		alert("Quote Re-Generated Successfully");
-		Quotation_send()
-				  
+		Quotation_send();		  
+	},
+	error: function() 
+	{
+		alert("Something went wrong!");
 	}       
 	}); 
 }

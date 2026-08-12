@@ -11,9 +11,11 @@ if(isset($_REQUEST['submit']))
 	$status=$_REQUEST['status'];
 	$sql=$con->query("update department_mapping set company_name='$company',department_id='$department',department_head='$head',status='$status' where id='$id'");
 	//echo "update department_mapping set company_name='$company',department_id='$department',department_head='$head',status='$status' where id='$id'";
-	if($sql)
+if($sql)
 {
-	echo "<script>alert(' Updated Updated');</script>";
-	header("location:/bbvision/index.php");
+    echo "<script>
+            alert('Updated Successfully');
+            window.location.href = '../../../index.php'; 
+          </script>";
 }
 }?>	

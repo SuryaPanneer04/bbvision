@@ -46,6 +46,9 @@ require '../../connect.php';
                                         // print_r($que);
                                         // die();
                                         $row_qn = $que->fetch(PDO::FETCH_ASSOC);
+                                        if (!$row_qn) {
+                                            continue;
+                                        }
                                         $que->execute();
                                         $counts = $que->rowCount();
                                         $qn_name = $row_qn['qn_name_id'];

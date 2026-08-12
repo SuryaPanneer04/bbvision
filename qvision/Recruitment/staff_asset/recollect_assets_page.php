@@ -62,23 +62,25 @@ if(!empty($sid)){
             </tr>
             
             <?php
-            $isel = $con->query("SELECT DISTINCT m.id AS id, m.name, a.Serial_no 
+            // ✅ FIX 1: Show the specific asset being returned right now!
+            $isel = $con->query("SELECT DISTINCT m.id AS id, m.name, COALESCE(f.Serial_no, '-') as Serial_no 
                                  FROM staff_asset_list s
-                                 JOIN assets_form_detail a ON s.asset_id = a.id 
-                                 JOIN assets_master m ON a.asset_name = m.name 
-                                 WHERE s.staff_id = '$sid' AND s.status = 1");
+                                 LEFT JOIN assets_master m ON (s.asset_id = m.id OR s.asset_id = m.name)
+                                 LEFT JOIN assets_form_detail f ON s.asset_id = f.id
+                                 WHERE s.asset_request_id = '$id' AND s.status = 2");
             
             $has_pending = false;
             $is_first_pending = true;
 
-            if($isel){
+            if($isel && $isel->rowCount() > 0){
                 while ($dfet = $isel->fetch(PDO::FETCH_ASSOC)) {
                     $has_pending = true;
+                    $asset_display_name = !empty($dfet['name']) ? $dfet['name'] : 'Asset ID: '.$dfet['id'];
                 ?>
                 <tr>
-                    <td style="font-weight:bold;"><?php echo $is_first_pending ? 'Pending Assets:' : ''; ?></td>
-                    <td><?php echo $dfet['name']; ?></td>
-                    <td colspan="2"><?php echo $dfet['Serial_no']; ?></td>
+                    <td style="font-weight:bold;"><?php echo $is_first_pending ? 'Returning Asset:' : ''; ?></td>
+                    <td><?php echo htmlspecialchars($asset_display_name); ?></td>
+                    <td colspan="2"><?php echo htmlspecialchars($dfet['Serial_no']); ?></td>
                 </tr>
                 <?php
                     $is_first_pending = false;
@@ -88,8 +90,8 @@ if(!empty($sid)){
             if (!$has_pending) {
                 ?>
                 <tr>
-                    <td style="font-weight:bold;">Pending Assets:</td>
-                    <td colspan="3"></td>
+                    <td style="font-weight:bold;">Returning Asset:</td>
+                    <td colspan="3">-</td>
                 </tr>
                 <?php
             }
@@ -121,26 +123,28 @@ if(!empty($sid)){
             <tr>
                 <td>
                     <?php 
-                    $isel_ret = $con->query("SELECT DISTINCT m.id as id, m.name as name, a.Serial_no as Serial_no, a.id as aid 
+                    // ✅ BULLETPROOF FIX 2: Exact query to show checkboxes for status=2 (Returned) assets
+                    $isel_ret = $con->query("SELECT DISTINCT s.id as aid, m.name as name, s.asset_id 
                                              FROM staff_asset_list s
-                                             JOIN assets_form_detail a ON s.asset_id=a.id 
-                                             JOIN assets_master m ON a.asset_name=m.name 
-                                             WHERE s.staff_id='$sid' AND s.status=2");
+                                             LEFT JOIN assets_master m ON (s.asset_id = m.id OR s.asset_id = m.name)
+                                             WHERE (s.asset_request_id = '$id' OR s.staff_id = '$sid') AND s.status = 2");
 
-                    if($isel_ret){
+                    if($isel_ret && $isel_ret->rowCount() > 0){
                         $i = 1;
-                        $s = 1;
                         while ($dfet_ret = $isel_ret->fetch(PDO::FETCH_ASSOC)) {
+                            $ret_name = !empty($dfet_ret['name']) ? $dfet_ret['name'] : 'Asset ID: '.$dfet_ret['asset_id'];
                         ?>
                             <div style="width:100%;float:left;padding: 5px 0px;">
-                                <div style="width:15%;float:left;margin-left: 113px;">
-                                    <input type="checkbox" name="View[]" id="View<?php echo $i . $s++; ?>" value="<?php echo $dfet_ret['aid']; ?>" />&emsp;<?php echo $dfet_ret['name']; ?>
+                                <div style="width:50%;float:left;margin-left: 50px;">
+                                    <input type="checkbox" name="View[]" id="View<?php echo $i; ?>" value="<?php echo $dfet_ret['aid']; ?>" />&emsp;<b><?php echo htmlspecialchars($ret_name); ?></b>
                                 </div>
                             </div>
                         <?php
                             $i++;
                         }
-                    } 
+                    } else {
+                        echo "<div style='padding: 10px; color: red; text-align: center;'>No assets ready for collection.</div>";
+                    }
                     ?>
                 </td>
             </tr>

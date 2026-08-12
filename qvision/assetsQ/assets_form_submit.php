@@ -1,6 +1,6 @@
 <?php 
-require '../../connect.php';
-include('../../user.php');
+require '../config.php';
+include('../user.php');
 //$user_id=$_SESSION['userid'];
 /* if(isset($_REQUEST['save']))
 {
@@ -103,7 +103,7 @@ else
 		$ass_name = $row['name'];
 	$sql_asset=$ass_name;
 }
-//echo "SELECT * FROM assets_master where id='$asset_name'";
+
 		
 
    $uploadedFile = ''; 
@@ -126,21 +126,16 @@ else
 			
 		$ins=$con->query("insert into assets_form_detail(`asset`, `asset_type`, `prefix`, `asset_no`, `asset_name`, `brand_name`, `vendor_name`, `p_date`, `Serial_no`, `config`, `warranty`, `hsn_code`, `part_no`, `asset_value`, `location`,`invoice_no`,`invoice`, `status`, `created_by`, `created_on`, `description`, `gst_code`)values('$asset','$asset_type','$prefix','$ass_no','$sql_asset','$brand','$vendor','$pdate','$serial','$config','$Warranty','$hsn_code','$part_no','$asset_value','$location','$invoice_no','$fileName',1,'$user_id',now(),'$des','$gst_code')");	
 		
-		echo "insert into assets_form_detail(`asset`, `asset_type`, `prefix`, `asset_no`, `asset_name`, `brand_name`, `vendor_name`, `p_date`, `Serial_no`, `config`, `warranty`, `hsn_code`, `part_no`, `asset_value`, `location`,`invoice_no`,`invoice`, `status`, `created_by`, `created_on`, `description`, `gst_code`)values('$asset','$asset_type','$prefix','$ass_no','$sql_asset','$brand','$vendor','$pdate','$serial','$config','$Warranty','$hsn_code','$part_no','$asset_value','$location','$invoice_no','$fileName',1,'$user_id',now(),'$des','$gst_code')";
+		//echo "insert into assets_form_detail(`asset`, `asset_type`, `prefix`, `asset_no`, `asset_name`, `brand_name`, `vendor_name`, `p_date`, `Serial_no`, `config`, `warranty`, `hsn_code`, `part_no`, `asset_value`, `location`,`invoice_no`,`invoice`, `status`, `created_by`, `created_on`, `description`, `gst_code`)values('$asset','$asset_type','$prefix','$ass_no','$sql_asset','$brand','$vendor','$pdate','$serial','$config','$Warranty','$hsn_code','$part_no','$asset_value','$location','$invoice_no','$fileName',1,'$user_id',now(),'$des','$gst_code')";
 			
 	/* echo "insert into assets_form_detail(`asset`, `asset_type`, `prefix`, `asset_no`, `asset_name`, `brand_name`, `vendor_name`, `p_date`, `Serial_no`, `config`, `warranty`, `hsn_code`, `part_no`, `asset_value`, `location`, `stock_in_hand`, `new_stock`, `status`, `created_by`, `created_on`)values('$asset','$asset_type','$prefix','$ass_no','$asset_name','$brand','$vendor','$pdate','$serial','$config','$Warranty','$hsn_code','$part_no','$asset_value','$location','$in_hand','$new',1'$user_id',,now())"; */
 	
 	if($ins)
 {
-	echo "<script>alert('Inserted Updated');</script>";
-	header("location: ../../index.php");
+	echo "<script>
+            alert('Inserted Updated');
+            window.location.href = '/bbvision/index.php';
+          </script>";
 }
-if($ins)
-	{
-		echo "1";
-		
-	}else{
-	echo "2";
-	}
 }
 ?>

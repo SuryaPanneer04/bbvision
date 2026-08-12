@@ -14,7 +14,7 @@ if(isset($_REQUEST['submit']))
 {
 	echo "<script>
             alert('Updated Successfully');
-            window.location.href = '/bbvision/index.php'; 
+            window.location.href = '../../../index.php'; 
           </script>";
 }
 }?>

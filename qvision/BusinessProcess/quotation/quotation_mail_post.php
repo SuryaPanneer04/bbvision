@@ -182,7 +182,7 @@ table, th, td {
 	</table>
 <TABLE width="710px" style="border: 1px solid black;">
  <tr style="border:1px solid black;"> 
-		  <td colspan="3"> <div style="font-weight:bold;font-size:17px;">Bluebase Software Services Private Limited</div>
+		  <td colspan="3"> <div style="font-weight:bold;font-size:17px;">Quadsel Systems Private Limited</div>
 		  <div style="margin-top:5px;font-size:13px;"> No.118, Manikkam Lane, Annasalai,</div>
 		  <div style="font-size:13px;">Guindy, Chennai-600032. Tamilnadu, India</div><br/></td>
 		</tr>

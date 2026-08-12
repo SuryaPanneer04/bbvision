@@ -27,6 +27,9 @@ $userrole = $_SESSION['userrole'];
 	<th>Emp_Code</th>
 	<th>Emp_name</th>
 	<th>Requested Date</th>
+	<th>From Date</th>  
+    <th>To Date</th>
+	<th>No.of.days</th>
 	<th>Reason</th>
 	<th>Action</th>
 	
@@ -59,6 +62,9 @@ $userrole = $_SESSION['userrole'];
 	<td><?php echo $emp_code; ?></td>
 	<td><?php echo $emp_name; ?></td>		
 	<td><?php echo $req_date; ?></td>
+	<td><?php echo $emp['from_date']; ?></td>  
+    <td><?php echo $emp['to_date']; ?></td>
+    <td><?php echo floatval($emp['no_of_days']); ?></td>
 	<td><?php echo $leave_reason; ?></td>
 	<td><input type="button" class="btn btn-success" id="save" name="save"  onclick='update_leave("<?php echo $id;?>","<?php echo $leave_type;?>","<?php echo $candid_id;?>")'  value="Leave Approve">
 	<input type="button" class="btn btn-danger" id="submit" name="submit"  onclick='reject_leave("<?php echo $id;?>","<?php echo $leave_type;?>")'  value="Reject">

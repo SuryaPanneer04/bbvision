@@ -142,13 +142,7 @@ $(document).off('submit', '#uploadcsvform').on('submit', '#uploadcsvform', funct
                         url: "qvision/payroll/payroll_process/payroll_insert.php", 
                         data: "month=" + att_month + "&year=" + att_year, 
                         success: function(pay_data) {
-                            if(pay_data == 1) {
-                                alert("Payroll Generated Successfully!"); 
-                                attendance_upload(); 
-                            } else {
-                                alert("Attendance Uploaded, but Payroll failed: " + pay_data);
-                                attendance_upload();
-                            }
+                            
                         }                       
                     });
 

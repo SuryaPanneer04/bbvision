@@ -10,7 +10,7 @@ $mmmmm=$datetime->format('m');
 $candid_id = $_REQUEST['candid_id'];
 $remark = $_REQUEST['remark'];
 $leavetype=$_REQUEST['leavetpy_get'];
-$stmt = $con->prepare("SELECT COUNT(*) as count,status FROM daily_attendence where candid_id='$candid_id' and date='$date'");
+$stmt = $con->prepare("SELECT COUNT(*) as count,status FROM daily_attendance where candid_id='$candid_id' and date='$date'");
 	$stmt->execute(); 
      $row3 = $stmt->fetch();
 	 $count=$row3['count'];
@@ -42,14 +42,14 @@ if($leavetype==1)
 if($count==0)
 	{	
     $status=2; //Daily Attendane INSERT status
-  $insert_query = $con->query("insert into daily_attendence(candid_id,emp_code,emp_name,date,month,year,remark,status,created_by,created_on) values('$candid_id','$emp_code','$emp_name','$date','$mmmmm','$year','$remark','$status','$user_id',NOW())");  
+  $insert_query = $con->query("insert into daily_attendance(candid_id,emp_code,emp_name,date,month,year,remark,status,created_by,created_on) values('$candid_id','$emp_code','$emp_name','$date','$mmmmm','$year','$remark','$status','$user_id',NOW())");  
 }
 else{
 	//$u_status = 3; //Daily Attendane update status
 
 	//$update_query = $con->query("UPDATE `Daily_attendence` SET `candid_id`='$candid_id',`emp_code`='$emp_code',`emp_name`='$emp_name',`date`='$date',`month`='$month',`year`='$year',`remark`='$remark',`status`='$u_status',`modified_on`= now(),`modified_by`='$user_id'  WHERE `candid_id`='$candid_id' && `date`='$date'");
 
-	$update_query = $con->query("UPDATE `daily_attendence` SET  `remark`='$remark',`status`='$u_status',`modified_on`= now(),`modified_by`='$user_id'  WHERE `candid_id`='$candid_id' && `date`='$date'");
+	$update_query = $con->query("UPDATE `daily_attendance` SET  `remark`='$remark',`status`='$u_status',`modified_on`= now(),`modified_by`='$user_id'  WHERE `candid_id`='$candid_id' && `date`='$date'");
 }
 }
 else if($leavetype==2)
@@ -57,14 +57,14 @@ else if($leavetype==2)
 	if($count==0)
 	{	
     $status=2; //Daily Attendane INSERT status
-  $insert_query = $con->query("insert into daily_attendence(candid_id,emp_code,emp_name,date,month,year,remark,status,halfday,created_by,created_on) values('$candid_id','$emp_code','$emp_name','$date','$mmmmm','$year','$remark','$status',1,'$user_id',NOW())");  
+  $insert_query = $con->query("insert into daily_attendance(candid_id,emp_code,emp_name,date,month,year,remark,status,halfday,created_by,created_on) values('$candid_id','$emp_code','$emp_name','$date','$mmmmm','$year','$remark','$status',1,'$user_id',NOW())");  
 }
 else{
 	//$u_status = 3; //Daily Attendane update status
 
 	//$update_query = $con->query("UPDATE `Daily_attendence` SET `candid_id`='$candid_id',`emp_code`='$emp_code',`emp_name`='$emp_name',`date`='$date',`month`='$month',`year`='$year',`remark`='$remark',`status`='$u_status',`modified_on`= now(),`modified_by`='$user_id'  WHERE `candid_id`='$candid_id' && `date`='$date'");
 
-	$update_query = $con->query("UPDATE `daily_attendence` SET  `remark`='$remark',`status`='$u_status',`halfday`=0,`modified_on`= now(),`modified_by`='$user_id'  WHERE `candid_id`='$candid_id' && `date`='$date'");
+	$update_query = $con->query("UPDATE `daily_attendance` SET  `remark`='$remark',`status`='$u_status',`halfday`=0,`modified_on`= now(),`modified_by`='$user_id'  WHERE `candid_id`='$candid_id' && `date`='$date'");
 }
 }
 ?>

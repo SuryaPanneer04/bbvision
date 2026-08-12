@@ -21,7 +21,7 @@ $userrole=$_SESSION['userrole'];
     <table class="table table-bordered">
         <tr>
         <td><center><img src="qvision/images/logo123.jpg" alt="quadsel" style="width:150px;height:50px;"></center></td>
-        <td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+        <td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
         </tr>
      
         <tr>

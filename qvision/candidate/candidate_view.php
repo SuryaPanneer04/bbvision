@@ -542,7 +542,7 @@ $k=0;
 while($md_row = $md_sql->fetch(PDO::FETCH_ASSOC))
 {
 ?>
-<tr> 
+<tr>
 <td><?php echo $md_row['Sec_name']; ?></td>
 <td colspan="2">
 <input type="text" class="form-control" id="section_name1" name="section_name1" value="<?php echo  $md_row['feedback']; ?>" readonly></td>

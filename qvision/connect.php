@@ -1,10 +1,12 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
+if (!headers_sent()) {
+    header("Access-Control-Allow-Origin: *");
+}
 
 //define("Title", 'Recruitment');
 try {
-	$con = new pdo ('mysql:host=localhost;dbname=qvision','root',''); //admin@123
+	$con = new pdo ('mysql:host=localhost;dbname=softwarebluebase_bluebase','root',''); //admin@123
 } 
 catch (Exception $e) 
 {
@@ -18,7 +20,7 @@ class Database{
   
     // specify your own database credentials
     private $host = "localhost";
-    private $db_name = "qvision";
+    private $db_name = "softwarebluebase_bluebase";
     private $username = "root";
     private $password = ""; 
     public $conn;
@@ -38,4 +40,5 @@ class Database{
         return $this->conn;
     }
 }
+    
 ?>

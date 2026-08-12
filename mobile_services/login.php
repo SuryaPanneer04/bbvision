@@ -1,6 +1,15 @@
 <?php
 session_start();
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require('../connect.php');
+
+// Check database connection
+if (!$con) {
+    echo json_encode(["Database connection failed."]);
+    exit;
+}
 
 $ip = $_SERVER['REMOTE_ADDR'];
 
@@ -19,7 +28,6 @@ if (empty($username) || empty($password)) {
 $md5password = md5($password);
 
 $res = $con->query("SELECT *
-    -- ass_emp_id,candidate_id,user_id,department,user_name,password,full_name,user_group_code,profile,consultant_id 
     FROM z_user_master zum
 LEFT JOIN z_department_master zdm ON zdm.id = zum.department
 where user_name='$username' and zum.status=1");

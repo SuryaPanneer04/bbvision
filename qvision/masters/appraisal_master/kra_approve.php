@@ -36,7 +36,17 @@ $employee_id = $staff['id'];
       <td><?php echo $i; ?></td>
       <td><?php echo $emp_res['dept_name']; ?></td>
       <td><?php echo date('d-m-Y',strtotime($emp_res['created_on'])); ?></td>
-      <td><?php if($emp_res['app_master_sts']==0){ echo '<span style="color:red;"><b>Pending</b></span>';} else{ echo '<span style="color:green;"><b> Accepted </b></span>';} ?></td>
+      <td>
+<?php 
+if($emp_res['app_master_sts'] == 0){ 
+    echo '<span style="color:red;"><b>Pending</b></span>';
+} elseif($emp_res['app_master_sts'] == 2){ 
+    echo '<span style="color:darkorange;"><b>Rejected</b></span>';
+} else { 
+    echo '<span style="color:green;"><b>Accepted</b></span>';
+} 
+?>
+</td>
       <td>
 	  <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['aid']; ?>" onclick="kra_view(<?php echo $emp_res['aid']; ?>,<?php echo $emp_res['dept']; ?>)"><i class="fa fa-eye"></i> view</button>
 	 

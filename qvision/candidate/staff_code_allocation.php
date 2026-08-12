@@ -42,10 +42,10 @@ $fet=$sql->fetch();
         <td colspan="2"><input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo $fet['last_name'];?>" readonly></td>
         </tr>
 		<?php
-		$deptid=$fet['dep_id'];
-		$getdeptname=$con->query("SELECT * FROM `z_department_master` where id='$deptid' and status=1");
-		$depnamee=$getdeptname->fetch();
-		$dpnameefgeted=$depnamee['id'];
+		$deptid = isset($fet['department']) ? $fet['department'] : 0;
+		$getdeptname = $con->query("SELECT * FROM `z_department_master` where id='$deptid' and status=1");
+		$depnamee = $getdeptname->fetch();
+		$dpnameefgeted = $depnamee ? $depnamee['id'] : 0;
 		?>
 		<input type="hidden" class="form-control" id="department" name="department" value="<?php echo $dpnameefgeted;?>" readonly>
         <tr>
@@ -151,14 +151,14 @@ $fet=$sql->fetch();
 <tr>
 <td>Staff Type:*</td>
 <td colspan="5">
-<select id="staff_type" name="staff_type" class="form-control" > 
-<option value="">Select Type</option>
+<select id="staff_type" name="staff_type" class="form-control" onchange="generateStaffCode()"> 
+<option value="" data-code="">Select Type</option>
 <?php   
 $stype=$con->query("select * from prefixcode_master where status=1");
 while($sdata=$stype->fetch())
 {
 ?>	
-<option value="<?php echo $sdata['id'];?>"><?php echo $sdata['name'];?></option>
+<option value="<?php echo $sdata['id'];?>" data-code="<?php echo $sdata['code'];?>"><?php echo $sdata['name'];?></option>
 
 <?php 	
 }
@@ -166,8 +166,20 @@ while($sdata=$stype->fetch())
 ?>
 </select><br>
 <h3>Staff Code:*</h3>
-<input type="text" class="form-control" id="staffcode" name="staffcode" value="" style="width:100%"/>
+<input type="text" class="form-control" id="staffcode" name="staffcode" value="" style="width:100%" readonly/>
 
+<script>
+function generateStaffCode() {
+    var sel = document.getElementById("staff_type");
+    var code = sel.options[sel.selectedIndex].getAttribute("data-code");
+    var cid = document.getElementById("cid").value;
+    if(code && cid) {
+        document.getElementById("staffcode").value = code + cid;
+    } else {
+        document.getElementById("staffcode").value = "";
+    }
+}
+</script>
 </td>
 </tr>
 

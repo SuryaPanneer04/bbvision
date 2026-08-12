@@ -56,7 +56,7 @@ function candidate_replacess(name)
 
 <td>
 <center><img src="/KerliERP/Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"> </center></td>
-<td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+<td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
 </tr>
 
 <tr>
@@ -208,7 +208,7 @@ else if($userrole=='R008')
 <table class="table table-bordered">
 <tr>
 <td><center><img src="/KerliERP/Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
-<td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+<td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
 </tr>
 <tr>
 <td>Candidate Name:</td>
@@ -359,7 +359,7 @@ else if($userrole=='R001')
 <table class="table table-bordered">
 <tr>
 <td><center><img src="/KerliERP/Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
-<td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+<td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
 </tr>
 <tr id="statushide">
 <td>Candidate Name:</td>
@@ -491,7 +491,7 @@ else
 ?>
 <table class="table table-bordered">
 <td><center><img src="/KerliERP/Recruitment/image/userlog/quadsel.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
-<td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
+<td colspan="5"><center><b>Quadsel Systems Private Limited</b></center></td>
 </tr>
 
 <tr>

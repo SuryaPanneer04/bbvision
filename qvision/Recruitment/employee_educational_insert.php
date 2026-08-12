@@ -15,7 +15,7 @@ $valid = 1;
 if( isset($_POST['employeeid']) || isset($_POST['examination_passed']) || isset($_POST['instute']) || isset($_POST['degree']) || isset($_POST['field']) || isset($_POST['passing'])  || isset($_POST['percentage']) || isset($_POST['attachment']) || isset($_POST['attach']) ){ 
 
 $candidateid=$_POST['cid'];
-$id = isset($_POST['employeeid']) ? $_POST['employeeid'] : array();
+$id=$_POST['employeeid'];
 $examination_passed=$_POST['examination_passed'];
 $examination_passed_count= count($examination_passed);
 $instute=$_POST['instute'];
@@ -24,19 +24,19 @@ $field=$_POST['field'];
 $passing=$_POST['passing'];
 $percentage=$_POST['percentage'];
 $filesArr3 = $_FILES["attachment"];
-$edu_attach = isset($_POST['attach']) ? $_POST['attach'] : array();
+$edu_attach = $_POST["attach"];
  
  for($i=0;$i<$examination_passed_count;$i++)
 {
 
-$empid = isset($id[$i]) ? $id[$i] : '';
+$empid = $id[$i];
 $examination= $examination_passed[$i];
 $college= $instute[$i];
 $course= $degree[$i];
 $fields= $field[$i];
 $passings= $passing[$i];
 $percentages= $percentage[$i];
-$education_attach = isset($edu_attach[$i]) ? $edu_attach[$i] : '';
+$education_attach= $edu_attach[$i];
 
 $status=1;
 $today = date("Y-m-d H:i:s"); 
@@ -71,16 +71,14 @@ $today = date("Y-m-d H:i:s");
    // Insert form data in the database 	
    
   if($empid!=''){
-    $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';
-    if($current_file!=''){
-      $sql=$con->query("UPDATE `emp_qualification` SET emp_id='$candidateid',education='$examination' ,institution_name='$college' ,degree='$course' ,field_of_specialization='$fields' ,year_of_passing='$passings' ,percentage='$percentages',attachment='$current_file' ,status='$status',modified_on=now(),modified_by='$candidateid' WHERE id ='$empid' ");
+    if($fileNames[$i]!=''){
+      $sql=$con->query("UPDATE `emp_qualification` SET emp_id='$candidateid',education='$examination' ,institution_name='$college' ,degree='$course' ,field_of_specialization='$fields' ,year_of_passing='$passings' ,percentage='$percentages',attachment='$fileNames[$i]' ,status='$status',modified_on=now(),modified_by='$candidateid' WHERE id ='$empid' ");
     }else{
 	  $sql=$con->query("UPDATE `emp_qualification` SET emp_id='$candidateid',education='$examination' ,institution_name='$college' ,degree='$course' ,field_of_specialization='$fields' ,year_of_passing='$passings' ,percentage='$percentages',attachment='$education_attach' , status='$status', modified_on=now(),modified_by='$candidateid' WHERE id = '$empid' "); 
     }  
   }
-   else{
-      $current_file = isset($filesArr3['name'][$i]) ? basename($filesArr3['name'][$i]) : '';					
-      $sql=$con->query("insert into `emp_qualification`(emp_id, education, institution_name, degree, field_of_specialization, year_of_passing, percentage,attachment,created_on,created_by)  values('$candidateid','$examination','$college','$course','$fields','$passings','$percentages','$current_file',now(),'$candidateid')");
+   else{						
+      $sql=$con->query("insert into `emp_qualification`(emp_id, education, institution_name, degree, field_of_specialization, year_of_passing, percentage,attachment,created_on,created_by)  values('$candidateid','$examination','$college','$course','$fields','$passings','$percentages','$fileNames[$i]',now(),'$candidateid')");
    }
 
  }

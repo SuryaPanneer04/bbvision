@@ -10,7 +10,7 @@ $userrole=$_SESSION['userrole'];
 <input type="hidden" name="userrole" id="userrole" value="<?php echo  $userrole; ?>">
 <table class="table table-bordered">
 <tr>
-<td><center><img src="/qvision/images/quadsel1.png" alt="quadsel" style="width:100px;height:50px;"></center></td>
+<td><center><img src="qvision/images/logo123.jpg" alt="quadsel" style="width:100px;height:50px;"></center></td>
 <td colspan="5"><center><b>Bluebase Software Services Private Limited</b></center></td>
 </tr>
 <tr>

@@ -62,7 +62,7 @@ $staff_id = $sfet['id'];
                 $emp_sql = $con->query("SELECT a.staff_id as staff_id, sm.emp_name, a.asset_master_id, a.id as sid, a.status as status 
                                         FROM staff_access_request a 
                                         JOIN staff_master sm ON a.staff_id=sm.id 
-                                        WHERE a.status=3 
+                                        WHERE a.status=4 
                                         AND a.id IN (SELECT asset_request_id FROM staff_asset_list WHERE status=1 AND asset_id != 0) 
                                         GROUP BY a.staff_id");
                 
@@ -96,11 +96,13 @@ $staff_id = $sfet['id'];
                 
                    <td>
                     <?php 
-                    $disasset = $con->query("SELECT DISTINCT m.name FROM staff_asset_list s JOIN assets_form_detail a ON s.asset_id=a.id JOIN assets_master m ON a.asset_name=m.name WHERE s.status=1 AND s.staff_id='$staffid'");
+                     $disasset = $con->query("SELECT DISTINCT m.name FROM staff_asset_list s LEFT JOIN assets_master m ON (s.asset_id = m.id OR s.asset_id = m.name) WHERE s.status=1 AND s.staff_id='$staffid'");
                     $pending_names = [];
                     if($disasset){
                         while ($asdes = $disasset->fetch()) {
-                            $pending_names[] = $asdes['name'];
+                            if(!empty($asdes['name'])) {
+                                $pending_names[] = $asdes['name'];
+                            }
                         }
                         $unique_pending = array_unique($pending_names);
                         echo !empty($unique_pending) ? implode(", ", $unique_pending) : "-";
@@ -110,9 +112,10 @@ $staff_id = $sfet['id'];
 
                   <td>
                     <?php
-                    if ($emp_res['status'] == 3) {
+                    // ✅ BULLETPROOF FIX: MD Approved (status = 4) aanalum, pending assets irunthalum Return button pakka-va kaattum!
+                    if ($emp_res['status'] == 4 || $emp_res['status'] == 3) {
                     ?>
-                      <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_return_hr(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> Return</button>
+                      <button class="btn btn-success btn-sm edit btn-flat" style="background-color: #f0ad4e; border-color: #eea236; color: white;" data-id="<?php echo $emp_res['sid']; ?>" onclick="staff_asset_return_hr(<?php echo $emp_res['sid']; ?>)"><i class="fa fa-edit"></i> Return</button>
                     <?php
                     }
                     ?>

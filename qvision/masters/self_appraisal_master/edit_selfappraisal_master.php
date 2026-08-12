@@ -102,7 +102,7 @@ $row = $stmt->fetch();
       $.ajax({
         type: 'GET',
         data: data + "&" + "id=" + id + "&get_id=" + get_id,
-        url: '/qvisionnew/qvision/masters/self_appraisal_master/update_selfappraisal_master.php',
+        url: 'qvision/masters/self_appraisal_master/update_selfappraisal_master.php',
 
         success: function(data) {
           if (data == 0) {

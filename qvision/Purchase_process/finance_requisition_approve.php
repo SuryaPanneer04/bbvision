@@ -80,7 +80,7 @@ function finance_status_view(v)
 	  //alert(v);
 	$.ajax({
 	type:"POST",
-	url:"/ssinfo1/qvision/Purchase_process/finance_status_view.php?id="+v,
+	url:"/qvision/Purchase_process/finance_status_view.php?id="+v,
 	success:function(data)
 	{
 		$("#main_content").html(data);

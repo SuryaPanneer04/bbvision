@@ -86,7 +86,7 @@ $curdate = date("d-m-y");
     {
         $.ajax({
             type: 'GET',
-            url: '/qvision/attendance/attendance_In_out_report_page.php',
+            url: 'qvision/attendance/attendance_In_out_report_page.php',
             data: "id=" + 1,
             success: function (data)
             {

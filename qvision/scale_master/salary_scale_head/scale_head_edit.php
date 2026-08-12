@@ -98,7 +98,7 @@ function scale_head_tab_back()
 {
 	$.ajax({
     type:"GET",
-    url:'Qvision/scale_master/salary_scale_head/scale_head_main.php',
+    url:'qvision/scale_master/salary_scale_head/scale_head_main.php',
     success:function(data){
       $("#payroll_view").html(data);
     }
@@ -141,7 +141,7 @@ function scale_head_update(v)
 	$.ajax({
 	type:'GET',
 	data: data,
-	url:'Qvision/scale_master/salary_scale_head/scale_head_update.php?id='+v,
+	url:'qvision/scale_master/salary_scale_head/scale_head_update.php?id='+v,
 	success:function(data)
 	{
 	 if(data==0)
@@ -169,7 +169,7 @@ function earnings_validate(v)
 	$.ajax({
 		type:'GET',
 		data:"earnings_id="+earnings_id,
-		url:'qvisionnew/Qvision/scale_master/salary_scale_head/scale_head_details.php',
+		url:'qvision/scale_master/salary_scale_head/scale_head_details.php',
 		success:function(data)
 		{
 			var splitData=data.split("=");			

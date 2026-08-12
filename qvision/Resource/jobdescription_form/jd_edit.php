@@ -154,8 +154,9 @@ $sfet = $sql->fetch();
 		var data = $('form').serialize();
 		$.ajax({
 			type: 'GET',
-			data: data + "&" + "field=" + field,
-			url: 'qvision/resource/jobdescription_form/jd_form_update.php',
+			data: "field=" + field,
+			data,
+			url: 'qvision/Resource/jobdescription_form/jd_form_update.php',
 			success: function(data) {
 				if (data == 0) {
 					alert("Update Failed");

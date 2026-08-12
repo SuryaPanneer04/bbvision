@@ -35,7 +35,7 @@ $company_name = $row['company_name'];
 				</td>
 				<td colspan="5">
 					<center>
-						<h1><b>Bluebase Software Services Private Limited</b></h1>
+						<h1><b>Quadsel Systems Private Limited</b></h1>
 					</center>
 				</td>
 			</tr>

@@ -18,9 +18,9 @@ $user_role =$_SESSION['userrole'];
   $costsheet_id = $_REQUEST['costsheet_id'];
 
 //  $full_name = $_REQUEST['full_name'];
-echo $user_id;echo '****';
-echo '****';
-echo $candidateid; echo '****'; 
+//echo $user_id;echo '****';
+//echo '****';
+//echo $candidateid; echo '****'; 
    //$row_query = "SELECT * FROM quote_generate";
   $stmt = $con->prepare ("sELECT e.client,e.company_name,e.mail,cse.client_id,zum.full_name,zum.user_name FROM cost_sheet_entry cse 
 INNER JOIN enquiry e on e.id=cse.enquiry_id INNER JOIN z_user_master zum ON zum.candidate_id=e.created_by where cse.cost_sheet_no='$cost_sheet_no' and e.id='$enquiry_id'");
@@ -194,22 +194,38 @@ if($count == 0)
 			 //echo  $QUOTE_NO = $no2.'/'.$final_quote_no.'/'.$char;
 			  echo  $QUOTE_NO =  $char.''.$current_month.'/'.$finyear.'/'.$final_quote_no.'/'.$char_str;
 			 } 
+			 } else {
+    // DB-la entha quote-um illana, first quote number generate panna
+    $char = 'QOT';
+    $current_month = date('m');
+    
+    // Financial year logic
+    $month = 01;
+    if ($current_month >= '01' && $current_month < '04'){
+        $nextyear = ($month >= '01' && $month < '04') ? substr(date('Y'),-2) : substr(date('Y')-1,-2);
+    } else {
+        $nextyear = ($month >= '04') ? substr(date('Y'),-2) : substr(date('Y')+1,-2);
+    }
+    
+    $curyear = substr(date('Y'),-2); 
+    $finyear = $curyear.'-'.$nextyear; 
+    
+    // First sequence number
+    $seq = 1;
+    $final_quote_no = sprintf("%05d", $seq);
+    $char_str = '1';
+    
+    $QUOTE_NO =  $char.''.$current_month.'/'.$finyear.'/'.$final_quote_no.'/'.$char_str;
 }
 }
+
 
 
 
  $date = date('Y-m-d');
- $row_count = count($cost_sheet_no);
 
-
-
- for($i=0;$i<$row_count;$i++)
-{
-  $quote = $cost_sheet_no[$i];
-  $update_query = $con->query("update cost_sheet_entry set approved_by ='$candidateid', status ='2',modified_by ='$candidateid',modified_on =NOW() WHERE cost_sheet_no= '$cost_sheet_no'");  
-// echo "update cost_sheet_entry set approved_by ='$user_id', status = '3',modified_by ='$candidateid',modified_on =NOW() WHERE cost_sheet_no= '$cost_sheet_no'";
-}
+// Removed the count() and for loop. Directly updating the cost_sheet_no
+$update_query = $con->query("update cost_sheet_entry set approved_by ='$candidateid', status ='2',modified_by ='$candidateid',modified_on =NOW() WHERE cost_sheet_no= '$cost_sheet_no'");
 
 $insert_query2= $con->query("Update enquiry set status='5',approved_by ='$candidateid' where id='$enquiry_id'");
 echo "Update enquiry set status='5',approved_by ='$candidateid' where id='$enquiry_id'";
