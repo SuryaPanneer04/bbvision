@@ -256,7 +256,7 @@ $fet=$sql->fetch();
         <tr>  
 		<td><input type="hidden" name="rid" id="rid" value="<?php echo $resourceid;?>">
 		<input type="hidden" name="jdcode" id="jdcode" value="<?php echo $fet['jdid']; ?>"></td>
-        <td colspan="6"><input type="button" class="btn btn-success" name="save" onclick="schedule_insert()" style="float:right;" value="Send Mail"></td>
+        <td colspan="6"><input type="button" class="btn btn-success" name="save" id="send_mail_btn" onclick="schedule_insert()" style="float:right;" value="Send Mail"></td>
         </tr>
         </table>
         <!-- /.post -->
@@ -331,6 +331,10 @@ function schedule_insert()
 	   intr_time = time+ "PM";
 	}
     	
+	// Prevent multiple clicks
+	$('#send_mail_btn').prop('disabled', true);
+	$('#send_mail_btn').val('Sending...');
+
 	var data=$('form').serialize();
 	$.ajax({
 		type:"GET",
@@ -338,8 +342,17 @@ function schedule_insert()
 		url:"qvision/Resource/Resource_form/schedule_insert.php?i_time="+intr_time,
 		success:function(data)
 		{
+			$('#send_mail_btn').prop('disabled', false);
+			$('#send_mail_btn').val('Send Mail');
+			
 			alert("Mail Sent Successfully")
 			resource_list()
+		},
+		error:function()
+		{
+			$('#send_mail_btn').prop('disabled', false);
+			$('#send_mail_btn').val('Send Mail');
+			alert("Error in sending mail")
 		}
 	})
  } 

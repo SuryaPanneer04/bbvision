@@ -514,11 +514,19 @@ function reject_doc()
 {
 	let e = $('#rejectID').val();
 	let reject = $('#remark').val();
+
+	// Prevent multiple clicks
+	$('#popup').prop('disabled', true);
+	$('#popup').text('Sending...');
+
 	$.ajax({
 	type:"POST",
 	url:"qvision/Recruitment/document_reject.php?id="+e+"&reject_remark="+reject,
 	success:function(data)
 	{
+		$('#popup').prop('disabled', false);
+		$('#popup').text('Send Mail');
+		
 		if(data==0)
 		{
 			alert("Mail Sent Successfully")
@@ -528,6 +536,12 @@ function reject_doc()
 			alert("Failed")
 			interview_candidate_list()
 		}
+	},
+	error:function()
+	{
+		$('#popup').prop('disabled', false);
+		$('#popup').text('Send Mail');
+		alert("Error in sending mail");
 	}
   })		  
 }

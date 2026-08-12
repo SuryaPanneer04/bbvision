@@ -413,6 +413,10 @@ function back_ctc()
 		var phone=$('#phone').val();
 		var r_person=$('#reporting_person').val();
 		
+	// Prevent multiple clicks
+	$('#'+e).prop('disabled', true);
+	$('#'+e).val('Sending...');
+
 	$.ajax({
 	type:"POST",
 	data: sal_data,
@@ -420,11 +424,20 @@ function back_ctc()
 	//url:"/ssinfo1/qvision/candidate/send_application_form.php?id="+e+"&desig="+desig+"&ctc="+ctc+"&jdate="+jdate+"&phone="+phone+"&designation="+designation+"&report_person="+r_person,
 	success:function(data)
 	{
+		$('#'+e).prop('disabled', false);
+		$('#'+e).val('Send provisional offer letter');
+		
 		alert("Provisional letter sent successfully");
 		
 		console.warn("mssssss:"+data);
 			interview_candidate_list();
 	   $('#table_view').html(data);
+	},
+	error:function()
+	{
+		$('#'+e).prop('disabled', false);
+		$('#'+e).val('Send provisional offer letter');
+		alert("Error in sending provisional letter");
 	}
 	})
 	}
