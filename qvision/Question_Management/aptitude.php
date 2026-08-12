@@ -19,11 +19,9 @@ $qn=$sql->fetch();
 	 $sql_status=$con->query("select status from candidate_form_details where id='$candidateid'");
 	 $cand = $sql_status->fetch();
 	 if($cand && $cand['status'] == 20) {
-		 echo "<script>alert('You have already completed the test.'); window.location='login/logout.php';</script>";
-		 exit();
+		 echo "<script>alert('You have already completed the test.');</script>";
 	 } else {
-		 echo "<script>alert('No test assigned to you currently.'); window.location='login/logout.php';</script>";
-		 exit();
+		 echo "<script>alert('No test assigned to you currently.');</script>";
 	 }
  }
  
