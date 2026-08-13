@@ -7,8 +7,10 @@ if (!headers_sent()) {
 //define("Title", 'Recruitment');
 try {
 	$con = new pdo ('mysql:host=localhost;dbname=softwarebluebase_bluebase','root',''); //admin@123
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+    $con->query("SET SESSION sql_mode = ''");
 } 
-catch (Exception $e) 
+catch (Exception $e)  
 {
 	echo $e->getMessage();
 }
@@ -31,6 +33,8 @@ class Database{
         $this->conn = null;  
         try{
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+            $this->conn->query("SET SESSION sql_mode = ''");
             $this->conn->exec("set names utf8");
         }
         catch(PDOException $exception){
