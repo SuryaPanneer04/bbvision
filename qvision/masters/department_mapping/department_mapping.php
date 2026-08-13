@@ -5,25 +5,48 @@ $userrole=$_SESSION['userrole'];
 ?>
 
 <style>
-#page-wrapper{
-	margin-left: 117px !important;
-}
-.btn-warning{
-	padding-top: 0px !important;
+#page-wrapper {
+    margin-left: 0px !important;
+    width: 100% !important;
+    
+    /* Intha rendu lines-ah vachu thaan neenga space-ah adjust pannanum 👇 */
+    padding-left: 5px !important;   /* Left side gap-ah adjust panna (e.g., 0px, 5px, 10px) */
+    padding-right: 50px !important; /* Right side gap-ah adjust panna (e.g., 5px, 15px, 20px) */
+    
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
 }
 
-.btn-warning{
-	background-color: #337ab7 !important;
+/* 2. Ulla iruka container & white box gap-ah remove panni stretch pandrathu */
+#page-wrapper .container-fluid,
+#page-wrapper .row,
+#page-wrapper .panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+/* 3. Panel-ku ulla iruka table body-kum gap varama thaduka */
+.panel-body {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.btn-warning {
+    padding-top: 0px !important;
+    background-color: #337ab7 !important;
     border-color: #337ab7 !important;
 }
-.btn-success{
-	background-color: #5cb85c !important;
+.btn-success {
+    background-color: #5cb85c !important;
     border-color: #5cb85c !important;
 }
-.page-header{
-	border-bottom: 3px solid #eee !important;
+.page-header {
+    border-bottom: 3px solid #eee !important;
 }
-
 </style>
 
 

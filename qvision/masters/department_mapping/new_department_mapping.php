@@ -55,18 +55,17 @@ $emp_sql=$con->query("SELECT * FROM z_department_master ");
 <select name="head" id="head" class="form-control">
 <option value="">Select Head</option>
 <?php
-// $emp_sql1=$con->query("SELECT * FROM z_user_master where user_group_code='ROLE-007'");
 $emp_sql1=$con->query("SELECT * FROM z_user_master where status=1 && user_group_code != ''");
 
-     
-      while($emp_res1 = $emp_sql1->fetch(PDO::FETCH_ASSOC))
-      {
-		  ?>
-		  <option value="<?php echo $emp_res1['user_id'];?>"><?php echo $emp_res1['user_name'];?></option>
-		  <?php
-	  }
-		  ?>
-		  </select>
+while($emp_res1 = $emp_sql1->fetch(PDO::FETCH_ASSOC))
+{
+    $display_text = $emp_res1['user_name'] . ' - ' . $emp_res1['full_name']; 
+?>
+    <option value="<?php echo $emp_res1['user_id'];?>"><?php echo $display_text; ?></option>
+<?php
+}
+?>
+</select>
 </td>
 </tr>
 <tr>
