@@ -3,13 +3,28 @@ require '../../connect.php';
 include("../../user.php");
 $userrole=$_SESSION['userrole'];
 ?>
+<style>
+	.card-primary:not(.card-outline)>.card-header {
+		background-color: #f1cc61 !important;
+		color: black !important;
+	}
+	.btn-dark {
+		background-color: #ed5d00 !important;
+		border-color: #ed5d00 !important;
+	}
+	.card-primary:not(.card-outline)>.card-header a {
+		color: black !important;
+	}	
+</style>
 <div class="container-fluid">
-<div class="card mb-3">
-
-<form id="new_department_form" method="POST" action="qvision/assesment/questionmaster_submit.php">
-<div class="card-header">
-<a onclick="return back_ctc()" style="float: right; color: white; cursor: pointer;" class="btn btn-primary">Back</a>
-</div>
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title">
+				<font size="5">ADD QUESTION DETAILS</font>
+			</h3>
+			<a onclick="return back_ctc()" style="float: right; cursor: pointer;" class="btn btn-dark">BACK</a>
+		</div>
+		<form id="new_department_form" method="POST" action="qvision/assesment/questionmaster_submit.php">
 <input type="hidden" name="userrole" id="userrole" value="<?php echo  $userrole; ?>">
 <table class="table table-bordered">
 <tr>
@@ -32,7 +47,8 @@ $userrole=$_SESSION['userrole'];
 </td>
 </tr>
 </table>
-<input type="submit" name="submit" class="btn btn-primary btn-md" style="float:right;">
+<input type="submit" name="submit" value="Submit" class="btn btn-dark btn-md" style="float:right; position:relative; left:-5px;">
+<br><br>
 </form>
 </div>
 <script>

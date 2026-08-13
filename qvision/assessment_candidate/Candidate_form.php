@@ -1,24 +1,37 @@
 <?php
 require '../../connect.php';
 ?>
-<div class="content-wrapper" style="padding-left: 50px;">
-    <form method="POST" enctype="multipart/form-data">
-        <!-- Post -->
-        <table class="table table-bordered">
-            <tr>
-                <td>
-                    <center><img src="qvision/images/logo123.jpg" alt="BlueBase" style="width:100px;height:50px;"></center>
-                </td>
-                <td colspan="5">
-                    <center><b>Bluebase Software Services Private Limited</b></center>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6">
-                    <center><b>Application for Candidate</b></center>
-                    <a onclick="assessment_employee()" style="float: right; color: white; cursor: pointer; margin-top: -30px;" class="btn btn-primary">Back</a>
-                </td>
-            </tr>
+<style>
+	.card-primary:not(.card-outline)>.card-header {
+		background-color: #f1cc61 !important;
+		color: black !important;
+	}
+	.btn-dark {
+		background-color: #ed5d00 !important;
+		border-color: #ed5d00 !important;
+	}
+	.card-primary:not(.card-outline)>.card-header a {
+		color: black !important;
+	}	
+</style>
+<div class="container-fluid">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title">
+				<font size="5">APPLICATION FOR CANDIDATE</font>
+			</h3>
+			<a onclick="assessment_employee()" style="float: right; cursor: pointer;" class="btn btn-dark">BACK</a>
+		</div>
+        <form method="POST" enctype="multipart/form-data">
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <center><img src="qvision/images/logo123.jpg" alt="BlueBase" style="width:100px;height:50px;"></center>
+                    </td>
+                    <td colspan="5">
+                        <center><b>Bluebase Software Services Private Limited</b></center>
+                    </td>
+                </tr>
             <tr>
                 <td>Company:</td>
                 <td colspan="5">
@@ -124,11 +137,12 @@ require '../../connect.php';
         <td colspan="2"><input type="number" class="form-control" id="no_of_year" name="no_of_year"></td>
         </tr-->
             <tr>
-                <td colspan="6"><input type="button" class="btn btn-success" name="save" onclick="candidate_formS()" style="float:right;" value="save"></td>
+                <td colspan="6"><input type="button" class="btn btn-dark" name="save" onclick="candidate_formS()" style="float:right; position:relative; left:-5px;" value="Save"></td>
             </tr>
         </table>
         <!-- /.post -->
     </form>
+	</div>
 </div>
 
 <script>

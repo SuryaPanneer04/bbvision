@@ -1,29 +1,16 @@
 <?php
 require '../../connect.php';
 ?>
-<div class="content-wrapper" style="padding-left: 50px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Employee List</h1>
-          </div>
-          <div class="col-sm-6">
-		  <a onclick="return add_employee()" style="float: right;" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> ADD</a>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-	</section>
-    <!-- Main content -->
-    <section class="content">
-    <div class="container-fluid">
-    <div class="row">
-    <div class="col-md-12">
-    <!-- Profile Image -->
-    <div class="card card-primary card-outline">
-    <div class="card-body box-profile">
-    <table id="example1" class="table table-bordered">
+<head>
+    <link rel="stylesheet" href="Qvision\commonstyle.css">
+</head>
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title"><font size="5">EMPLOYEE LIST</font></h3>
+        <a onclick="return add_employee()" style="float: right;" data-toggle="modal" class="btn">ADD</a>
+    </div>
+    <div class="card-body">
+    <table class="table table-striped table-bordered table-hover display nowrap" id="example1" style="width:100%">
     <thead>
       <th>S.No</th>
       <th>Question Name</th>
@@ -85,15 +72,16 @@ require '../../connect.php';
       </tbody>
       </table>
     
-<!-- /.card -->
-      </div>
-      <!-- /.col -->
-    </div>
-    <!-- /.row -->
-  </div><!-- /.container-fluid -->
-</section>
-<!-- /.content -->
 </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#example1').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
 
 <script>
 	 function add_employee()

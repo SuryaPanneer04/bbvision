@@ -3,34 +3,16 @@ require '../../connect.php';
 include("../../user.php");
 $userrole=$_SESSION['userrole'];
 ?>
-<div class="content-wrapper" style="padding-left: 50px;">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Question List</h1>
-          </div>
-          <div class="col-sm-6">
-		
-		  <a onclick="add_question()" style="float: right;" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> ADD</a>
-	
-		
-		
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-	</section>
-    <!-- Main content -->
-    <section class="content">
-    <div class="container-fluid">
-    <div class="row">
-    <div class="col-md-12">
-    <!-- Profile Image -->
-    <div class="card card-primary card-outline">
-    <div class="card-body box-profile">
-		 
-    <table id="example1" class="table table-bordered">
+<head>
+    <link rel="stylesheet" href="Qvision\commonstyle.css">
+</head>
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title"><font size="5">QUESTION NAME LIST</font></h3>
+        <a onclick="add_question()" style="float: right;" data-toggle="modal" class="btn">ADD</a>
+    </div>
+    <div class="card-body">
+    <table class="table table-striped table-bordered table-hover display nowrap" id="example1" style="width:100%">
     <thead>
       <th>#</th>
       <th>Name</th>
@@ -51,11 +33,11 @@ $userrole=$_SESSION['userrole'];
 	  <?php
 	  if($emp_res['status']==1)
 	  {
-		  echo "Active"; 
+		  echo '<span style="color:green;text-align:center;"><b>Active</b></span>';
 	  }
 	  else
 	  {
-		  echo "Inactive";
+		  echo '<span style="color:red;text-align:center;"><b>Inactive</b></span>';
 	  }
 	  ?>
 	  </td>
@@ -71,15 +53,15 @@ $userrole=$_SESSION['userrole'];
       </table>
 	 
       </div>
-<!-- /.card -->
-      </div>
-      <!-- /.col -->
-    </div>
-    <!-- /.row -->
-  </div><!-- /.container-fluid -->
-</section>
-<!-- /.content -->
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#example1').DataTable( {
+        "scrollX": true
+    } );
+} );
+</script>
 
 <script>
 		function add_question()
