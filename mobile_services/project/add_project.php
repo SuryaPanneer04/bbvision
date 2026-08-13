@@ -3,6 +3,7 @@ require('../../connect.php');
 
 $json = file_get_contents("php://input");
 $data = json_decode($json, true);
+date_default_timezone_set('Asia/Kolkata');
 
 if (!$data) {
     echo json_encode([
@@ -41,24 +42,24 @@ try {
 
     $projectId = $con->lastInsertId();
 
-    $empStmt = $con->prepare("INSERT INTO y_project_employees
-        (project_id,employee_id)
-        VALUES
-        (?,?)
-    ");
+    // $empStmt = $con->prepare("INSERT INTO y_project_employees
+    //     (project_id,employee_id)
+    //     VALUES
+    //     (?,?)
+    // ");
 
-    foreach ($employees as $emp) {
+    // foreach ($employees as $emp) {
 
-        $empStmt->execute([
-            $projectId,
-            $emp['user_name']
-        ]);
-    }
+    //     $empStmt->execute([
+    //         $projectId,
+    //         $emp['user_name']
+    //     ]);
+    // }
 
     $taskStmt = $con->prepare("INSERT INTO y_project_tasks
-        (project_id,employee_id,day_number,task)
+        (project_id,employee_id,day_number,task,created_on)
         VALUES
-        (?,?,?,?)
+        (?,?,?,?,?)
     ");
 
     foreach ($tasks as $task) {
@@ -67,7 +68,8 @@ try {
             $projectId,
             $task['employee_id'],
             $task['day'],
-            $task['task']
+            $task['task'],
+            date('Y-m-d H:i:s'),
         ]);
     }
     $con->commit();

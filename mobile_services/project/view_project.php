@@ -44,7 +44,8 @@ try {
     }
     $stmt = $con->prepare("SELECT sm.emp_name, pd.* FROM 
         `y_project_details` pd
-        left JOIN staff_master sm ON sm.emp_code = pd.assigner_id;");
+        left JOIN staff_master sm ON sm.emp_code = pd.assigner_id
+        ORDER by pd.project_id DESC;");
 
     if ($stmt->execute()) {
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

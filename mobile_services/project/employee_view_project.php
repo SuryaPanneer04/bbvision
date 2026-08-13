@@ -4,6 +4,7 @@ session_start();
 error_reporting(E_ERROR | E_PARSE);
 ini_set('display_errors', 0);
 header('Content-Type: application/json');
+date_default_timezone_set('Asia/Kolkata');
 
 require('../../connect.php');
 
@@ -13,7 +14,16 @@ $taskId =  $_GET['taskId'] ?? $_POST['taskId'] ?? '';
 
 try {
     if ($taskId != "") {
-        $res = $con->prepare("UPDATE y_project_tasks SET status = 1 WHERE task_id =:task_id");
+
+        $res = $con->prepare("UPDATE y_project_tasks
+            SET status = 1,
+                completed_on = :completed_on
+            WHERE task_id = :task_id
+        ");
+
+        $completedOn = date('Y-m-d H:i:s');
+
+        $res->bindParam(':completed_on', $completedOn);
         $res->bindParam(':task_id', $taskId, PDO::PARAM_INT);
 
         if ($res->execute()) {
