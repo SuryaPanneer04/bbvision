@@ -2,12 +2,19 @@
 require '../../connect.php';
 include('../../user.php');
 $userid=$_SESSION['userid'];
-require '../../PHPMailer/PHPMailerAutoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require '../../PHPMailer/src/Exception.php';
-require '../../PHPMailer/src/PHPMailer.php';
-require '../../PHPMailer/src/SMTP.php';
+
+// Try to load PHPMailer gracefully to avoid case-sensitivity issues on Linux
+if (file_exists('../../PHPMailer/src/Exception.php')) {
+    require '../../PHPMailer/src/Exception.php';
+    require '../../PHPMailer/src/PHPMailer.php';
+    require '../../PHPMailer/src/SMTP.php';
+} elseif (file_exists('../../phpmailer/src/Exception.php')) {
+    require '../../phpmailer/src/Exception.php';
+    require '../../phpmailer/src/PHPMailer.php';
+    require '../../phpmailer/src/SMTP.php';
+}
 
 //Candidate Details
 $first_name = $_REQUEST['first_name'];
@@ -74,9 +81,13 @@ $approved_ctc=$_REQUEST['ctc'];
 $design_mail=$_REQUEST['designation'];
 $reporting_person=$_REQUEST['report_person'];
 
-$join_date=$_REQUEST['jdate'];
-$date=date_create($_REQUEST['jdate']);
-$joining_date=date_format($date,"d/m/Y");
+$join_date = isset($_REQUEST['jdate']) ? $_REQUEST['jdate'] : '';
+if(!empty($join_date)){
+    $date=date_create($join_date);
+    $joining_date=date_format($date,"d/m/Y");
+} else {
+    $joining_date = "";
+}
 
 $phone = $_REQUEST['phone'];
 //$z_phone = substr($phone, 4);
@@ -122,11 +133,11 @@ else
 	echo 0;
 }
 
-$number =$approved_ctc;
+$number = floatval($approved_ctc);
    $no = floor($number);
    $point = round($number - $no, 2) * 100;
    $hundred = null;
-   $digits_1 = strlen($no);
+   $digits_1 = strlen((string)$no);
    $i = 0;
    $str = array();
    $words = array('0' => '', '1' => 'one', '2' => 'two',
@@ -166,15 +177,20 @@ $number =$approved_ctc;
 
 <?php 
   $staff_query= $con->query("select c.*,d.designation_name as position,u.user_name,u.password,u.full_name as fullname from candidate_form_details c left join designation_master d on c.position=d.id join z_user_master u on c.id=u.candidate_id where c.id='$candidateid'"); 
-   //echo "select c.*,d.designation_name as position,u.user_name,u.password,u.full_name as fullname from candidate_form_details c left join designation_master d on c.position=d.id join z_user_master u on c.id=u.candidate_id where c.id='$candidateid'";
-   // $staff_query->execute(); 
-	$row            = $staff_query->fetch();	
-	
-	$FULLNAME       = $row['fullname'];
-    $SENDMAIL       = $row['mail'];
-    $position       = $row['position'];
-    $USERNAME       = $row['user_name'];
-    $PASSWORD       = "Welcome@123";
+   
+   if ($staff_query) {
+       $row = $staff_query->fetch();	
+       $FULLNAME       = isset($row['fullname']) ? $row['fullname'] : '';
+       $SENDMAIL       = isset($row['mail']) ? $row['mail'] : '';
+       $position       = isset($row['position']) ? $row['position'] : '';
+       $USERNAME       = isset($row['user_name']) ? $row['user_name'] : '';
+   } else {
+       $FULLNAME       = '';
+       $SENDMAIL       = '';
+       $position       = '';
+       $USERNAME       = '';
+   }
+   $PASSWORD       = "Welcome@123";
    
    //$iterdate=date('Y-m-d H:i:s', strtotime('interview_date'));
  // echo  $iterdate= date("F j, Y, g:i a", $interview_date);

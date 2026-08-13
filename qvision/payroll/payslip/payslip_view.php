@@ -477,6 +477,26 @@ if($is_payroll_ready && !empty($earned_salaries)) {
     ?></td>
   </tr>
 
+   <tr>
+    <td class="left"></td>
+    <td class="right"></td>
+    <td class="left">Loss Of Pay</td>
+    <td class="right"><?php 
+        $lop_amount = floatval($ded_amount['Loss Of Pay'] ?? $ded_amount['loss of pay'] ?? 0);
+        echo number_format($lop_amount, 2);
+    ?></td>
+  </tr>
+
+   <tr>
+    <td class="left"></td>
+    <td class="right"></td>
+    <td class="left">Salary Advance</td>
+    <td class="right"><?php 
+        $adv_amount = floatval($ded_amount['Salary Advance'] ?? $ded_amount['salary advance'] ?? 0);
+        echo number_format($adv_amount, 2);
+    ?></td>
+  </tr>
+
   
   
   
@@ -489,7 +509,7 @@ if($is_payroll_ready && !empty($earned_salaries)) {
     <td class="right" style="font-weight:bold;"><?php echo number_format($gross_salary,2) ;?></td>
 	
 	<?php 
-		$deduction_total = $pfamount + $esicamount + $ptamount;
+		$deduction_total = $pfamount + $esicamount + $ptamount + $lop_amount + $adv_amount;
 	?>
     <td class="left" style="font-weight:bold;">Total Deduction</td>
     <td class="right" style="font-weight:bold;"><?php echo number_format($deduction_total,2);?></td>
