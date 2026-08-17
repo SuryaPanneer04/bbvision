@@ -52,7 +52,7 @@ $dep_id = $fet['department'];
 <?php } ?>
 
 		<option value="">Choose designation</option>
-		<?php $stmt1 = $con->query("SELECT * FROM `designation_master` WHERE status='1' AND dep_id!='1'");
+		<?php $stmt1 = $con->query("SELECT * FROM `designation_master` WHERE status='1' AND dep_id!='0'");
 		while ($row1 = $stmt1->fetch()) {?>
 		<option value="<?php echo $row1['id']; ?>"> <?php echo $row1['designation_name']; ?> </option>
 		<?php } ?>
