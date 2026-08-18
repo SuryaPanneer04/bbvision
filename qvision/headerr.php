@@ -79,7 +79,6 @@ $name = $_SESSION['fullname'];
 		  <input type="hidden" id="menuid" name="menuid" value="">
     <?php 
     } ?>
-
 </div>
 
 <style>
@@ -345,6 +344,16 @@ alert('siva ')
             }
         })
     }
+    function menu_mapping_view()
+{
+    $.ajax({
+        type: "POST",
+        url: "qvision/masters/menu_mapping/menu_mapping_ui.php",
+        success: function (data) {
+            $("#main_content").html(data);
+        }
+    })
+}
 
     function role_master()
     {

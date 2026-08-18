@@ -431,6 +431,16 @@ function claim_request()
             }
         })
     }
+    function menu_mapping_view()
+{
+    $.ajax({
+        type: "POST",
+        url: "qvision/masters/menu_mapping/menu_mapping_ui.php",
+        success: function (data) {
+            $("#main_content").html(data);
+        }
+    })
+}
 
     function role_master()
     {
