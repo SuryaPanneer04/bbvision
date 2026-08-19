@@ -155,7 +155,7 @@ $userrole=$_SESSION['userrole'];
         </tr>
    
 	  <tr>
-					<td>Product/Service*</td>
+				<td>Product/Service*</td>
 					<td colspan="5">
 						<select name="Product" class="form-control" id="Product" onchange="productstatus(this.value)" required>
 							<option>Select</option>
@@ -168,8 +168,9 @@ $userrole=$_SESSION['userrole'];
 				<tr>
 					<td></td>
 					<td colspan="5">
-					 <select class="form-control" name="services" id="services" ></select>				
-					</td>
+					 <!-- <select class="form-control" name="services" id="services" ></select>				 -->
+					    <div id="services"></div>
+                    </td>
 				</tr>
 				 <tr>
 		<td>Attach File</td>
