@@ -296,12 +296,15 @@ function back()
 	$.ajax({
 	type:'POST',
 	data:data,
-	url:'/qvision/Qvision/Resource/jobdescription_form/job_description_approval_update.php?jid='+V,
+	url:'qvision/Resource/jobdescription_form/job_description_approval_update.php?jid='+V,
 	success:function(data)
 	{  
-        //  console.warn("jijijij:"+data);    
-		alert("Approved Successfully")
-		    job_description_approval()		  
+        if(data.trim() == 'Md only update') {
+            alert("Only MD can approve this Job Description.");
+        } else {
+		    alert("Approved Successfully");
+		    job_description_approval();
+        }
 	}       
 	});
 }
@@ -313,7 +316,7 @@ function back()
 	//let reporting = $('#report_person').val()  // +"&reportingPerson="+reporting
 	$.ajax({
 	type:'POST',
-	url:'Qvision/resource/jobdescription_form/job_description_reject.php?jid='+V+"&remark="+remark+"&approve="+approve,
+	url:'qvision/Resource/jobdescription_form/job_description_reject.php?jid='+V+"&remark="+remark+"&approve="+approve,
 	success:function(data)
 	{      
 		alert("Rejected");

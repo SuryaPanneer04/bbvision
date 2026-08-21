@@ -490,7 +490,7 @@ function AmountInWords($amount)
                                             <h5 style="font-weight: bold;margin-left: 10px; width: 130px;"> Tax Amount :
                                         </div>
                                         <div class="col-md-3" style="padding-left: 65px;"><?php echo number_format($total_score, 2); ?>
-                                            <h5/>
+                                        </h5>
                                         </div>
                                     </div>
                                     ....................................................................................... <br />

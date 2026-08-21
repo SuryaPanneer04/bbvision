@@ -87,7 +87,7 @@ if(isset($_POST['enquiry_idflow']) || isset($_POST['mapping_id']) || isset($_POS
     // Get the submitted form data 
 	$business_ids = $_POST['mapping_id'];
  $business_id = $data['Product']; 	
-	if($business_id==1 || $business_id==3){
+	if($business_id==1 || $business_id==3 || $business_id==4){
      $tot_item_get = $_POST['tot_item'];
 	 if($tot_item_get)
 	 {
@@ -155,7 +155,7 @@ if(isset($_POST['enquiry_idflow']) || isset($_POST['mapping_id']) || isset($_POS
 	//vendor selection
 	  $vendor_name = isset($_REQUEST['vendor_name']) ? $_REQUEST['vendor_name'] : array();
 
-	 if($business_id==1 || $business_id==3){
+	 if($business_id==1 || $business_id==3 || $business_id==4){
       $costsheet_date = date('Y-m-d', strtotime($costsheet_date_str));
 	 }
     //Terms and conditions
@@ -191,7 +191,6 @@ if(isset($_POST['enquiry_idflow']) || isset($_POST['mapping_id']) || isset($_POS
        $query = $con->query($row_query);
        $query->execute();
        $count = $query->rowCount();
-
        $row_val = $query->fetch();
  
 	if($count == 0)
@@ -318,7 +317,7 @@ if (is_numeric($find_fs)) {
 	    }
 							   
 	}  
-if($business_id==1){  //product quotation
+if($business_id==1 || $business_id==4){  //product & software quotation
 			for($i=0;$i<$row_count;$i++)
 					
 			{
@@ -360,8 +359,8 @@ if($business_id==1){  //product quotation
 					 $dist_pers  ='0';
 			}
 
-					 $log_perss   = $log_per[$i];
-					 $vendor=$vendor_name[$i];
+					 $log_perss   = isset($log_per[$i]) ? $log_per[$i] : '';
+					 $vendor = isset($vendor_name[$i]) ? $vendor_name[$i] : '';
 
 				  if($log_perss!=''){
 					 $log_pers  = $log_per[$i];
@@ -369,17 +368,17 @@ if($business_id==1){  //product quotation
 					 $log_pers  ='0';
 			}
 			   //echo $log_pers;exit;
-					 $eng_perss   = $eng_per[$i];
+					 $eng_perss   = isset($eng_per[$i]) ? $eng_per[$i] : '';
 				  if($eng_perss!=''){
 					 $eng_pers  = $eng_per[$i];
 			}else{
 					 $eng_pers  ='0';
 			}
-					 $log_amts   = $log_amt[$i];
-					 $eng_amts   = $eng_amt[$i];
+					 $log_amts   = isset($log_amt[$i]) ? $log_amt[$i] : '0';
+					 $eng_amts   = isset($eng_amt[$i]) ? $eng_amt[$i] : '0';
 			   //$log_eng_amts   = $log_eng_amt[$i];
 			  
-					 $com_perss   = $com_per[$i];
+					 $com_perss   = isset($com_per[$i]) ? $com_per[$i] : '';
 				   if($com_perss!=''){
 					 $com_pers = $com_per[$i];
 			}else{
@@ -546,8 +545,8 @@ if($business_id==1){  //product quotation
 					 $dist_pers  ='0';
 			}
 
-					 $log_perss   = $log_per[$i];
-					 $vendor=$vendor_name[$i];
+					 $log_perss   = isset($log_per[$i]) ? $log_per[$i] : '';
+					 $vendor = isset($vendor_name[$i]) ? $vendor_name[$i] : '';
 
 				  if($log_perss!=''){
 					 $log_pers  = $log_per[$i];
@@ -555,17 +554,17 @@ if($business_id==1){  //product quotation
 					 $log_pers  ='0';
 			}
 			   //echo $log_pers;exit;
-					 $eng_perss   = $eng_per[$i];
+					 $eng_perss   = isset($eng_per[$i]) ? $eng_per[$i] : '';
 				  if($eng_perss!=''){
 					 $eng_pers  = $eng_per[$i];
 			}else{
 					 $eng_pers  ='0';
 			}
-					 $log_amts   = $log_amt[$i];
-					 $eng_amts   = $eng_amt[$i];
+					 $log_amts   = isset($log_amt[$i]) ? $log_amt[$i] : '0';
+					 $eng_amts   = isset($eng_amt[$i]) ? $eng_amt[$i] : '0';
 			   //$log_eng_amts   = $log_eng_amt[$i];
 			  
-					 $com_perss   = $com_per[$i];
+					 $com_perss   = isset($com_per[$i]) ? $com_per[$i] : '';
 				   if($com_perss!=''){
 					 $com_pers = $com_per[$i];
 			}else{

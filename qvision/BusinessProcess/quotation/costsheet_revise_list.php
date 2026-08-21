@@ -67,6 +67,7 @@ if($datas) {
 	  if($data['business_id'] =='1'){ echo "Product"; 
 	  }elseif($data['business_id'] =='2'){ echo "Service";
 	  }elseif($data['business_id'] =='3'){ echo "Solution";
+	  }elseif($data['business_id'] =='4'){ echo "Software";
 	  }
 	  ?></td>
       <td><?php if($data['quote_type']=='1'){ echo "INR"; }else{ echo "Doller";}?></td>

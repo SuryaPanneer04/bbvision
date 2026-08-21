@@ -44,7 +44,7 @@ function record_fetch(a){
 }
 function productstatus(value)
 {
-if(value=='3')
+if(value=='3' || value=='4')
 {
 document.getElementById('services').style.visibility = "hidden";
 
@@ -59,7 +59,7 @@ document.getElementById('services').style.visibility = "visible";
                 ev.preventDefault();
                 var formData = new FormData(this);
 
-                 $.ajax({
+                 $.ajax({   
                     url: "qvision/CRM/calls/calls_submit.php",
                     method: "POST",
                     data: formData,
@@ -434,6 +434,7 @@ var inputvalues = $(this).val();
 							<option value="1">Product</option>
 							<option value="2">Services</option>
 							<option value="3">Solution</option>
+                            <option value="4">Software</option>
 						</select>
 					</td>
 				</tr>

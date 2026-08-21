@@ -1460,7 +1460,18 @@ function od()
             type: "POST",
             url: "qvision/Resource/jobdescription_form/job_description_approval.php",
             success: function (data) {
-                $("#main_content").html(data);
+                $('#main_content').html(data);
+            }
+        })
+    }
+	
+	function scope_approval()
+    {
+        $.ajax({
+            type: "POST",
+            url: "qvision/CRM/scope_approval.php",
+            success: function (data) {
+                $('#main_content').html(data);
             }
         })
     }

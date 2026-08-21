@@ -102,6 +102,39 @@ function cost_view(v){
 	})
 }
 
+function addSoftwareScope(v){
+	$.ajax({
+	type:"POST",
+	url:"qvision/CRM/software_scope_add.php?id="+v,
+	success:function(data)
+	{
+		$("#main_content").html(data);
+	}
+	})
+}
+
+function uploadSoftwareFile(v){
+	$.ajax({
+	type:"POST",
+	url:"qvision/CRM/software_upload_add.php?id="+v,
+	success:function(data)
+	{
+		$("#main_content").html(data);
+	}
+	})
+}
+
+function generateSoftwareQuote(v){
+	$.ajax({
+	type:"POST",
+	url:"qvision/CRM/software_quotation.php?id="+v,
+	success:function(data)
+	{
+		$("#main_content").html(data);
+	}
+	})
+}
+
 function lead_view(v){
 	 //alert(v);
 	$.ajax({
@@ -367,6 +400,30 @@ elseif($enquiry['enquiry_status']==11) // After PO Sent.
 	
 {
 echo '<span style="color:green;text-align:center;"><b> Purchase Order Sent </b></span>';
+}
+elseif($enquiry['enquiry_status']==30)
+{
+echo '<span style="color:green;text-align:center;"><b>Software Flow Created</b></span>';
+echo '<span style="color:red;text-align:center;"><b> / Waiting for Scope Addition</b></span>';
+}
+elseif($enquiry['enquiry_status']==31)
+{
+echo '<span style="color:green;text-align:center;"><b>Software Scope Added</b></span>';
+echo '<span style="color:red;text-align:center;"><b> / Waiting for Scope Approval</b></span>';
+}
+elseif($enquiry['enquiry_status']==32)
+{
+echo '<span style="color:green;text-align:center;"><b>Software Scope Approved</b></span>';
+echo '<span style="color:red;text-align:center;"><b> / Waiting for File Upload</b></span>';
+}
+elseif($enquiry['enquiry_status']==33)
+{
+echo '<span style="color:green;text-align:center;"><b>Software File Uploaded</b></span>';
+echo '<span style="color:red;text-align:center;"><b> / Waiting for Quotation Generation</b></span>';
+}
+elseif($enquiry['enquiry_status']==34)
+{
+echo '<span style="color:green;text-align:center;"><b>Software Quotation Generated</b></span>';
 }else{}
 ?>
 </td>
@@ -377,11 +434,23 @@ echo '<span style="color:green;text-align:center;"><b> Purchase Order Sent </b><
 			$enq_value= $enquiry['enquiry_status'];
 			
 			
-			if($enquiry['enquiry_status']==3)
-			{?>
-			
+			if($enquiry['enquiry_status']==30) {
+				?>
+				<button class="btn btn-warning" data-id="<?php echo $enquiry['enquiry_id']; ?>" onclick="addSoftwareScope(<?php echo $enquiry['enquiry_id']; ?>)">Add Scope</button>
+				<?php
+			} elseif($enquiry['enquiry_status']==32) {
+				?>
+				<button class="btn btn-info" data-id="<?php echo $enquiry['enquiry_id']; ?>" onclick="uploadSoftwareFile(<?php echo $enquiry['enquiry_id']; ?>)">Upload File</button>
+				<?php
+			} elseif($enquiry['enquiry_status']==33) {
+				?>
 				<button class="btn btn-primary" data-id="<?php echo $enquiry['enquiry_id']; ?>" onclick="cost_view(<?php echo $enquiry['enquiry_id']; ?>)">Add Quotation</button>
-				<?php 
+				<?php
+			} elseif($enquiry['enquiry_status']==3)
+  			{?>
+  			
+  				<button class="btn btn-primary" data-id="<?php echo $enquiry['enquiry_id']; ?>" onclick="cost_view(<?php echo $enquiry['enquiry_id']; ?>)">Add Quotation</button>
+  				<?php 
 			}elseif($enquiry['enquiry_status']==5)
 			{?>
 				<button class="btn btn-primary" data-id="<?php echo $enquiry['enquiry_id']; ?>" onclick="costz_view(<?php echo $enquiry['enquiry_id']; ?>)">Quote Send view</button>

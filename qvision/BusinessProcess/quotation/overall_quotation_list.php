@@ -91,9 +91,10 @@ $row = $roll_query->fetch();
 		  <td><?php echo $data['cs_no']; ?></td>
 		  <td><?php echo $data['hquote_no']; ?></td>
 		  <td><?php 
-		  if($data['mapping_id'] =='1'){ echo "Product"; 
-		  }elseif($data['mapping_id'] =='2'){ echo "Service";
-		  }elseif($data['mapping_id'] =='3'){ echo "Solution";
+		  if($data['business_id'] =='1'){ echo "Product"; 
+		  }elseif($data['business_id'] =='2'){ echo "Service";
+		  }elseif($data['business_id'] =='3'){ echo "Solution";
+		  }elseif($data['business_id'] =='4'){ echo "Software";
 		  }
 		  ?></td>
 		  <td><?php if($data['quote_type']=='1'){ echo "INR"; }else{ echo "Doller";}?></td>

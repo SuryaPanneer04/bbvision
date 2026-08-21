@@ -10,14 +10,14 @@ if(isset($_POST['idd']) || isset($_POST['attachfile'])){
   $id=$_REQUEST['idd'];
 
 	$enquiry_id    = $_REQUEST['idd'];
-	$filesArr3=$_FILES['attachfile'];
-	$sco    = $_REQUEST['sco'];
-	$fileNames = array_filter($filesArr3['name']); 
+	$filesArr3= isset($_FILES['attachfile']) ? $_FILES['attachfile'] : null;
+	$sco    = isset($_REQUEST['sco']) ? $_REQUEST['sco'] : '';
+	$fileNames = $filesArr3 ? array_filter($filesArr3['name']) : []; 
 			 
          
         // Upload file 
         $uploadedFile = ''; 
-                                  
+        if(!empty($filesArr3['name'])) {                          
             foreach($filesArr3['name'] as $key=>$val)
 			{  
                 // File upload path  
@@ -33,6 +33,7 @@ if(isset($_POST['idd']) || isset($_POST['attachfile'])){
                      
                 }
             }
+        }
 
 $flow = 1;
 	
@@ -176,6 +177,12 @@ $sql12=$con->query("Update crm_calls set department='$department_id',employee='$
 
 
 
+if(isset($_POST['is_software']) && $_POST['is_software'] == 1) {
+	$sql_sw = $con->query("UPDATE `enquiry` SET `flag`='4', `status`='30' WHERE calls_id='$enquiry_id'");
+	echo 1;
+	exit;
+}
+
 if($cust_type == 1){
 	
 	$bb = $con->query("select * from new_client_master a join new_plant_master b on (a.id=b.client_id) where a.id='$client_id'");
@@ -196,6 +203,8 @@ if($cust_type == 1){
 	$sql22=$con->query("UPDATE `enquiry` SET `flag`='$flag',`status`='3' WHERE calls_id='$enquiry_id'");
 	}
 }
+
+echo 1; // added echo 1 so the ajax gets a success response for regular flow too
 
 
 

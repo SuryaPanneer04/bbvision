@@ -183,6 +183,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				 }elseif($Product=='3')
 				 {
 					 $Product_value="Solution";
+				 }elseif($Product=='4')
+				 {
+					 $Product_value="Software";
 				 }
 				?>
         <td colspan="5"><input type="text" value="<?php echo $Product_value; ?>" name="Product" class="form-control" id="Product" readonly></td>
@@ -471,9 +474,15 @@ $cnt=$cnt+1;
 		<input type="hidden" name="idd" id="idd" value="<?php echo $id;   ?>" class="btn btn-success submitBtn" >
             <center>
 			
+			 <?php if($Product == '4') { ?>
+			 <button type="button" class="btn btn-primary btn-lg" onclick="createSoftwareFlow(<?php echo $id; ?>)">
+  Create Flow
+</button>
+			 <?php } else { ?>
 			 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal1">
   Verify Costsheet
 </button>
+			 <?php } ?>
 <!-- Modal -->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -510,9 +519,15 @@ $cnt=$cnt+1;
 		<input type="hidden" name="idd" id="idd" value="<?php echo $id;   ?>" class="btn btn-success submitBtn" >
             <center>
 			 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+			 <?php if($Product == '4') { ?>
+			 <button type="button" class="btn btn-primary btn-lg" onclick="createSoftwareFlow(<?php echo $id; ?>)">
+  Create Flow
+</button>
+			 <?php } else { ?>
+			 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   Verify Costsheet
 </button>
+			 <?php } ?>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -582,6 +597,19 @@ $cnt=$cnt+1;
 
 
 <script>
+function createSoftwareFlow(id) {
+    if(confirm('Are you sure you want to create the Software Flow?')) {
+        $.ajax({
+            type: "POST",
+            url: "qvision/CRM/calls/enquiry_insertuhh.php",
+            data: { idd: id, is_software: 1 },
+            success: function(data){
+                alert("Software Flow Created Successfully");
+                costsheet_add();
+            }
+        });
+    }
+}
 function openForm33() {
   document.getElementById('myForm3').style.visibility="hidden";
   var x = document.getElementById("myForm33");

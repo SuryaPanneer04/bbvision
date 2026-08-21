@@ -167,16 +167,17 @@ $userrole = $_SESSION['userrole'];
 		  <td><?php echo $cnt;?>.</td>
 		  <td><?php echo $data['cost_sheet_no']; ?></td>
 		  <td><?php 
-		  if($data['mapping_id'] =='1'){ echo "Product"; 
-		  }elseif($data['mapping_id'] =='2'){ echo "Service";
-		  }elseif($data['mapping_id'] =='3'){ echo "Solution";
+		  if($data['business_id'] =='1'){ echo "Product"; 
+		  }elseif($data['business_id'] =='2'){ echo "Service";
+		  }elseif($data['business_id'] =='3'){ echo "Solution";
+		  }elseif($data['business_id'] =='4'){ echo "Software";
 		  }
 		  ?></td>
 		  <td><?php if($data['quote_type']=='1'){ echo "INR"; }else{ echo "Doller";}?></td>
 		 
 		  <td><?php echo $data['org_name']; ?></td>
 		  <td><?php echo $data['employee_name']; ?></td>
-		  <td><?php if($data['cs_status']==1){ 
+		  <td><?php if($data['cs_status']==0){ echo '<span style="color:green;text-align:center;"><b>Cost Sheet Added & </b></span><span style="color:red;text-align:center;"><b> Waiting for Approval</b></span>'; }else if($data['cs_status']==1){ 
 	               echo '<span style="color:green;text-align:center;"><b>Cost Sheet Generated & </b></span>'; 
 	               echo '<span style="color:red;text-align:center;"><b> Waiting for Approval</b></span>'; 
 				}else if($data['cs_status']==3){ 
