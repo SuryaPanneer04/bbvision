@@ -28,10 +28,41 @@ else
 <div class="card">
 <div class="card-header p-2">
 <ul class="nav nav-pills">
-<li class="nav-item"><a class="nav-link active" href="#for_employment" data-toggle="tab">Application for Employment</a></li>
-<li class="nav-item"><a class="nav-link" href="#education_qualification" data-toggle="tab">Educational Qualifications</a></li>
-<li class="nav-item"><a class="nav-link" href="#certification_details" data-toggle="tab">Certification Details</a></li>
-<li class="nav-item"><a class="nav-link" href="#employment_details" data-toggle="tab">Employment Details</a></li>
+
+    <li class="nav-item">
+        <a class="nav-link active"
+           href="#for_employment"
+           data-toggle="tab">
+            Application for Employment
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+           href="#education_qualification"
+           data-toggle="tab">
+            Educational Qualifications
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+           href="#certification_details"
+           id="certificationTab"
+           onclick="return openCertificationPopup();">
+            Certification Details
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link"
+            href="#employment_details"
+            id="employmentTab"
+            data-toggle="tab">
+            Employment Details
+        </a>
+    </li>
+
 </ul>
 </div> <!-- /.card-header -->
 <div class="card-body">
@@ -635,7 +666,7 @@ else
       <input type="hidden" id="ests" name="ests" value="" >
       <table class="table table-bordered">
       <tr> 
-        <td colspan="5"> Are you Experience?</td>
+        <td colspan="5">Are you a Experience?</td>
         <td colspan="5"> 
           <select class="form-control" id="conformexp" name="conformexp" onchange="conformExperinece(this.value)"> 
         <?php if($emp_exp_freshr == 'Fresher') {  ?>
@@ -862,18 +893,53 @@ $(document).ready(function(){
 
 
 
-function conformExperinece(v){
-  
-    if(v == 'Experience'){
-        $('#new_tab2').show();
-        $('#yes').show(); //submit button when experience
-        $('#no').hide(); //submit button when fresher
+function conformExperinece(v)
+{
+    // -----------------------------------------
+    // --- Select ---
+    // -----------------------------------------
+    if (v == '--- Select ---' || v == '')
+    {
+        $('#new_tab2').hide();
+        $('#yes').hide();
+        $('#no').hide();
 
-    } else{
-       $('#new_tab2').hide();
-       $('#yes').hide(); //submit button when experience
-       $('#no').show(); //submit button when fresher
-     
+        return;
+    }
+
+
+    // -----------------------------------------
+    // EXPERIENCE
+    // -----------------------------------------
+    if (v == 'Experience')
+    {
+        // Show experience details
+        $('#new_tab2').show();
+
+        // Show Experience submit button
+        $('#yes').show();
+
+        // Hide Fresher submit button
+        $('#no').hide();
+
+        // IMPORTANT:
+        // Do NOT show popup
+        return;
+    }
+
+
+    // -----------------------------------------
+    // FRESHER
+    // -----------------------------------------
+    if (v == 'Fresher')
+    {
+        // Show popup ONLY for Fresher
+        $('#employmentModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        return;
     }
 }
 
@@ -962,6 +1028,252 @@ function printDiv(divName) {
 }
     </script> 
 	
+    
+<!-- Certification Popup -->
+<div class="modal fade" id="certificationModal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Certification Details
+                </h5>
+
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <h5>Have you done any certification course?</h5>
+
+                <p class="text-muted">
+                    Please select Yes or No.
+                </p>
+
+            </div>
+
+            <div class="modal-footer justify-content-center">
+
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="certificationYes()">
+                    Yes
+                </button>
+
+                <button type="button"
+                        class="btn btn-danger"
+                        onclick="certificationNo()">
+                    No
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Employment Popup -->
+<div class="modal fade" id="employmentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Employment Details
+                </h5>
+
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body text-center">
+
+                <h5>Are you a Fresher?</h5>
+
+                <p class="text-muted">
+                    Select Yes if you are a Fresher.
+                    Select No if you have previous experience.
+                </p>
+
+            </div>
+
+            <div class="modal-footer justify-content-center">
+
+                <button type="button"
+                        class="btn btn-success"
+                        onclick="fresherYes()">
+                    Yes
+                </button>
+
+                <button type="button"
+                        class="btn btn-danger"
+                        onclick="fresherNo()">
+                    No
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+
+.modal {
+    z-index: 99999 !important;
+}
+
+.modal-backdrop {
+    z-index: 99998 !important;
+}
+
+</style>
+
+<script>
+
+/*
+|--------------------------------------------------------------------------
+| CERTIFICATION POPUP
+|--------------------------------------------------------------------------
+*/
+
+function openCertificationPopup()
+{
+    var modal = $('#certificationModal');
+
+    // IMPORTANT:
+    // new.php is loaded inside #main_content.
+    // Move modal outside #main_content and put it directly under body.
+    if (modal.length && !modal.parent().is('body')) {
+        modal.appendTo('body');
+    }
+
+    modal.modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+
+    return false;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CERTIFICATION YES
+|--------------------------------------------------------------------------
+*/
+
+function certificationYes()
+{
+    $('#certificationModal').modal('hide');
+
+    setTimeout(function()
+    {
+        $('#certificationTab').tab('show');
+    }, 300);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CERTIFICATION NO
+|--------------------------------------------------------------------------
+*/
+
+function certificationNo()
+{
+    $('#certificationModal').modal('hide');
+
+    setTimeout(function()
+    {
+        // Only open Employment Details tab
+        // DO NOT open employment popup here
+        $('#employmentTab').tab('show');
+    }, 300);
+
+    return false;
+}
+
+/*
+|--------------------------------------------------------------------------
+| EMPLOYMENT TAB
+|--------------------------------------------------------------------------
+*/
 
 
 
+
+/*
+|--------------------------------------------------------------------------
+| FRESHER = YES
+|--------------------------------------------------------------------------
+*/
+
+function fresherYes()
+{
+    $('#employmentModal').modal('hide');
+
+    setTimeout(function()
+    {
+        // Set dropdown to Fresher
+        $('#conformexp').val('Fresher');
+
+        // Hide experience details
+        $('#new_tab2').hide();
+
+        // Hide Experience submit button
+        $('#yes').hide();
+
+        // Show Fresher submit button
+        $('#no').show();
+
+    }, 300);
+}
+
+/*
+|--------------------------------------------------------------------------
+| FRESHER = NO / EXPERIENCE
+|--------------------------------------------------------------------------
+*/
+
+function fresherNo()
+{
+    $('#employmentModal').modal('hide');
+
+    setTimeout(function()
+    {
+        // Set dropdown to Experience
+        $('#conformexp').val('Experience');
+
+        // Show experience details
+        $('#new_tab2').show();
+
+        // Show Experience submit button
+        $('#yes').show();
+
+        // Hide Fresher submit button
+        $('#no').hide();
+
+    }, 300);
+}
+
+</script>
