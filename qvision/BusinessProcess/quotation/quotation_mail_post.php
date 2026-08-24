@@ -49,7 +49,7 @@ $stmtb= $con->query("SELECT a.id,a.first_name as fnames,a.phone as pphone,a.mail
 		echo $oorg_name = $rowb['oorg_name'];
 		echo $exxtra_file = $rowb['exxtra_file'];
 		
-$count = sizeof($costsheet_id);
+$count = is_array($costsheet_id) ? sizeof($costsheet_id) : 1;
 
 
 // Create a function for converting the amount in words
@@ -566,8 +566,8 @@ for($i=0;$i<$count;$i++)
 	$row        = $quote_query->fetch();
 }	 
 	$mailerID = $row['mail']; echo $mailerID;
-	// $sendmail       = $row['email_id1']; echo "<br/>";
-	$sendmail = "suryabluebase@gmail.com";
+	$sendmail       = $row['email_id1']; echo "<br/>";
+	// $sendmail = "suryabluebase@gmail.com";
 	$client_name    = $row['org_name'];echo "<br/>";
     $cost_sheet_no  = $row['cost_sheet_no'];echo "<br/>";
 	 //$cost_sheet_no  = $row['cost_sheet_no'];
