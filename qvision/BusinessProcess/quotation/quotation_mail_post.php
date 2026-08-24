@@ -374,7 +374,7 @@ table, th, td {
 </div>
 ';
  //terms and condition query
-                $query2=  $con->prepare("select a.*,b.*,c.*,f.position as desg from staff_master a left join designation_master b on 
+                $query2=  $con->prepare("select a.*,b.*,c.*,b.designation_name as desg from staff_master a left join designation_master b on 
 		                  (a.design_id=b.id) left join z_user_master c on (a.id=c.candidate_id) left join candidate_form_details f on (a.candid_id=f.id) where a.id = '$acc_manager'");
 				   /* echo "select a.*,b.*,c.* from staff_master a inner join designation_master b on 
 		                  (b.id = a.design_id) inner join z_user_master c on (c.candidate_id=a.id) where a.id = '$acc_manager'"; */ 
@@ -566,8 +566,9 @@ for($i=0;$i<$count;$i++)
 	$row        = $quote_query->fetch();
 }	 
 	$mailerID = $row['mail']; echo $mailerID;
-	 $sendmail       = $row['email_id1'];echo "<br/>";
-	 $client_name    = $row['org_name'];echo "<br/>";
+	// $sendmail       = $row['email_id1']; echo "<br/>";
+	$sendmail = "suryabluebase@gmail.com";
+	$client_name    = $row['org_name'];echo "<br/>";
     $cost_sheet_no  = $row['cost_sheet_no'];echo "<br/>";
 	 //$cost_sheet_no  = $row['cost_sheet_no'];
 	 $enquiry_id     = $row['enquir_id'];echo "<br/>";
@@ -629,10 +630,10 @@ $mail->SMTPDebug = 2;
 $mail->Mailer = "smtp";
 $mail->IsSMTP(true); 
 $mail->Port = 587;
-$mail->Host = 'webmail.quadsel.in';        
+$mail->Host = 'mail.bluebase.in';        
 $mail->SMTPAuth = true;                              // Enable SMTP authentication
-$mail->Username = 'quote@quadsel.in';
-$mail->Password = 'Q@2023';                           // SMTP password
+$mail->Username = 'surya@bluebase.in';
+$mail->Password = 'Surya@2026#';                           // SMTP password
 $mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
 $mail->SMTPOptions = [
     'ssl' => [
@@ -641,7 +642,7 @@ $mail->SMTPOptions = [
 		'allow_self_singed' => true,
     ]
 ];
-$mail->From = 'quote@quadsel.in';		//Sets the From email address for the message
+$mail->From = 'surya@bluebase.in';		//Sets the From email address for the message
 	$mail->FromName = 'Quotation from Quadsel Syatems ';			//Sets the From name of the message
 	$mail->AddAddress( $sendmail, $client_name);		//Adds a "To" address
 	$mail->AddCC($cc_mail);
@@ -674,10 +675,10 @@ $mail->SMTPDebug = 2;
 $mail->Mailer = "smtp";
 $mail->IsSMTP(true); 
 $mail->Port = 587;
-$mail->Host = 'webmail.quadsel.in';        
+$mail->Host = 'mail.bluebase.in';        
 $mail->SMTPAuth = true;                              // Enable SMTP authentication
-$mail->Username = 'quote@quadsel.in';
-$mail->Password = 'Q@2023';                           // SMTP password
+$mail->Username = 'surya@bluebase.in';
+$mail->Password = 'Surya@2026#';                            // SMTP password
 $mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also accepted
 $mail->SMTPOptions = [
     'ssl' => [
@@ -686,7 +687,7 @@ $mail->SMTPOptions = [
 		'allow_self_singed' => true,
     ]
 ];
-$mail->From = 'quote@quadsel.in';		//Sets the From email address for the message
+$mail->From = 'surya@bluebase.in';		//Sets the From email address for the message
 	$mail->FromName = 'Quotation from Quadsel Systems';			//Sets the From name of the message
 	$mail->AddAddress( $sendmail, $client_name);		//Adds a "To" address
 	$mail->AddCC($cc_mail);
@@ -717,7 +718,7 @@ $mail->From = 'quote@quadsel.in';		//Sets the From email address for the message
 	{  
      	echo "Success";
 		$message = '<label class="text-success">Quote Details has been send successfully...</label>';echo $message;
-	    $update_query = $con->query("update ax Summary_entry set flag ='1' , modified_by ='$user_id',modified_on =NOW() WHERE quote_no= '$QuoteNo'");  
+	    $update_query = $con->query("update quotation_entry set flag ='1' , modified_by ='$user_id',modified_on =NOW() WHERE quote_no= '$QuoteNo'");  
 		echo "update quotation_entry set flag ='1' , modified_by ='$user_id',modified_on =NOW() WHERE quote_no= '$QuoteNo'";
 	} elseif(!$mail->send()) {
        echo 'Message could not be sent.';

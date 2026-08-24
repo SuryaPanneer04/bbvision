@@ -689,7 +689,7 @@ $mail->From = 'test1@ssinformation.in';		//Sets the From email address for the m
 	{  
      	echo "Success";
 		$message = '<label class="text-success">Quote Details has been send successfully...</label>';echo $message;
-	    $update_query = $con->query("update ax Summary_entry set flag ='1' , modified_by ='$user_id',modified_on =NOW() WHERE quote_no= '$QuoteNo'");  
+	    $update_query = $con->query("update quotation_entry set flag ='1' , modified_by ='$user_id',modified_on =NOW() WHERE quote_no= '$QuoteNo'");  
 		echo "update quotation_entry set flag ='1' , modified_by ='$user_id',modified_on =NOW() WHERE quote_no= '$QuoteNo'";
 	} elseif(!$mail->send()) {
        echo 'Message could not be sent.';
