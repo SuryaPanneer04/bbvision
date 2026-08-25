@@ -500,7 +500,7 @@ function claim_request()
 {
 	$.ajax({
     type:"POST",
-    url:"qvision/Leave_Management/main.php",
+    url: "qvision/Leave_Management/main.php?menu=hr",
     success:function(data){
       $("#main_content").html(data);
     }

@@ -145,7 +145,9 @@ function leave_reject_list()
 					<input class="btn btn-success" type="button" value="Leave Balance" onclick="leave_balance_view()"><br>-->
 					<input class="btn button3" type="button" value="Leave Request" onclick="leave_request()">
 					
-				<?php if($userrole=="R003")
+				<?php 
+				$is_hr_menu = (isset($_GET['menu']) && $_GET['menu'] == 'hr') ? true : false;
+				if($userrole=="R003" && $is_hr_menu)
 				{?>
 					<input class="btn button2" type="button" value="Staff Leave Update" onclick="leave_update()">
 					<input class="btn button" type="button" value="Staff Leave Master" onclick="leave_master_app()">
