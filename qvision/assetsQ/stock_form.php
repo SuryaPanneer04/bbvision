@@ -47,7 +47,7 @@ $userrole=$_SESSION['userrole'];
         <td>Stock Name</td>
         <td colspan="5"><select class="form-control" id="asset_name" name="asset_name" onchange="get_asset_no(this.value)">
 		<option value="">Choose Stock</option>
-		<?php $stmt = $con->query("SELECT * FROM assets_master where type='It Asset'");
+		<?php $stmt = $con->query("SELECT * FROM assets_master where type='It Asset' AND status='1'");
 		while ($row = $stmt->fetch()) {?>
 		<option value="<?php echo $row['id']; ?>"> <?php echo $row['name']; ?> </option>
 		<?php } ?>
@@ -188,30 +188,20 @@ $('#assets_type').hide();
 
 function sub_type(v)
 {
-	var value=v;
-	//alert(v);
-	if(value=="Internal Asset")
+	var value = v;
+	
+	if(value == "Spare Asset" || value == "New Products")
 	{
-		$('#assets_type').show();
+		$('#assets_type').show(); 
 		$('#asset_nme').hide();		
 		$('#inter_asset').show();
-		//document.getElementById('assets_type').style.visibility = "visible";
-       //document.getElementById('asset_nme').style.visibility = "hidden";
 	}
-	else if(value !=="Internal Asset")
+	else 
 	{
 		$('#assets_type').hide();
-		$('#asset_nme').show();
+		$('#asset_nme').hide();
 		$('#inter_asset').hide();
-		//document.getElementById('assets_type').style.visibility = "hidden";		
-       //document.getElementById('asset_nme').style.visibility = "visible";
 	}
-	
-	/* else
-	{
-		document.getElementById('asset_nme').style.visibility = "visible";
-document.getElementById('assets_type').style.visibility = "hidden";
-	} */
 }
 
 function get_asset(v)

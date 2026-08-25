@@ -38,6 +38,22 @@ $sta = isset($row['status']) ? $row['status'] : 1;
                     </td>
                 </tr>
                 <tr>
+        <td>Asset Type</td>
+        <td colspan="5">
+            <select class="form-control" name="type" id="type" required>
+                <option value="">Select Asset Type</option>
+                <option value="IT Asset" <?php if($row['type'] == 'IT Asset') echo 'selected'; ?>>IT Asset</option>
+                <option value="NonIt Asset" <?php if($row['type'] == 'NonIt Asset') echo 'selected'; ?>>NonIt Asset</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Prefix Code</td>
+        <td colspan="5">
+            <input type="text" class="form-control" id="prefix_code" name="prefix_code" value="<?php echo $row['prefix_code']; ?>" required>
+        </td>
+    </tr>
+                <tr>
                     <td>Status</td>
                     <td colspan="5">
                         <select class="form-control" name="status" id="status" required>

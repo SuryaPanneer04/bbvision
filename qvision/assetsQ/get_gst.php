@@ -1,6 +1,7 @@
 <?php
 require '../../connect.php';
 include("../../user.php");
+session_write_close();
 $asset_name = $_REQUEST["id"];
 
 

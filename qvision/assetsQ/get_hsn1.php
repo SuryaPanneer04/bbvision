@@ -1,6 +1,7 @@
 <?php
 require '../../connect.php';
 include("../../user.php");
+session_write_close();
 $asset_name = $_REQUEST["id"];
 
 $sqlzz=$con->query("SELECT * FROM `product_master` where id='$asset_name'");

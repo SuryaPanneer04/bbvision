@@ -33,6 +33,20 @@ $userrole=$_SESSION['userrole'];
                 <td colspan="2"><input type="text" class="form-control" id="name" name="name" required></td>
             </tr>
             <tr>
+        <td>Asset Type</td>
+        <td colspan="2">
+            <select class="form-control" name="type" id="type" required>
+                <option value="">Select Asset Type</option>
+                <option value="IT Asset">IT Asset</option>
+                <option value="NonIt Asset">NonIt Asset</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Prefix Code</td>
+        <td colspan="2"><input type="text" class="form-control" id="prefix_code" name="prefix_code" placeholder="Example: MON, CPU" required></td>
+    </tr>
+            <tr>
                 <td>Status</td>
                 <td colspan="2">
                     <select class="form-control" name="status" id="status" required>

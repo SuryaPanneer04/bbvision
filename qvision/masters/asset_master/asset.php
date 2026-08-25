@@ -16,6 +16,8 @@ $userrole=$_SESSION['userrole'];
             <thead>
                 <th>#</th>
                 <th>Asset Name</th>
+                <th>Asset Type</th> 
+                <th>Prefix Code</th>
                 <th>Status</th>
                 <th>Tools</th>
             </thead>
@@ -27,24 +29,26 @@ $userrole=$_SESSION['userrole'];
                 {
                 ?>
                 <tr>
-                    <td><?php echo $i; ?></td>
-                    <td><?php echo $asset_res['name']; ?></td>
-                    <td>
-                    <?php
-                    if(isset($asset_res['status']) && $asset_res['status']==1)
-                    {
-                        echo '<span style="color:green;text-align:center;"><b>Active</b></span>';
-                    }
-                    else
-                    {
-                        echo '<span style="color:red;text-align:center;"><b>Inactive</b></span>';
-                    }
-                    ?>
-                    </td>
-                    <td>
-                        <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $asset_res['id']; ?>" onclick="edit_asset(<?php echo $asset_res['id']; ?>)"><i class="fa fa-edit"></i> Edit</button>
-                    </td>
-                </tr>
+    <td><?php echo $i; ?></td>
+    <td><?php echo $asset_res['name']; ?></td>
+    <td><?php echo $asset_res['type'] ? $asset_res['type'] : 'N/A'; ?></td>
+    <td><?php echo $asset_res['prefix_code'] ? $asset_res['prefix_code'] : 'N/A'; ?></td>
+    <td>
+    <?php
+    if(isset($asset_res['status']) && $asset_res['status']==1)
+    {
+        echo '<span style="color:green;text-align:center;"><b>Active</b></span>';
+    }
+    else
+    {
+        echo '<span style="color:red;text-align:center;"><b>Inactive</b></span>';
+    }
+    ?>
+    </td>
+    <td>
+        <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $asset_res['id']; ?>" onclick="edit_asset(<?php echo $asset_res['id']; ?>)"><i class="fa fa-edit"></i> Edit</button>
+    </td>
+</tr>
                 <?php
                 $i++;
                 }
