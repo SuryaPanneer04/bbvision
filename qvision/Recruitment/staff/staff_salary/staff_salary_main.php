@@ -435,7 +435,7 @@ if (is_numeric($varaible_pay)) {
        );
    }
  ?>
- <img src="/qvision/images/edit.png" id="editIcon" style="height:25px;width:25px;float:right;" onclick="editt();" /><br>
+ <img src="qvision/images/edit.png" id="editIcon" style="height:25px;width:25px;float:right;" onclick="editt();" /><br>
  <br>
  
 	<div class="row">
@@ -558,7 +558,7 @@ if (is_numeric($varaible_pay)) {
 <div id="editPopup" class="popup">
 <div class="card-content">
 <div>
- <span style="font-size:25px;color:blue;">New Salary Structure <span><img src="/qvision/images/close.png" id="editIcon" style="height:25px;width:25px;float:right;" onclick="closeee();" /><br><br>
+ <span style="font-size:25px;color:blue;">New Salary Structure <span><img src="qvision/images/close.png" id="editIcon" style="height:25px;width:25px;float:right;" onclick="closeee();" /><br><br>
 </div>
 
 <div class="row">

@@ -47,6 +47,10 @@ $costsheet_date = date('Y-m-d', strtotime($costsheet_date_str));
  }elseif($business_id ==3){
 	 //$bussiness_type ="QSPLSL";
 	 $bussiness_type ="SSSL";//solution
+ }elseif($business_id ==4){
+     $bussiness_type ="SSSW";//software
+ }else{
+     $bussiness_type ="SSPR";//product
  }
 file_put_contents('debug.txt', "Line 50\n", FILE_APPEND);
 //$vendor_id     = $_REQUEST['vendor_id'];
@@ -139,7 +143,7 @@ $row_val = $query->fetch();
 	        $find_fs = substr($row['cost_sheet_no'], 7, 4);
 	        $bussiness_type ; 
 	  // echo  $a = sprintf("%05d", $find_fs);
-	    $final_cost_no = str_pad($find_fs + 1, 5, 0, STR_PAD_LEFT); 
+	    $final_cost_no = str_pad((int)$find_fs + 1, 5, 0, STR_PAD_LEFT); 
 	    $CS_NO = $no.''.'/'.$no2.'/'.$newchar;
 	  //echo $CS_NO = $bussiness_type.''.$final_cost_no.'/'.$finyear.'/'.$newchar;	
 	 }
@@ -188,17 +192,17 @@ file_put_contents('debug.txt', "Inside loop i=$i.\n", FILE_APPEND);
  $totalPrices    = $total[$i];//qty*cost
  $total_amts     = $total_amt[$i];//items total
  //$net_amts       = $net_amt[$i];//netamount
-$vendor=$vendor_id[$i];
+ $vendor = isset($vendor_id[$i]) ? $vendor_id[$i] : '';
 
- $log_pers   = $log_per[$i];
- $eng_pers   = $eng_per[$i];
- $log_amts   = $log_amt[$i];
- $eng_amts   = $eng_amt[$i];
+ $log_pers   = isset($log_per[$i]) ? $log_per[$i] : '0';
+ $eng_pers   = isset($eng_per[$i]) ? $eng_per[$i] : '0';
+ $log_amts   = isset($log_amt[$i]) ? $log_amt[$i] : '0';
+ $eng_amts   = isset($eng_amt[$i]) ? $eng_amt[$i] : '0';
  //$log_eng_amts   = $log_eng_amt[$i];
  
  
- $com_pers   = $com_per[$i];
- $com_amts   = $com_amt[$i];
+ $com_pers   = isset($com_per[$i]) ? $com_per[$i] : '0';
+ $com_amts   = isset($com_amt[$i]) ? $com_amt[$i] : '0';
  
  
  // Safe check for image
@@ -241,7 +245,7 @@ if(!empty($fileNames1)) {
  $query3->execute();
  $count = $query3->rowCount();
  $row = $query3->fetch();
- $quote_no = $row['quote_no'];
+ $quote_no = $row ? $row['quote_no'] : '';
 if($quote_no!=''){
    $insert_query=$con->query("insert into cost_sheet_entry(cost_sheet_no,specification,qty,unit,unit_rate,log_per,log_amt,eng_per,eng_amt,com_per,com_amt,
                               total_price,total_amt,net_amt,grand_amt,gst_per,gst_amt,igst_per,igst_amount,enquiry_id,client_id,quote_type,

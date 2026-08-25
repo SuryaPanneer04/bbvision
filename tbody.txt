@@ -1,0 +1,99 @@
+
+		<?php  
+		 $query3= $con->query("SELECT a.id as costsheet_id,a.*,b.*,e.*,v.* from cost_sheet_entry a 
+				 left join client_master b on(b.id=a.client_id) 
+				 left join staff_master e ON e.candid_id=a.candid_id join doller_vendor_mastor v on a.vendor_id=v.id
+				 where a.cost_sheet_no='$cost_sheet_no' order by a.id asc"); 
+				 
+		     /* echo "SELECT a.id as costsheet_id,a.*,b.*,e.* from cost_sheet_entry a 
+				 left join client_master b on(b.id=a.client_id) 
+				 left join staff_master e ON e.candid_id=a.candid_id
+				 where a.status ='1' or a.status ='0'  and a.cost_sheet_no='$cost_sheet_no' order by a.id desc"; */
+			   $cnt=1; 
+		 while($cost = $query3->fetch(PDO::FETCH_ASSOC)){ 
+		    
+			 /* echo "hi";
+			 echo "SELECT a.id as costsheet_id,a.*,b.*,e.* from cost_sheet_entry a 
+				 inner join client_master b on(b.id=a.client_id) 
+				 inner join staff_master e ON e.candid_id=a.candid_id
+				 where a.status ='1' and a.cost_sheet_no='$cost_sheet_no'"; */
+				 
+				//echo  $cnt;  	 
+		?>
+		<tr>
+		 
+		  <td>
+		    <INPUT type="hidden" id="cost_sheet_no" name="cost_sheet_no" class="form-control" value="<?php echo $cost['cost_sheet_no']; ?>" readonly="readonly">
+			<?php echo $cost['product_name']; ?></td>
+		  <td>
+		  <?php echo $cost['product_id']; ?></td>
+		  
+		  <td>
+		  <?php echo $cost['description']; ?></td>
+		  <td>
+			<?php echo $cost['qty']; ?></td>		
+		  <td>
+			<?php echo $cost['unit_rate']; ?></td>
+		  <td>
+			<?php echo $cost['total_price']; ?></td>
+			 <td>
+			<?php echo $cost['dist_per']; ?>
+		</td>
+		<td>
+			<?php echo $cost['dist_amt']; ?>
+		</td>
+			<td >
+		   <?php echo $cost['com_per']; ?>
+		</td>
+		<td>
+		  <?php echo $cost['com_amt']; ?>
+		</td>
+		<td>
+		  <?php echo $cost['sel_price']; ?>
+		</td>
+		
+		  <td>
+			<?php echo $cost['log_per']; ?>
+		</td>
+		<td>
+			<?php echo $cost['log_amt']; ?>
+		</td>
+		
+		<td> 
+		    <?php echo $cost['eng_per']; ?>
+		</td>
+		  
+		<td>
+		  <?php echo $cost['eng_amt']; ?>
+		</td>
+		<td >
+		  <?php echo $cost['total_amt']; ?>
+		</td>
+		 <td>
+		  <?php echo $cost['gst_per']; ?>
+		</td> 
+	<td>
+		  <?php echo $cost['gst_amt']; ?>
+		</td>
+		<td>
+		  <?php echo $cost['igst_per']; ?>
+		</td>
+		<td>
+		  <?php echo $cost['igst_amount']; ?>
+		</td>
+		<td>
+		  <?php echo $cost['total_gst']; ?>
+		</td>
+		<td >
+		  <?php echo $cost['vendor_name']; ?>
+		</td>
+		
+		
+		  
+		  <!--<td>
+		    <INPUT type="button" class="btn btn-success" value="Add " onclick="addRow('dataTable')" />
+	        <INPUT type="button" class="btn btn-danger" value="Delete" onclick="deleteRow('dataTable')" />
+		   </td>-->
+		</tr>
+		 <?php $cnt++; } ?>
+		

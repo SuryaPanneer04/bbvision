@@ -460,7 +460,18 @@ if($is_payroll_ready && !empty($earned_salaries)) {
     <td class="left">Other Allowance</td>
     <td class="right"><?php 
     if($is_payroll_ready && !empty($earned_salaries)) {
-        $otherallowance = floatval($earned_salaries['Other Allowances'] ?? $earned_salaries['Other Allowance'] ?? 0);
+        $otherallowance = 0;
+        foreach($earned_salaries as $key => $val) {
+            $norm_key = trim(strtolower($key));
+            if($norm_key == 'other allowances' || $norm_key == 'other allowance' || $norm_key == 'otherallowance' || $norm_key == 'otherallowances' || $norm_key == 'oa') {
+                $otherallowance = floatval($val);
+                break;
+            }
+        }
+        // Fallback to exact match just in case
+        if($otherallowance == 0) {
+            $otherallowance = floatval($earned_salaries['Other Allowances'] ?? $earned_salaries['Other Allowance'] ?? 0);
+        }
     } else {
         $otherallowance = ($month_days > 0) ? ($getdetails['otherallowances_permonth'] / $month_days * $work_days) : 0;
     }

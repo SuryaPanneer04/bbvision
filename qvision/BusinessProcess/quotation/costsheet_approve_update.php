@@ -30,9 +30,9 @@ echo $candidateid; echo '****';
  
  echo "sELECT e.client,e.company_name,e.mail,cse.client_id,zum.full_name,zum.user_name FROM cost_sheet_entry cse 
 left JOIN enquiry e on (e.id=cse.enquiry_id) left JOIN z_user_master zum ON (zum.candidate_id=e.created_by) where cse.cost_sheet_no='$cost_sheet_no' and e.id='$enquiry_id'";
- $query_select = $con->query("SELECT e.client,e.company_name,e.mail as email,cse.client_id,zum.full_name,zum.user_name as mail FROM cost_sheet_entry cse 
+ $query_select = $con->query("SELECT e.Company_name as company_name, e.mail as email,cse.client_id,zum.full_name,zum.user_name as mail FROM cost_sheet_entry cse 
 left JOIN enquiry e on (e.id=cse.enquiry_id) left JOIN z_user_master zum ON (zum.candidate_id=e.created_by) where cse.cost_sheet_no='$cost_sheet_no' and e.id='$enquiry_id'");
-/* echo "SELECT e.client,e.company_name,e.mail as email,cse.client_id,zum.full_name,zum.user_name as mail FROM cost_sheet_entry cse 
+/* echo "SELECT e.Company_name as company_name, e.mail as email,cse.client_id,zum.full_name,zum.user_name as mail FROM cost_sheet_entry cse 
 left JOIN enquiry e on (e.id=cse.enquiry_id) left JOIN z_user_master zum ON (zum.candidate_id=e.created_by) where cse.cost_sheet_no='$cost_sheet_no' and e.id='$enquiry_id'"; */
  /* echo "sELECT e.client,e.company_name,e.mail,cse.client_id,zum.full_name,zum.user_name FROM cost_sheet_entry cse 
 INNER JOIN enquiry e on e.id=cse.enquiry_id INNER JOIN z_user_master zum ON zum.candidate_id=e.created_by where cse.cost_sheet_no='$cost_sheet_no' and e.id='$enquiry_id'"; */
@@ -62,7 +62,7 @@ JOIN z_user_master zum WHERE zum.candidate_id = e.created_by and qg.cost_sheet_n
 	
 	//$data=$deatsils->fetch();
 	//$enquiry_id=$data['id'];
-	$client=$query['client'];echo $client;echo '**$**';
+	$client=$query['full_name'];echo $client;echo '**$**';
 	$full_name=$query['full_name']; echo $full_name;echo '**#**';
 	$user_name=$query['mail']; echo $user_name;echo '**%**';
 	$mailerID=$query['mail']; echo $mailerID;
@@ -207,12 +207,12 @@ if($count == 0)
 
 
  $date = date('Y-m-d');
- $row_count = count($cost_sheet_no);
+ $row_count = is_array($cost_sheet_no) ? count($cost_sheet_no) : 1;
 	
 
  for($i=0;$i<$row_count;$i++)
 {
-  $quote = $cost_sheet_no[$i];
+  $quote = is_array($cost_sheet_no) ? $cost_sheet_no[$i] : $cost_sheet_no;
   $update_query = $con->query("update cost_sheet_entry set approved_by ='$candidateid', status ='2',modified_by ='$candidateid',modified_on =NOW() WHERE cost_sheet_no= '$cost_sheet_no'");  
 // echo "update cost_sheet_entry set approved_by ='$user_id', status = '3',modified_by ='$candidateid',modified_on =NOW() WHERE cost_sheet_no= '$cost_sheet_no'";
 }
