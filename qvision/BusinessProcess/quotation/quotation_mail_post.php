@@ -566,8 +566,8 @@ for($i=0;$i<$count;$i++)
 	$row        = $quote_query->fetch();
 }	 
 	$mailerID = $row['mail']; echo $mailerID;
-	$sendmail       = $row['email_id1']; echo "<br/>";
-	// $sendmail = "suryabluebase@gmail.com";
+	//$sendmail       = $row['email_id1']; echo "<br/>";
+	$sendmail = "vaithi663@gmail.com";
 	$client_name    = $row['org_name'];echo "<br/>";
     $cost_sheet_no  = $row['cost_sheet_no'];echo "<br/>";
 	 //$cost_sheet_no  = $row['cost_sheet_no'];

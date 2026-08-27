@@ -81,10 +81,9 @@ $row = $roll_query->fetch();
 		   $approved_id = $data['quote_approve_id'];
 		 
 		 $stmt = $con->prepare("SELECT emp_name from staff_master where candid_id ='$approved_id' "); 	
-		 //echo "SELECT emp_name from staff_master where candid_id ='$approved_id'";
 		 $stmt->execute(); 
-		 $row = $stmt->fetch();
-		 $emp_name = $row['emp_name'];
+		 $row = $stmt->fetch(PDO::FETCH_ASSOC);
+		 $emp_name = ($row && isset($row['emp_name'])) ? $row['emp_name'] : '-';
 	  ?>
       <tr>
 		  <td><?php echo $cnt;?>.</td>
