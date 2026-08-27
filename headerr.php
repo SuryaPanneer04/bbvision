@@ -506,6 +506,15 @@ function claim_request()
             }
         })
     }
+    function document_view() {
+    $.ajax({
+        type: "POST",
+        url: "qvision/HR/document_view/main.php", 
+        success: function (data) {
+            $("#main_content").html(data);
+        }
+    });
+}
     function leave_management()
 {
 	$.ajax({
