@@ -278,34 +278,32 @@ $mail->SMTPOptions = [
 ];
 $mail->From = 'quote@quadsel.in';
 $mail->FromName = 'Marketing Approved Alert - Cost sheet....';
-$mail->AddAddress($mailerID, $client);
-//$mail->AddAddress("subramanian.r@bluebase.in");		//Adds a "To" address
-//$mail->addAddress("laxmipriya@bluebase.in");     // Add a recipient
-$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
-$mail->isHTML(true);                                 // Set email format to HTML
-$subject="Cost Sheet approved by Head..";			
-	$html_table = 'Dear&nbsp;&nbsp;'.$full_name.',<br> 
-		&nbsp;&nbsp;	This Mail regarding your Cost sheet approved by Marketing Head.';
-		
-	$html_table .=' </table>';
-	$html_table .=' <h4>Thanks & Regards,</h4><br>
-	'.$full_name.'
-	<p>Quadsel Systems Pvt. Ltd.</p>';
-	$mail->Subject =$subject;
-	$mail->Body =$html_table;
-	
+// E-mail validation check
+if(!empty($mailerID) && filter_var($mailerID, FILTER_VALIDATE_EMAIL)) {
+    $mail->AddAddress($mailerID, $client);
+    $mail->WordWrap = 50;                                 
+    $mail->isHTML(true);                                 
+    $subject="Cost Sheet approved by Head..";			
+    $html_table = 'Dear&nbsp;&nbsp;'.$full_name.',<br> 
+    &nbsp;&nbsp;	This Mail regarding your Cost sheet approved by Marketing Head.';
+    $html_table .=' </table>';
+    $html_table .=' <h4>Thanks & Regards,</h4><br>
+    '.$full_name.'
+    <p>Quadsel Systems Pvt. Ltd.</p>';
+    $mail->Subject =$subject;
+    $mail->Body =$html_table;
 
-if(!$mail->send()) {
-    echo 'Message could not be sent.';
-    echo 'Mailer Error: ' . $mail->ErrorInfo;
-	echo "0";
-} 
-else {
-    echo 'Message has been sent';
-	echo "1";
+    if(!$mail->send()) {
+        echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        echo "0";
+    } else {
+        echo 'Message has been sent';
+        echo "1";
+    }
+} else {
+    // Email illanaalum error adikkama process ah complete pannu
+    echo "1"; 
 }
-
-?>  
 
 
 
