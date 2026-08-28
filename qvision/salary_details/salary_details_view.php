@@ -124,16 +124,26 @@
 $saldetails = $con->query("SELECT * FROM `joining_detail_sal_structure` WHERE candid_id='$candid_id'");
 $amtshow = $saldetails->fetch(PDO::FETCH_ASSOC);
 
-// Convert all salary fields to numbers
-$sal_amt   = (float)($amtshow['fixedgross_month'] ?? 0);
-$pf_amt    = (float)($amtshow['employee_PF_month'] ?? 0);
-$esic_amt  = (float)($amtshow['employee_ESIC_month'] ?? 0);
-$basic_amt = (float)($amtshow['basic_month'] ?? 0);
+if ($amtshow) {
+    // Convert all salary fields to numbers
+    $sal_amt   = (float)($amtshow['fixedgross_month'] ?? 0);
+    $pf_amt    = (float)($amtshow['employee_PF_month'] ?? 0);
+    $esic_amt  = (float)($amtshow['employee_ESIC_month'] ?? 0);
+    $basic_amt = (float)($amtshow['basic_month'] ?? 0);
 
-// Also convert these because they are used later in calculations
-$hra_month   = (float)($amtshow['HRA_month'] ?? 0);
-$other_month = (float)($amtshow['otherallowances_permonth'] ?? 0);
-$site_month  = (float)($amtshow['siteallowance_permonth'] ?? 0);
+    // Also convert these because they are used later in calculations
+    $hra_month   = (float)($amtshow['HRA_month'] ?? 0);
+    $other_month = (float)($amtshow['otherallowances_permonth'] ?? 0);
+    $site_month  = (float)($amtshow['siteallowance_permonth'] ?? 0);
+} else {
+    $sal_amt   = (float)$salary_amount;
+    $pf_amt    = 0;
+    $esic_amt  = 0;
+    $basic_amt = (float)$salary_amount;
+    $hra_month   = 0;
+    $other_month = 0;
+    $site_month  = 0;
+}
 
 	
 		if($work_days)
