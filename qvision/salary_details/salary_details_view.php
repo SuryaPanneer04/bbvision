@@ -61,7 +61,7 @@
 		else
 		{
 			//echo "1";
-			$staff_sql=$con->query("SELECT a.* FROM staff_master a  join bb_attendance b on a.emp_code = b.emp_code where  a.status=1 group by b.emp_code ");	
+			$staff_sql=$con->query("SELECT a.* FROM staff_master a  join bb_attendance b on a.id = b.emp_code where  a.status=1 group by b.emp_code ");	
 		     //echo "SELECT a.* FROM staff_master a  join bb_attendance b on a.id = b.emp_code where  a.status=1 group by b.emp_code";
 		}
 		
@@ -109,7 +109,7 @@
 
     <?php 
 	   //echo $getworkdaytype.'kokoko';
-        $countgetworkingdays=$con->query("SELECT sum(working_days) as workdy_count,total_days FROM `bb_attendance` where emp_code='$employee_code' and year(in_log_date)='$y' and month(in_log_date) = '$m'");
+        $countgetworkingdays=$con->query("SELECT sum(working_days) as workdy_count,total_days FROM `bb_attendance` where emp_code='$employee_id' and year(in_log_date)='$y' and month(in_log_date) = '$m'");
 		//echo "SELECT sum(working_days) as workdy_count,total_days FROM `bb_attendance` where emp_code='$employee_code' and year(in_log_date)='$y' and month(in_log_date) = '$m'";
     		$workdaystake=$countgetworkingdays->fetch(PDO::FETCH_ASSOC);
 		
@@ -223,7 +223,7 @@ if ($pfcalc > 15000) {
         $pfemp = $pfcal * round($work_days);
         $pfamount = round($pfemp, 2);
     } else {
-        $pfamount = $amtshow['employee_PF_month'];
+        $pfamount = $pf_amt;
     }
 }
 
@@ -235,11 +235,11 @@ if ($pfcalc > 15000) {
 $esicamount = 0; // Initialize esicamount to 0 by default.
 
 if ($gross_salary <= 21000) {
-    $esicamount = $amtshow['employee_ESIC_month'];
+    $esicamount = $esic_amt;
 }
 
 
-$month='0'.$m;
+$month = sprintf('%02d', $m);
 $salaryadvance=$con->query("SELECT sum(advance_amount) as advance_amt FROM `salary_advance` WHERE emp_id='$candid_id' AND DATE_FORMAT(created_on, '%Y-%m') = '$y-$month'");
  $saladvance_cals=$salaryadvance->fetch(PDO::FETCH_ASSOC);
 if($saladvance_cals['advance_amt'])

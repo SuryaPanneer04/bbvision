@@ -26,7 +26,7 @@ $candidateid=$_SESSION['candidateid'];
 	  <th>#</th>
 	 
 	  <th>Quote No </th>
-      <th>Product/Service </th>
+      <th>Product/Service/Software </th>
       <th>Quote Type</th> 
 	  <th>Client Name</th>
       <th>Employee Name</th>
@@ -73,7 +73,7 @@ $candidateid=$_SESSION['candidateid'];
 		 //echo "SELECT emp_name from staff_master where candid_id ='$approved_id'";
 		 $stmt->execute(); 
 		 $row = $stmt->fetch();
-		 $emp_name = $row['emp_name'];
+		 $emp_name = $row ? $row['emp_name'] : " ";
 	  ?>
       <tr>
 		  <td><?php echo $cnt;?>.</td>
@@ -97,10 +97,12 @@ $candidateid=$_SESSION['candidateid'];
 				<?php } ?>
 		  </td>
 		  <td><?php 
-		  if($data['mapping_id'] =='1'){ echo "Product"; 
-		  }elseif($data['mapping_id'] =='2'){ echo "Service";
-		  }elseif($data['mapping_id'] =='3'){ echo "Solution";
+		  if($data['business_id'] =='1'){ echo "Product"; 
+		  }elseif($data['business_id'] =='2'){ echo "Service";
+		  }elseif($data['business_id'] =='3'){ echo "Solution";
+		  }elseif($data['business_id'] =='4'){ echo "Software";
 		  }
+	    
 		  ?></td>
 		  <td><?php if($data['quote_type']=='1'){ echo "INR"; }else{ echo "Doller";}?></td>
 		 

@@ -241,7 +241,9 @@ $fet = $stmt->fetch();
 		  <th>UNIT</th>
 		  <th>UNIT RATE</th>
 		  <th formula="cost*qty" summary="sum">AMOUNT</th>
+		  <?php if($fet['business_id'] == 1 || $fet['business_id'] == 3) { ?>
 		  <th colspan='2'>LOGISTIC</th>
+		  <?php } ?>
 		  <th colspan='2'>ENGINEER</th>
 		  <th colspan='2'>MARGIN</th>
 		  <th>TOTAL ITEMS</th>
@@ -262,8 +264,10 @@ $fet = $stmt->fetch();
 				
 			  <td><?php echo $dis['unit_rate']; ?></td>
 			  <td><?php echo $dis['total_price']; ?></td>
+			  <?php if($fet['business_id'] == 1 || $fet['business_id'] == 3) { ?>
 			  <td><?php echo $dis['log_per']; ?></td>
 			  <td><?php echo $dis['log_amt']; ?></td>
+			  <?php } ?>
 			  <td><?php echo $dis['eng_per']; ?></td>
 			  <td><?php echo $dis['eng_amt']; ?></td> 
 			  <td><?php echo $dis['com_per']; ?></td>
@@ -278,32 +282,34 @@ $fet = $stmt->fetch();
 		
 		<?php 
 		$cost1=$con->query("select * from cost_sheet_entry where cost_sheet_no='$cno'");
-		$cfet=$cost1->fetch()?>
+		$cfet=$cost1->fetch();
+		$cs = ($fet['business_id'] == 1 || $fet['business_id'] == 3) ? 6 : 5;
+		?>
 		<tr>
-		  <td colspan="6" align="center"><b>Net Amount</b></td>
+		  <td colspan="<?php echo $cs; ?>" align="center"><b>Net Amount</b></td>
 		 
-		  <td colspan="6"align="right">
+		  <td colspan="<?php echo $cs; ?>"align="right">
 		    <INPUT type="text" id="total_item" name="total_item" class="form-control" style="width:40% !important;" placeholder="0.00" value="<?php echo $cfet['net_amt']; ?>" readonly="readonly">
 		  </td>
 		</tr>
 		<tr>
-		  <td colspan="6" align="center"><b>GST Percentage <?php echo $cfet['gst_per']; ?>%</b></td>
-		  <td colspan="6" align="right">
+		  <td colspan="<?php echo $cs; ?>" align="center"><b>GST Percentage <?php echo $cfet['gst_per']; ?>%</b></td>
+		  <td colspan="<?php echo $cs; ?>" align="right">
 		    <INPUT type="text" id="gst_per" name="gst_per" class="form-control" style="width:40% !important;" placeholder="0.00" value="<?php echo $cfet['gst_amt']; ?>" readonly="readonly">
 		  </td>
 		</tr>
 		<tr>
 
-		  <td colspan="6" align="center"><b>IGST Percentage <?php echo $cfet['igst_per']; ?>%</b></td>
+		  <td colspan="<?php echo $cs; ?>" align="center"><b>IGST Percentage <?php echo $cfet['igst_per']; ?>%</b></td>
 
-		  <td colspan="6" align="right">
+		  <td colspan="<?php echo $cs; ?>" align="right">
 		    <INPUT type="text" id="gst_per" name="igst_per" class="form-control" style="width:40% !important;" placeholder="0.00" value="<?php echo $cfet['igst_amount']; ?>" readonly="readonly">
 		  </td>
 		</tr>
 		
 		<tr>
-		  <td colspan="6" align="center"><b>Grand Total</b></td>
-		  <td colspan="6" align="right">
+		  <td colspan="<?php echo $cs; ?>" align="center"><b>Grand Total</b></td>
+		  <td colspan="<?php echo $cs; ?>" align="right">
 		    <INPUT type="text" id="grand_total" name="grand_total" class="form-control" style="width:40% !important;" placeholder="0.00" value="<?php echo $cfet['grand_amt']; ?>" readonly="readonly">
 		  </td>
 		</tr>

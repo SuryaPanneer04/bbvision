@@ -59,6 +59,7 @@ About to start loop, count=1.
 Inside loop i=0.
 Reached line 254 before quote query.
 Success! inserted.
+<<<<<<< Updated upstream
 Started costsheet_revise_insert.php
 Line 25
 Line 37
@@ -191,3 +192,5 @@ Reached line 254 before quote query.
 Inside loop i=5.
 Reached line 254 before quote query.
 Success! inserted.
+=======
+>>>>>>> Stashed changes

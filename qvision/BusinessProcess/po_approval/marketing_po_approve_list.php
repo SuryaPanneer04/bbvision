@@ -74,7 +74,7 @@ else
 		
 		 $mtmtf->execute(); 
 		 $rowm = $mtmtf->fetch();
-		 $market_emp_name = $rowm['emp_name'];
+		 $market_emp_name = $rowm ? $rowm['emp_name']: " ";
 }
 
 $md_status=$quote_list['md_status'];
@@ -87,7 +87,7 @@ else{
 		 
 		 $mdtmtf->execute(); 
 		 $rowmd = $mdtmtf->fetch();
-		 $md_emp_name = $rowmd['emp_name'];	
+		 $md_emp_name = $rowmd ?  $rowmd['emp_name'] : " ";	
 }
 
 $finance_status=$quote_list['finance_status'];
@@ -101,7 +101,7 @@ else{
 		 //echo "SELECT emp_name from staff_master where candid_id ='$approved_id'";
 		 $stmtf->execute(); 
 		 $rowf = $stmtf->fetch();
-		 $finance_emp_name = $rowf['emp_name'];
+		 $finance_emp_name = $rowf ? $rowf['emp_name'] : " ";
 }	
 		 
 		  ?>

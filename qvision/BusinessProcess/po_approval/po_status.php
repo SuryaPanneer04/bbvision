@@ -63,18 +63,17 @@ a.md_status,
 a.md_approved_by,
 a.finance_status,
 a.finance_approved_by,
-b.cost_sheet_no,
 b.enquiry_id,
 c.id AS enqs_id,
 c.Company_name,
-d.client_name AS Client,
+d.org_name AS Client,
 a.purchase_invoice_sts AS pi_sts
 FROM po_generate a
 LEFT JOIN cost_sheet_entry b
     ON a.cost_sheet_no = b.cost_sheet_no
 LEFT JOIN enquiry c
     ON b.enquiry_id = c.id
-LEFT JOIN client_master d
+LEFT JOIN new_client_master d
     ON c.Client_id = d.id
 WHERE a.po_upload_status IN ('1','2')
 ORDER BY a.id DESC
@@ -101,16 +100,26 @@ $mstatus_approved=$quote_list['marketing_approved_by'];
 if($mstatus=='1')
 {
 	$sql1=$con->query("SELECT full_name,candidate_id FROM z_user_master  where candidate_id='$mstatus_approved'");
+<<<<<<< Updated upstream
 $fet1=$sql1->fetch(PDO::FETCH_ASSOC);
 $empm_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
+=======
+$fet1=$sql1->fetch();
+$empm_name= $fet1 ? $fet1['full_name'] : '';
+>>>>>>> Stashed changes
 	echo '<span style="color:green;text-align:center;"><b>SOF Approved By </b></span>';?>
 				<?php echo $empm_name;
 }
 elseif($mstatus=='2')
 {
 	$sql1=$con->query("SELECT full_name,candidate_id FROM z_user_master  where candidate_id='$mstatus_approved'");
+<<<<<<< Updated upstream
 $fet1=$sql1->fetch(PDO::FETCH_ASSOC);
 $empm_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
+=======
+$fet1=$sql1->fetch();
+$empm_name= $fet1 ? $fet1['full_name'] : '';
+>>>>>>> Stashed changes
 
 	echo '<span style="color:red;text-align:center;"><b>SOF Rejected by <b/></span>';
 	 echo $empm_name;
@@ -126,16 +135,26 @@ $empm_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
 if($sstatus=='1')
 {
 	$sql1=$con->query("SELECT full_name,candidate_id FROM z_user_master  where candidate_id='$md_approved'");
+<<<<<<< Updated upstream
 $fet1=$sql1->fetch(PDO::FETCH_ASSOC);
 $emps_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
+=======
+$fet1=$sql1->fetch();
+$emps_name= $fet1 ? $fet1['full_name'] : '';
+>>>>>>> Stashed changes
 	echo '<span style="color:green;text-align:center;"><b>SOF Approved By </b></span>';?>
 				<?php echo $emps_name;
 }
 elseif($sstatus=='2')
 {
 	$sql1=$con->query("SELECT full_name,candidate_id FROM z_user_master  where candidate_id='$md_approved'");
+<<<<<<< Updated upstream
 $fet1=$sql1->fetch(PDO::FETCH_ASSOC);
 $emps_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
+=======
+$fet1=$sql1->fetch();
+$emps_name= $fet1 ? $fet1['full_name'] : '';
+>>>>>>> Stashed changes
 	echo '<span style="color:red;text-align:center;"><b>SOF Rejected By </b></span>';?>
 				<?php echo $emps_name;
 }else{
@@ -151,8 +170,13 @@ $finance_approved=$quote_list['finance_approved_by'];
 
 if($quote_list['pi_sts']==1){
 	$sql1=$con->query("SELECT full_name,candidate_id FROM z_user_master  where candidate_id='$finance_approved'");
+<<<<<<< Updated upstream
 $fet1=$sql1->fetch(PDO::FETCH_ASSOC);
 $empd_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
+=======
+$fet1=$sql1->fetch();
+$empd_name= $fet1 ? $fet1['full_name'] : '';
+>>>>>>> Stashed changes
 
 	echo '<span style="color:green;text-align:center;"><b>SOF Approved By </b></span>', $empd_name; 
 
@@ -164,16 +188,26 @@ if($fstatus=='1')
 {
 	
 	$sql1=$con->query("SELECT full_name,candidate_id FROM z_user_master  where candidate_id='$finance_approved'");
+<<<<<<< Updated upstream
 $fet1=$sql1->fetch(PDO::FETCH_ASSOC);
 $empd_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
+=======
+$fet1=$sql1->fetch();
+$empd_name= $fet1 ? $fet1['full_name'] : '';
+>>>>>>> Stashed changes
 	echo '<span style="color:green;text-align:center;"><b>SOF Approved By </b></span>';?>
 				<?php echo $empd_name; echo '<span style="color:red;text-align:center;"><b>"And Waiting For Purchase"</b></span>';
 }
 elseif($fstatus=='2')
 {
 	$sql1=$con->query("SELECT full_name,candidate_id FROM z_user_master  where candidate_id='$finance_approved'");
+<<<<<<< Updated upstream
 $fet1=$sql1->fetch(PDO::FETCH_ASSOC);
 $empd_name=($fet1 && isset($fet1['full_name'])) ? $fet1['full_name'] : '-';
+=======
+$fet1=$sql1->fetch();
+$empd_name= $fet1 ? $fet1['full_name'] : '';
+>>>>>>> Stashed changes
 	echo '<span style="color:red;text-align:center;"><b>SOF Rejected By </b></span>';?>
 				<?php echo $empd_name;
 }else{

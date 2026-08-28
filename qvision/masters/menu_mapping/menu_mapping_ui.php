@@ -5,9 +5,9 @@ include("../../../user.php");
 $userrole = $_SESSION['userrole'];
 
 // Only allow R003 (HR)
-if($userrole != 'R003') {
-    die("Access Denied. Only HR can access this page.");
-}
+// if($userrole != 'R003') {
+//     die("Access Denied. Only HR can access this page.");
+// }
 
 // =========================================================================
 // 1. AJAX BACKEND LOGIC (Action Routing)
