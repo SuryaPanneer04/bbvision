@@ -15,7 +15,7 @@ if(isset($_REQUEST['submit']))
 	{
 		echo "<script>
                 alert('New Division added successfully!');
-                window.location.href = '/bbvision/index.php'; // qvision-ku bathila correct-ana bbvision path
+                window.location.href = '/bbvision/index.php'; 
               </script>";
 	}
 }

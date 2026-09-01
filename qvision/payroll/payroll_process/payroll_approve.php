@@ -7,15 +7,15 @@
 	$id = $_REQUEST['id'];
 
 	
-	$payroll_update=$con->query("update payroll_master set flag=1 where month='$month' and year='$year' and flag=2");
+	$payroll_update=$con->query("update payroll_master set flag=1, approval_status=0 where month='$month' and year='$year' and flag=2");
 	
 	$salary_earnings_delete=$con->query("DELETE FROM payroll_salary_earnings WHERE payroll_month='$month' and payroll_year='$year'");
 	
 	$salary_deduction_delete=$con->query("DELETE FROM payroll_salary_deduction WHERE payroll_month='$month' and payroll_year='$year'");
 	
-	//$salary_earned_delete=$con->query("DELETE FROM payroll_earned_salary WHERE payroll_month='$month' and payroll_year='$year'");
+	$salary_final_delete=$con->query("DELETE FROM payroll_final_salary WHERE payroll_month='$month' and payroll_year='$year'");
 	
-	if($payroll_update && $salary_earnings_delete && $salary_deduction_delete)
+	if($payroll_update && $salary_earnings_delete && $salary_deduction_delete && $salary_final_delete)
 	{
 		echo 1;
 	}

@@ -14,7 +14,7 @@ if(isset($_REQUEST['submit']))
 {
 	echo "<script>
             alert('Updated Successfully');
-            window.location.href = '../../../index.php'; 
+            window.location.href = '../../../index.php'; What do we develop under store conform password new password and something went on the validation verification in the book of PC
           </script>";
 }
 }?>

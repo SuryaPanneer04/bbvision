@@ -550,7 +550,7 @@ if($check == 0){
     // Update existing
     $con->query("
     UPDATE payroll_master 
-    SET flag=2 
+    SET flag=2, approval_status=0
     WHERE month='$month' AND year='$year'
     ");
 }

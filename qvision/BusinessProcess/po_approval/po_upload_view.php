@@ -44,13 +44,13 @@ background-color: rgb(237, 93, 0) !important;
 				   <div class="form-group row">
 				  <label for="inputname" class="col-sm-2 col-form-label">Client Name</label>
 				  <div class="col-sm-5">
-                      <input type="text" class="form-control" name="cost_sheet_no" id="cost_sheet_no" value="<?php echo  $row['org_name'];?>"readonly>
+                      <input type="text" class="form-control" name="org_name" id="org_name" value="<?php echo  $row['org_name'];?>"readonly>
                     </div>
 					</div>
 					<div class="form-group row">
 				  <label for="inputname" class="col-sm-2 col-form-label">Contact Person Name</label>
 				  <div class="col-sm-5">
-                      <input type="text" class="form-control" name="cost_sheet_no" id="cost_sheet_no" value="<?php echo  $row['contact_person'];?>"readonly>
+                      <input type="text" class="form-control" name="contact_person" id="contact_person" value="<?php echo  $row['contact_person'];?>"readonly>
                     </div>
 					</div>
                     <div class="form-group row">

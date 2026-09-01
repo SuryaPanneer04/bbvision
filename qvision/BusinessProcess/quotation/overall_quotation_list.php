@@ -82,13 +82,8 @@ $row = $roll_query->fetch();
 		 
 		 $stmt = $con->prepare("SELECT emp_name from staff_master where candid_id ='$approved_id' "); 	
 		 $stmt->execute(); 
-<<<<<<< Updated upstream
 		 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 		 $emp_name = ($row && isset($row['emp_name'])) ? $row['emp_name'] : '-';
-=======
-		 $row = $stmt->fetch();
-		 $emp_name = $row ? $row['emp_name'] : '';
->>>>>>> Stashed changes
 	  ?>
       <tr>
 		  <td><?php echo $cnt;?>.</td>

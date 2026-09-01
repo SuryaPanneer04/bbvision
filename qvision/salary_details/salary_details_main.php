@@ -27,7 +27,12 @@
 		<select class="form-control" name="payroll_id">
 		<option value="0">-- Select Month --</option>
 		<?php
-		$staff_payroll_sql=$con->query("select id,month,year,flag from payroll_master where flag in (2,3)");
+		$role = isset($_SESSION['userrole']) ? $_SESSION['userrole'] : '';
+		if ($role == 'R008') {
+			$staff_payroll_sql=$con->query("select id,month,year,flag from payroll_master where flag in (2,3) and approval_status IN (1,2,3)");
+		} else {
+			$staff_payroll_sql=$con->query("select id,month,year,flag from payroll_master where flag in (2,3)");
+		}
 		while($staff_payroll_res=$staff_payroll_sql->fetch(PDO::FETCH_ASSOC))
 		{
 			$m = $staff_payroll_res['month'];
@@ -143,7 +148,7 @@
 	</div>
     </div>
   <!-- /.card-header -->
-    <div class="card-body">
+    <div class="card-body" style="overflow-x: auto;">
       <div id="salary_details_view">
       </div>
     </div>
